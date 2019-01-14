@@ -12,7 +12,7 @@
 
 <script>
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
-import  { isChorme }  from '@/common.js'
+import  { isChorme }  from '@adminPc/common.js'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {

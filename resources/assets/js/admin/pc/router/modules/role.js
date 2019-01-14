@@ -6,9 +6,9 @@ const roleRouter = {
     path: '/role',
     component: Layout,
     redirect: '/role/index',
-    name: 'Role',
+    name: 'role',
     meta: {
-      title: '',
+      title: 'role',
       icon: 'people',
       roles: ['admin']
     },
@@ -17,7 +17,13 @@ const roleRouter = {
         path: 'index',
         component: resolve => void(require(['@/views/role/index'], resolve)),
         name: 'roleList',
-        meta: { title: 'role' }
+        meta: { title: 'roleManger' }
+      },
+      {
+        path: 'permission',
+        component: resolve => void(require(['@/views/permissions/index'], resolve)),
+        name: 'permissionList',
+        meta: { title: 'permission' }
       },
     ]
 }

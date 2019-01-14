@@ -77,7 +77,7 @@ export const constantRouterMap = [
     meta: { title: 'passwordReset' }
   },
 
-  infoSelfRouter,
+  // infoSelfRouter,
   /*userRouter,
   permissionRouter,
   roleRouter,
@@ -107,16 +107,16 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  infoStatisticsRouter,
-  infoDianxinRouter,
+  /*infoStatisticsRouter,
+  infoDianxinRouter,*/
   userRouter,
   permissionRouter,
   roleRouter,
-  managerRouter,
+  /*managerRouter,
   packageRouter,
   goodsRouter,
   serviceRouter,
-  inventoryRouter,
+  inventoryRouter,*/
 
   { path: '*', redirect: '/404', hidden: true }
 ]

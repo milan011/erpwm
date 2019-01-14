@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		21: 0
+/******/ 		29: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -3224,7 +3224,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__("./resources/assets/js/admin/pc/views/layout/components/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_js__ = __webpack_require__("./resources/assets/js/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__adminPc_common_js__ = __webpack_require__("./resources/assets/js/admin/pc/common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixin_ResizeHandler__ = __webpack_require__("./resources/assets/js/admin/pc/views/layout/mixin/ResizeHandler.js");
 //
 //
@@ -3278,7 +3278,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$store.dispatch('closeSideBar', { withoutAnimation: false });
     },
     isChormeBrowser: function isChormeBrowser() {
-      if (!Object(__WEBPACK_IMPORTED_MODULE_1__common_js__["a" /* isChorme */])()) {
+      if (!Object(__WEBPACK_IMPORTED_MODULE_1__adminPc_common_js__["a" /* isChorme */])()) {
         this.$router.push({ name: 'chormeDownLoad' });
       }
     }
@@ -105931,15 +105931,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_element_ui_lib_theme_chalk_index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_element_ui_lib_theme_chalk_index_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__adminPc_styles_index_scss__ = __webpack_require__("./resources/assets/js/admin/pc/styles/index.scss");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__adminPc_styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__adminPc_styles_index_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_vue__ = __webpack_require__("./resources/assets/js/admin/pc/App.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__router__ = __webpack_require__("./resources/assets/js/admin/pc/router/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__store__ = __webpack_require__("./resources/assets/js/admin/pc/store/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lang__ = __webpack_require__("./resources/assets/js/admin/pc/lang/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__icons__ = __webpack_require__("./resources/assets/js/admin/pc/icons/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__errorLog__ = __webpack_require__("./resources/assets/js/admin/pc/errorLog.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__permission__ = __webpack_require__("./resources/assets/js/admin/pc/permission.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__filters__ = __webpack_require__("./resources/assets/js/admin/pc/filters/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__adminPc_App_vue__ = __webpack_require__("./resources/assets/js/admin/pc/App.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__adminPc_App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__adminPc_App_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__adminPc_router__ = __webpack_require__("./resources/assets/js/admin/pc/router/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__adminPc_store__ = __webpack_require__("./resources/assets/js/admin/pc/store/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__adminPc_lang__ = __webpack_require__("./resources/assets/js/admin/pc/lang/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__adminPc_icons__ = __webpack_require__("./resources/assets/js/admin/pc/icons/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__adminPc_errorLog__ = __webpack_require__("./resources/assets/js/admin/pc/errorLog.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__adminPc_permission__ = __webpack_require__("./resources/assets/js/admin/pc/permission.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__adminPc_filters__ = __webpack_require__("./resources/assets/js/admin/pc/filters/index.js");
 
 
 /**
@@ -105982,24 +105982,24 @@ __webpack_require__("./resources/assets/js/admin/pc/bootstrap.js");
 __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_element_ui___default.a, {
   size: __WEBPACK_IMPORTED_MODULE_2_js_cookie___default.a.get('size') || 'medium', // set element-ui default size
   i18n: function i18n(key, value) {
-    return __WEBPACK_IMPORTED_MODULE_10__lang__["a" /* default */].t(key, value);
+    return __WEBPACK_IMPORTED_MODULE_10__adminPc_lang__["a" /* default */].t(key, value);
   }
 });
 
 // register global utility filters.
-__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys___default()(__WEBPACK_IMPORTED_MODULE_14__filters__).forEach(function (key) {
-  __WEBPACK_IMPORTED_MODULE_1_vue___default.a.filter(key, __WEBPACK_IMPORTED_MODULE_14__filters__[key]);
+__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys___default()(__WEBPACK_IMPORTED_MODULE_14__adminPc_filters__).forEach(function (key) {
+  __WEBPACK_IMPORTED_MODULE_1_vue___default.a.filter(key, __WEBPACK_IMPORTED_MODULE_14__adminPc_filters__[key]);
 });
 
 __WEBPACK_IMPORTED_MODULE_1_vue___default.a.config.productionTip = false;
 
 var app = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
   el: '#app',
-  router: __WEBPACK_IMPORTED_MODULE_8__router__["a" /* default */],
-  store: __WEBPACK_IMPORTED_MODULE_9__store__["a" /* default */],
-  i18n: __WEBPACK_IMPORTED_MODULE_10__lang__["a" /* default */],
+  router: __WEBPACK_IMPORTED_MODULE_8__adminPc_router__["c" /* default */],
+  store: __WEBPACK_IMPORTED_MODULE_9__adminPc_store__["a" /* default */],
+  i18n: __WEBPACK_IMPORTED_MODULE_10__adminPc_lang__["a" /* default */],
   render: function render(h) {
-    return h(__WEBPACK_IMPORTED_MODULE_7__App_vue___default.a);
+    return h(__WEBPACK_IMPORTED_MODULE_7__adminPc_App_vue___default.a);
   }
 });
 
@@ -106064,13 +106064,40 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/admin/pc/common.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export isEmpty */
+/* harmony export (immutable) */ __webpack_exports__["a"] = isChorme;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys__ = __webpack_require__("./node_modules/babel-runtime/core-js/object/keys.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys__);
+
+
+// 公共方法
+
+//判断数组对象是否为空
+function isEmpty(v) {
+  return Array.isArray(v) && v.length == 0 || Object.prototype.isPrototypeOf(v) && __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys___default()(v).length == 0;
+}
+
+//判断是否谷歌浏览器
+function isChorme() {
+  var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+  //判断是否Chrome浏览器
+
+  return userAgent.indexOf("Chrome") > -1;
+}
+
+/***/ }),
+
 /***/ "./resources/assets/js/admin/pc/errorLog.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store__ = __webpack_require__("./resources/assets/js/admin/pc/store/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__adminPc_store__ = __webpack_require__("./resources/assets/js/admin/pc/store/index.js");
 
 
 
@@ -106452,6 +106479,7 @@ var _infoStatistics;
     page401: '401',
     page404: '404',
     user: '用户管理',
+    userList: '用户列表',
     userCreate: '添加用户',
     passwordReset: '重置密码',
     userUpdate: '修改用户',
@@ -106460,7 +106488,8 @@ var _infoStatistics;
     permissionAdd: '添加权限',
     permissionUpdate: '修改权限',
     permissionDelete: '删除权限',
-    role: '角色管理',
+    role: '角色权限',
+    roleManger: '角色管理',
     roleAdd: '添加角色',
     roleUpdate: '修改角色',
     roleDelete: '删除角色',
@@ -106750,15 +106779,15 @@ var _infoStatistics;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__("./resources/assets/js/admin/pc/router/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store__ = __webpack_require__("./resources/assets/js/admin/pc/store/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__adminPc_router__ = __webpack_require__("./resources/assets/js/admin/pc/router/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adminPc_store__ = __webpack_require__("./resources/assets/js/admin/pc/store/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_element_ui__ = __webpack_require__("./node_modules/element-ui/lib/element-ui.common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_element_ui___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_element_ui__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_nprogress__ = __webpack_require__("./node_modules/nprogress/nprogress.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_nprogress___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_nprogress__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_nprogress_nprogress_css__ = __webpack_require__("./node_modules/nprogress/nprogress.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_nprogress_nprogress_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_nprogress_nprogress_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_auth__ = __webpack_require__("./resources/assets/js/utils/auth.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__adminPc_utils_auth__ = __webpack_require__("./resources/assets/js/admin/pc/utils/auth.js");
 
 
 
@@ -106780,34 +106809,34 @@ function hasPermission(roles, permissionRoles) {
 
 var whiteList = ['/login', '/auth-redirect', '/chormeDownLoad']; // no redirect whitelist
 
-__WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */].beforeEach(function (to, from, next) {
+__WEBPACK_IMPORTED_MODULE_1__adminPc_router__["c" /* default */].beforeEach(function (to, from, next) {
   __WEBPACK_IMPORTED_MODULE_4_nprogress___default.a.start(); // start progress bar
-  if (Object(__WEBPACK_IMPORTED_MODULE_6__utils_auth__["a" /* getToken */])()) {
+  if (Object(__WEBPACK_IMPORTED_MODULE_6__adminPc_utils_auth__["a" /* getToken */])()) {
     // determine if there has token
     /* has token*/
     if (to.path === '/login') {
       next({ path: '/' });
       __WEBPACK_IMPORTED_MODULE_4_nprogress___default.a.done(); // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      if (__WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */].getters.roles.length === 0) {
+      if (__WEBPACK_IMPORTED_MODULE_2__adminPc_store__["a" /* default */].getters.roles.length === 0) {
         // 判断当前用户是否已拉取完user_info信息
-        __WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */].dispatch('GetUserInfo').then(function (res) {
+        __WEBPACK_IMPORTED_MODULE_2__adminPc_store__["a" /* default */].dispatch('GetUserInfo').then(function (res) {
           // 拉取user_info
           var roles = res.data.roles; // note: roles must be a array! such as: ['editor','develop']
-          __WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */].dispatch('GenerateRoutes', { roles: roles }).then(function () {
+          __WEBPACK_IMPORTED_MODULE_2__adminPc_store__["a" /* default */].dispatch('GenerateRoutes', { roles: roles }).then(function () {
             // 根据roles权限生成可访问的路由表
-            __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */].addRoutes(__WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */].getters.addRouters); // 动态添加可访问路由表
+            __WEBPACK_IMPORTED_MODULE_1__adminPc_router__["c" /* default */].addRoutes(__WEBPACK_IMPORTED_MODULE_2__adminPc_store__["a" /* default */].getters.addRouters); // 动态添加可访问路由表
             next(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, to, { replace: true })); // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
           });
         }).catch(function (err) {
-          __WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */].dispatch('FedLogOut').then(function () {
+          __WEBPACK_IMPORTED_MODULE_2__adminPc_store__["a" /* default */].dispatch('FedLogOut').then(function () {
             __WEBPACK_IMPORTED_MODULE_3_element_ui__["Message"].error(err || '请重新登录');
             next({ path: '/' });
           });
         });
       } else {
         // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
-        if (hasPermission(__WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */].getters.roles, to.meta.roles)) {
+        if (hasPermission(__WEBPACK_IMPORTED_MODULE_2__adminPc_store__["a" /* default */].getters.roles, to.meta.roles)) {
           next();
         } else {
           next({ path: '/401', replace: true, query: { noGoBack: true } });
@@ -106827,7 +106856,7 @@ __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */].beforeEach(function (to
   }
 });
 
-__WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */].afterEach(function () {
+__WEBPACK_IMPORTED_MODULE_1__adminPc_router__["c" /* default */].afterEach(function () {
   __WEBPACK_IMPORTED_MODULE_4_nprogress___default.a.done(); // finish progress bar
 });
 
@@ -106837,24 +106866,17 @@ __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */].afterEach(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export constantRouterMap */
-/* unused harmony export asyncRouterMap */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return constantRouterMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return asyncRouterMap; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__("./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adminPc_views_layout_Layout__ = __webpack_require__("./resources/assets/js/admin/pc/views/layout/Layout.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adminPc_views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__adminPc_views_layout_Layout__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_user__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/user.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_permission__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/permission.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_role__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/role.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_manager__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/manager.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_package__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/package.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_infoSelf__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/infoSelf.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modules_infoDianxin__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/infoDianxin.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__modules_infoStatistics__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/infoStatistics.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__modules_goods__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/goods.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__modules_service__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/service.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__modules_inventory__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/inventory.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_role__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/role.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_inventory__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/inventory.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_service__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/service.js");
 
 
 
@@ -106865,16 +106887,18 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 /* Router Modules */
 
+// import permissionRouter from './modules/permission'
+
+//import infoSelfRouter from './modules/infoSelf'
 
 
+/*import managerRouter from './modules/manager'
+import packageRouter from './modules/package'
+import infoDianxinRouter from './modules/infoDianxin'
+import infoStatisticsRouter from './modules/infoStatistics'
+import goodsRouter from './modules/goods'
 
-
-
-
-
-
-
-
+import inventoryRouter from './modules/inventory'*/
 /*import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
@@ -106902,14 +106926,14 @@ var constantRouterMap = [{
   name: 'login',
   path: '/login',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(16).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/login/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(22).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/login/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   }
   // hidden: true,
 }, {
   name: 'chormeDownLoad',
   path: '/chormeDownLoad',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(18).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/chormeDownLoad/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(23).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/chormeDownLoad/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   }
   // hidden: true,
 }, {
@@ -106920,7 +106944,7 @@ var constantRouterMap = [{
     path: 'dashboard',
     // component: () => import('@adminPc/views/dashboard/index'),
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(14).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/dashboard/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(17).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/dashboard/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'Dashboard',
     meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
@@ -106929,13 +106953,13 @@ var constantRouterMap = [{
   hidden: true,
   path: '/user/passwordReset',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(20).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/user/passwordReset.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(25).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/user/passwordReset.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   },
   name: 'userAdd',
   meta: { title: 'passwordReset' }
-}, __WEBPACK_IMPORTED_MODULE_8__modules_infoSelf__["a" /* default */]];
+}];
 
-/* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
+/* harmony default export */ __webpack_exports__["c"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
   // mode: 'history', // require service support
   scrollBehavior: function scrollBehavior() {
     return { y: 0 };
@@ -106943,137 +106967,20 @@ var constantRouterMap = [{
   routes: constantRouterMap
 }));
 
-var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_10__modules_infoStatistics__["a" /* default */], __WEBPACK_IMPORTED_MODULE_9__modules_infoDianxin__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_permission__["a" /* default */], __WEBPACK_IMPORTED_MODULE_5__modules_role__["a" /* default */], __WEBPACK_IMPORTED_MODULE_6__modules_manager__["a" /* default */], __WEBPACK_IMPORTED_MODULE_7__modules_package__["a" /* default */], __WEBPACK_IMPORTED_MODULE_11__modules_goods__["a" /* default */], __WEBPACK_IMPORTED_MODULE_12__modules_service__["a" /* default */], __WEBPACK_IMPORTED_MODULE_13__modules_inventory__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
-
-/***/ }),
-
-/***/ "./resources/assets/js/admin/pc/router/modules/goods.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-
-//权限管理路由组
-
-
-var goodsRouter = {
-  path: '/goods',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/goods/index',
-  name: 'Goods',
-  meta: {
-    title: '',
-    icon: 'theme',
-    roles: ['admin', 'manager']
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(12/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/goods/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'goodsList',
-    meta: { title: 'goods' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (goodsRouter);
-
-/***/ }),
-
-/***/ "./resources/assets/js/admin/pc/router/modules/infoDianxin.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-//电信信息管理路由组
+var asyncRouterMap = [
+//infoStatisticsRouter,
+//infoDianxinRouter,
+__WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */],
+// inventoryRouter,
+// permissionRouter,
+// roleRouter,
+// managerRouter,
+//packageRouter,
+//goodsRouter,
+// serviceRouter,
 
 
-var infoDianxinRouter = {
-  path: '/infoDianxin',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/infoDianxin/index',
-  name: 'infoDianXin',
-  meta: {
-    title: '',
-    icon: 'message',
-    roles: ['admin', 'manager']
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/infoDianxin/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'infoDianxinList',
-    meta: { title: 'infoDianXin' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (infoDianxinRouter);
-
-/***/ }),
-
-/***/ "./resources/assets/js/admin/pc/router/modules/infoSelf.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-
-//信息管理路由组
-
-
-var infoSelfRouter = {
-  path: '/infoSelf',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/infoSelf/index',
-  name: 'InfoSelf',
-  meta: {
-    title: '',
-    icon: 'documentation'
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/infoSelf/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'infoSelfList',
-    meta: { title: 'info' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (infoSelfRouter);
-
-/***/ }),
-
-/***/ "./resources/assets/js/admin/pc/router/modules/infoStatistics.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-
-//信息管理路由组
-
-
-var infoStatisticsRouter = {
-  path: '/infoStatistics',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/infoSelf/index',
-  name: 'InfoStatistics',
-  meta: {
-    title: '',
-    roles: ['admin', 'manager'],
-    icon: 'star'
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(11/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/infoStatistics/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'infoStatistics',
-    meta: { title: 'InfoStatistics' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (infoStatisticsRouter);
+{ path: '*', redirect: '/404', hidden: true }];
 
 /***/ }),
 
@@ -107100,119 +107007,20 @@ var inventoryRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(6/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/inventory/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(3/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/inventory/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'inventoryGoodsList',
     meta: { title: 'inventoryList' }
   }, {
     path: 'detail',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(5/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/inventoryDetail/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(2/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/inventoryDetail/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'inventoryDetail',
     meta: { title: 'inventoryDetail' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (inventoryRouter);
-
-/***/ }),
-
-/***/ "./resources/assets/js/admin/pc/router/modules/manager.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-
-//权限管理路由组
-
-
-var permissionRouter = {
-  path: '/manager',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/manager/index',
-  name: 'Manager',
-  meta: {
-    title: '',
-    icon: 'list',
-    roles: ['admin', 'manager'] //页面需要的权限
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(10/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/manager/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'managerList',
-    meta: { title: 'manager' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (permissionRouter);
-
-/***/ }),
-
-/***/ "./resources/assets/js/admin/pc/router/modules/package.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-
-//权限管理路由组
-
-
-var packageRouter = {
-  path: '/package',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/package/index',
-  name: 'Package',
-  meta: {
-    title: '',
-    icon: 'size',
-    roles: ['admin', 'manager']
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(9/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/package/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'packageList',
-    meta: { title: 'package' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (packageRouter);
-
-/***/ }),
-
-/***/ "./resources/assets/js/admin/pc/router/modules/permission.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-
-//权限管理路由组
-
-
-var permissionRouter = {
-  path: '/permission',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/permission/index',
-  name: 'Permission',
-  meta: {
-    title: '',
-    icon: 'password',
-    roles: ['admin']
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(8/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'permissionList',
-    meta: { title: 'permission' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (permissionRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (inventoryRouter);
 
 /***/ }),
 
@@ -107230,22 +107038,29 @@ var roleRouter = {
   path: '/role',
   component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
   redirect: '/role/index',
-  name: 'Role',
+  name: 'role',
   meta: {
-    title: '',
+    title: 'role',
     icon: 'people',
     roles: ['admin']
   },
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(3/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'roleList',
-    meta: { title: 'role' }
+    meta: { title: 'roleManger' }
+  }, {
+    path: 'permission',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(5/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'permissionList',
+    meta: { title: 'permission' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (roleRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (roleRouter);
 
 /***/ }),
 
@@ -107271,20 +107086,20 @@ var serviceRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(7/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/service/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(4/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/service/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'serviceList',
     meta: { title: 'serviceList', roles: ['admin', 'manager'] }
   }, {
     path: 'detail',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(4/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/serviceDetail/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/serviceDetail/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'serviceDetail',
     meta: { title: 'serviceDetail', roles: ['admin', 'manager'] }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (serviceRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (serviceRouter);
 
 /***/ }),
 
@@ -107292,29 +107107,43 @@ var serviceRouter = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adminPc_views_layout_Layout__ = __webpack_require__("./resources/assets/js/admin/pc/views/layout/Layout.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adminPc_views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__adminPc_views_layout_Layout__);
 
 //后台用户管理路由组
 
 
 var userRouter = {
   path: '/user',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
+  component: __WEBPACK_IMPORTED_MODULE_0__adminPc_views_layout_Layout___default.a,
   redirect: '/user/index',
-  name: 'User',
+  name: 'user',
   meta: {
-    title: '',
+    title: 'user',
     icon: 'user',
     roles: ['admin', 'manager']
   },
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(2/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(19).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'userList',
-    meta: { title: 'user' }
+    meta: { title: 'userList' }
+  }, {
+    path: 'permission',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(21).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'permissionList',
+    meta: { title: 'permission' }
+  }, {
+    path: 'role',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(20).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'roleList',
+    meta: { title: 'role' }
   }]
 };
 /* harmony default export */ __webpack_exports__["a"] = (userRouter);
@@ -107532,7 +107361,7 @@ var errorLog = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__ = __webpack_require__("./node_modules/babel-runtime/core-js/promise.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__("./resources/assets/js/router/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__adminPc_router__ = __webpack_require__("./resources/assets/js/admin/pc/router/index.js");
 
 
 
@@ -107571,13 +107400,13 @@ function filterAsyncRouter(asyncRouterMap, roles) {
 
 var permission = {
   state: {
-    routers: __WEBPACK_IMPORTED_MODULE_1__router__["b" /* constantRouterMap */],
+    routers: __WEBPACK_IMPORTED_MODULE_1__adminPc_router__["b" /* constantRouterMap */],
     addRouters: []
   },
   mutations: {
     SET_ROUTERS: function SET_ROUTERS(state, routers) {
       state.addRouters = routers;
-      state.routers = __WEBPACK_IMPORTED_MODULE_1__router__["b" /* constantRouterMap */].concat(routers);
+      state.routers = __WEBPACK_IMPORTED_MODULE_1__adminPc_router__["b" /* constantRouterMap */].concat(routers);
     }
   },
   actions: {
@@ -107589,9 +107418,9 @@ var permission = {
 
         var accessedRouters = void 0;
         if (roles.indexOf('admin') >= 0) {
-          accessedRouters = __WEBPACK_IMPORTED_MODULE_1__router__["a" /* asyncRouterMap */];
+          accessedRouters = __WEBPACK_IMPORTED_MODULE_1__adminPc_router__["a" /* asyncRouterMap */];
         } else {
-          accessedRouters = filterAsyncRouter(__WEBPACK_IMPORTED_MODULE_1__router__["a" /* asyncRouterMap */], roles);
+          accessedRouters = filterAsyncRouter(__WEBPACK_IMPORTED_MODULE_1__adminPc_router__["a" /* asyncRouterMap */], roles);
         }
         commit('SET_ROUTERS', accessedRouters);
         resolve();
@@ -108116,6 +107945,35 @@ if(false) {
 	}
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./resources/assets/js/admin/pc/utils/auth.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getToken;
+/* unused harmony export setToken */
+/* unused harmony export removeToken */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_js_cookie__ = __webpack_require__("./node_modules/js-cookie/src/js.cookie.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_js_cookie___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_js_cookie__);
+
+
+// const TokenKey = 'Admin-Token'
+// const TokenKey = 'X-Token'
+var TokenKey = 'token';
+
+function getToken() {
+  return __WEBPACK_IMPORTED_MODULE_0_js_cookie___default.a.get(TokenKey);
+}
+
+function setToken(token) {
+  return __WEBPACK_IMPORTED_MODULE_0_js_cookie___default.a.set(TokenKey, token);
+}
+
+function removeToken() {
+  return __WEBPACK_IMPORTED_MODULE_0_js_cookie___default.a.remove(TokenKey);
 }
 
 /***/ }),
@@ -109247,14 +109105,14 @@ var constantRouterMap = [{
   name: 'login',
   path: '/login',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(15).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/login/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(14).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/login/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   }
   // hidden: true,
 }, {
   name: 'chormeDownLoad',
   path: '/chormeDownLoad',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(17).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/chormeDownLoad/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(15).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/chormeDownLoad/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   }
   // hidden: true,
 }, {
@@ -109274,11 +109132,11 @@ var constantRouterMap = [{
   hidden: true,
   path: '/user/passwordReset',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(19).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/passwordReset.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(16).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/passwordReset.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   },
   name: 'userAdd',
   meta: { title: 'passwordReset' }
-}, __WEBPACK_IMPORTED_MODULE_8__modules_infoSelf__["a" /* default */]];
+}];
 
 /* unused harmony default export */ var _unused_webpack_default_export = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
   // mode: 'history', // require service support
@@ -109288,7 +109146,17 @@ var constantRouterMap = [{
   routes: constantRouterMap
 }));
 
-var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_10__modules_infoStatistics__["a" /* default */], __WEBPACK_IMPORTED_MODULE_9__modules_infoDianxin__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_permission__["a" /* default */], __WEBPACK_IMPORTED_MODULE_5__modules_role__["a" /* default */], __WEBPACK_IMPORTED_MODULE_6__modules_manager__["a" /* default */], __WEBPACK_IMPORTED_MODULE_7__modules_package__["a" /* default */], __WEBPACK_IMPORTED_MODULE_11__modules_goods__["a" /* default */], __WEBPACK_IMPORTED_MODULE_12__modules_service__["a" /* default */], __WEBPACK_IMPORTED_MODULE_13__modules_inventory__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
+var asyncRouterMap = [
+/*infoStatisticsRouter,
+infoDianxinRouter,*/
+__WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_permission__["a" /* default */], __WEBPACK_IMPORTED_MODULE_5__modules_role__["a" /* default */],
+/*managerRouter,
+packageRouter,
+goodsRouter,
+serviceRouter,
+inventoryRouter,*/
+
+{ path: '*', redirect: '/404', hidden: true }];
 
 /***/ }),
 
@@ -109321,7 +109189,7 @@ var goodsRouter = {
     meta: { title: 'goods' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (goodsRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (goodsRouter);
 
 /***/ }),
 
@@ -109347,13 +109215,13 @@ var infoDianxinRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/infoDianxin/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(6/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/infoDianxin/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'infoDianxinList',
     meta: { title: 'infoDianXin' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (infoDianxinRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (infoDianxinRouter);
 
 /***/ }),
 
@@ -109379,13 +109247,13 @@ var infoSelfRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/infoSelf/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(7/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/infoSelf/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'infoSelfList',
     meta: { title: 'info' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (infoSelfRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (infoSelfRouter);
 
 /***/ }),
 
@@ -109418,7 +109286,7 @@ var infoStatisticsRouter = {
     meta: { title: 'InfoStatistics' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (infoStatisticsRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (infoStatisticsRouter);
 
 /***/ }),
 
@@ -109445,20 +109313,20 @@ var inventoryRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(6/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/inventory/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(3/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/inventory/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'inventoryGoodsList',
     meta: { title: 'inventoryList' }
   }, {
     path: 'detail',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(5/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/inventoryDetail/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(2/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/inventoryDetail/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'inventoryDetail',
     meta: { title: 'inventoryDetail' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (inventoryRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (inventoryRouter);
 
 /***/ }),
 
@@ -109491,7 +109359,7 @@ var permissionRouter = {
     meta: { title: 'manager' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (permissionRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (permissionRouter);
 
 /***/ }),
 
@@ -109524,7 +109392,7 @@ var packageRouter = {
     meta: { title: 'package' }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (packageRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (packageRouter);
 
 /***/ }),
 
@@ -109551,7 +109419,7 @@ var permissionRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(8/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(5/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'permissionList',
     meta: { title: 'permission' }
@@ -109584,7 +109452,7 @@ var roleRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(3/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'roleList',
     meta: { title: 'role' }
@@ -109616,20 +109484,20 @@ var serviceRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(7/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/service/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(4/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/service/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'serviceList',
     meta: { title: 'serviceList', roles: ['admin', 'manager'] }
   }, {
     path: 'detail',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(4/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/serviceDetail/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/serviceDetail/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'serviceDetail',
     meta: { title: 'serviceDetail', roles: ['admin', 'manager'] }
   }]
 };
-/* harmony default export */ __webpack_exports__["a"] = (serviceRouter);
+/* unused harmony default export */ var _unused_webpack_default_export = (serviceRouter);
 
 /***/ }),
 
@@ -109656,7 +109524,7 @@ var userRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(2/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(8/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'userList',
     meta: { title: 'user' }
@@ -111421,6 +111289,13 @@ var RATIO = 3;
 
 /***/ }),
 
+/***/ "./resources/assets/sass/appMobile.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./resources/assets/sass/appPc.scss":
 /***/ (function(module, exports) {
 
@@ -111432,7 +111307,8 @@ var RATIO = 3;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__("./resources/assets/js/admin/pc/appPc.js");
-module.exports = __webpack_require__("./resources/assets/sass/appPc.scss");
+__webpack_require__("./resources/assets/sass/appPc.scss");
+module.exports = __webpack_require__("./resources/assets/sass/appMobile.scss");
 
 
 /***/ })

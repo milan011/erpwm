@@ -8,16 +8,18 @@ import Layout from '@adminPc/views/layout/Layout'
 
 /* Router Modules */
 import userRouter from './modules/user'
-import permissionRouter from './modules/permission'
+// import permissionRouter from './modules/permission'
 import roleRouter from './modules/role'
-import managerRouter from './modules/manager'
+//import infoSelfRouter from './modules/infoSelf'
+import inventoryRouter from './modules/inventory'
+import serviceRouter from './modules/service'
+/*import managerRouter from './modules/manager'
 import packageRouter from './modules/package'
-import infoSelfRouter from './modules/infoSelf'
 import infoDianxinRouter from './modules/infoDianxin'
 import infoStatisticsRouter from './modules/infoStatistics'
 import goodsRouter from './modules/goods'
-import serviceRouter from './modules/service'
-import inventoryRouter from './modules/inventory'
+
+import inventoryRouter from './modules/inventory'*/
 /*import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
@@ -77,27 +79,7 @@ export const constantRouterMap = [
     meta: { title: 'passwordReset' }
   },
 
-  infoSelfRouter,
-  /*userRouter,
-  permissionRouter,
-  roleRouter,
-  managerRouter,
-  packageRouter,*/
-  
-  /*{
-    path: '',
-    component: Layout,
-    redirect: 'user',
-    children: [
-      {
-        path: 'user',
-        // component: () => import('@adminPc/views/dashboard/index'),
-        component: resolve => void(require(['@adminPc/components/hello'], resolve)),
-        name: 'user',
-        meta: { title: '用户管理', icon: 'user', noCache: true }
-      }
-    ]
-  },*/
+  // infoSelfRouter,
 ]
 
 export default new Router({
@@ -107,16 +89,17 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  infoStatisticsRouter,
-  infoDianxinRouter,
+  //infoStatisticsRouter,
+  //infoDianxinRouter,
   userRouter,
-  permissionRouter,
-  roleRouter,
-  managerRouter,
-  packageRouter,
-  goodsRouter,
-  serviceRouter,
-  inventoryRouter,
+  // inventoryRouter,
+  // permissionRouter,
+  // roleRouter,
+  // managerRouter,
+  //packageRouter,
+  //goodsRouter,
+  // serviceRouter,
+  
 
   { path: '*', redirect: '/404', hidden: true }
 ]
