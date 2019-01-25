@@ -119142,8 +119142,10 @@ module.exports = Component.exports
 /**
  * Defines the API route we are using.
  */
-var api_url = 'http://www.myvue.net/api';
-var app_url = 'http://www.myvue.net';
+/*var api_url = 'http://www.myvue.net/api';
+var app_url = 'http://www.myvue.net';*/
+var api_url = 'http://www.tclvue.net/api';
+var app_url = 'http://www.tclvue.net';
 /*var api_url = 'http://www.erpwm.com/api';
 var app_url = 'http://www.erpwm.com';*/
 /*var gaode_maps_js_api_key = '33c20882595f1fecc2d31c8c73a38da7';

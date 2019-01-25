@@ -22,7 +22,7 @@ class User extends Authenticatable
     protected $guard_name = 'api'; // 使用任何你想要的守卫
     protected $table      = 'tcl_user';
     protected $primaryKey ='id';
-    protected $fillable = ['name', 'nick_name', 'password', 'telephone', 'phone', 'qq_number', 'wx_number', 'address', 'creater_id', 'shop_id', 'status', 'user_img', 'email'];
+    protected $fillable = ['id', 'name', 'nick_name', 'password', 'telephone', 'phone', 'qq_number', 'wx_number', 'address', 'creater_id', 'shop_id', 'status', 'user_img', 'email'];
 
     /**
      * The attributes that should be hidden for arrays.

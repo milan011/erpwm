@@ -10,7 +10,7 @@ import Layout from '@adminPc/views/layout/Layout'
 import userRouter from './modules/user'
 // import permissionRouter from './modules/permission'
 import roleRouter from './modules/role'
-//import infoSelfRouter from './modules/infoSelf'
+import shopRouter from './modules/shop'
 import inventoryRouter from './modules/inventory'
 import serviceRouter from './modules/service'
 /*import managerRouter from './modules/manager'
@@ -90,7 +90,7 @@ export default new Router({
 
 export const asyncRouterMap = [
   //infoStatisticsRouter,
-  //infoDianxinRouter,
+  shopRouter,
   userRouter,
   // inventoryRouter,
   // permissionRouter,

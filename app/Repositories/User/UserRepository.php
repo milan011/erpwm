@@ -15,7 +15,7 @@ use Auth;
 class UserRepository implements UserRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['id', 'name', 'nick_name', 'telephone', 'creater_id', 'status', 'created_at', 'remark'];
+    protected $select_columns = ['id', 'name', 'nick_name', 'password', 'telephone', 'phone', 'qq_number', 'wx_number', 'address', 'creater_id', 'shop_id', 'status', 'user_img', 'email'];
 
     public function model()
     {

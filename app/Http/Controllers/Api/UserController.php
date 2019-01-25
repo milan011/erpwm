@@ -36,7 +36,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::where('id', '!=', '1')->orderBy('created_at', 'DESC')->paginate(10);
+        $users = User::where('id', '!=', '1')->where('status', '1')->orderBy('created_at', 'DESC')->paginate(10);
 
         // return new UserResource($users);
 
@@ -180,6 +180,9 @@ class UserController extends Controller
     {   
         $user = $this->userRepository->find($id);
         $roles = $user->getRoleNames();
+        // dd(lastSql());
+        /*dd($user);
+        dd($roles);*/
         // $permissions = $user->getAllPermissions();
         
         // $role = Role::findOrFail(2);
@@ -189,7 +192,7 @@ class UserController extends Controller
         // dd($permissions);
         //p(lastSql());
         //dd($users);
-        return $this->baseSucceed($respond_data = $roles, $message = '添加成功');
+        return $this->baseSucceed($respond_data = $roles, $message = '获取角色列表');
     }
 
     // 编辑用户角色列表

@@ -106493,10 +106493,10 @@ var _infoStatistics;
     roleAdd: '添加角色',
     roleUpdate: '修改角色',
     roleDelete: '删除角色',
-    package: '套餐管理',
-    packageAdd: '添加套餐',
-    packageUpdate: '修改套餐',
-    packageDelete: '删除套餐',
+    shop: '门店管理',
+    shopAdd: '添加门店',
+    shopUpdate: '修改门店',
+    shopDelete: '删除门店',
     manager: '客户经理',
     managerAdd: '添加客户经理',
     managerUpdate: '修改客户经理',
@@ -106632,11 +106632,11 @@ var _infoStatistics;
     add: '添加',
     description: '角色描述'
   },
-  package: {
+  shop: {
     id: 'ID',
-    name: '套餐名称',
+    name: '门店名称',
     bloc: '所属集团',
-    package_price: '套餐价格',
+    shop_price: '门店价格',
     creater_id: '创建者',
     month_nums: '还款月数',
     netin: '入网时间',
@@ -106647,7 +106647,7 @@ var _infoStatistics;
     return_month: '返还月份',
     nums: '还款时间几个月',
     add: '添加',
-    show: '套餐详情'
+    show: '门店详情'
   },
   manager: {
     id: 'ID',
@@ -106681,8 +106681,8 @@ var _infoStatistics;
     balance_month: '当前结算月',
     collections_type: '收款方式',
     creater: '创建者',
-    package_month: '套餐返还月',
-    package: '套餐',
+    shop_month: '门店返还月',
+    shop: '门店',
     side_number_num: '副卡',
     side_uim_number: '副卡UIM码',
     side_uim_number_num: '副卡UIM数量',
@@ -106696,7 +106696,7 @@ var _infoStatistics;
   infoDianxin: {
     id: '序号',
     // code: '序号',
-    name: '套餐名称',
+    name: '门店名称',
     return_telephone: '返款号码',
     jituan: '集团名称',
     manager: '客户经理',
@@ -106875,8 +106875,9 @@ __WEBPACK_IMPORTED_MODULE_1__adminPc_router__["c" /* default */].afterEach(funct
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adminPc_views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__adminPc_views_layout_Layout__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_user__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/user.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_role__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/role.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_inventory__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/inventory.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_service__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_shop__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/shop.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_inventory__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/inventory.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_service__ = __webpack_require__("./resources/assets/js/admin/pc/router/modules/service.js");
 
 
 
@@ -106889,7 +106890,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 // import permissionRouter from './modules/permission'
 
-//import infoSelfRouter from './modules/infoSelf'
+
 
 
 /*import managerRouter from './modules/manager'
@@ -106969,8 +106970,7 @@ var constantRouterMap = [{
 
 var asyncRouterMap = [
 //infoStatisticsRouter,
-//infoDianxinRouter,
-__WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */],
+__WEBPACK_IMPORTED_MODULE_5__modules_shop__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */],
 // inventoryRouter,
 // permissionRouter,
 // roleRouter,
@@ -107100,6 +107100,39 @@ var serviceRouter = {
   }]
 };
 /* unused harmony default export */ var _unused_webpack_default_export = (serviceRouter);
+
+/***/ }),
+
+/***/ "./resources/assets/js/admin/pc/router/modules/shop.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adminPc_views_layout_Layout__ = __webpack_require__("./resources/assets/js/admin/pc/views/layout/Layout.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adminPc_views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__adminPc_views_layout_Layout__);
+
+//权限管理路由组
+
+
+var shopRouter = {
+  path: '/shop',
+  component: __WEBPACK_IMPORTED_MODULE_0__adminPc_views_layout_Layout___default.a,
+  redirect: '/shop/index',
+  name: 'shop',
+  meta: {
+    title: '',
+    icon: 'theme',
+    roles: ['admin', 'manager']
+  },
+  children: [{
+    path: 'index',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(30).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/goods/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'shopList',
+    meta: { title: 'shop' }
+  }]
+};
+/* harmony default export */ __webpack_exports__["a"] = (shopRouter);
 
 /***/ }),
 
@@ -108962,8 +108995,10 @@ module.exports = Component.exports
 /**
  * Defines the API route we are using.
  */
-var api_url = 'http://www.myvue.net/api';
-var app_url = 'http://www.myvue.net';
+/*var api_url = 'http://www.myvue.net/api';
+var app_url = 'http://www.myvue.net';*/
+var api_url = 'http://www.tclvue.net/api';
+var app_url = 'http://www.tclvue.net';
 /*var api_url = 'http://www.erpwm.com/api';
 var app_url = 'http://www.erpwm.com';*/
 /*var gaode_maps_js_api_key = '33c20882595f1fecc2d31c8c73a38da7';
