@@ -135,7 +135,7 @@
 
 <script>
 // import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
-import { fetchList, fetchPv, createUser, updateUser, deleteUser } from '@/api/user'
+import { fetchList, fetchPv, createUser, updateUser, deleteUser } from '@adminPc/api/user'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import { isTelephone } from '@/utils/validate'

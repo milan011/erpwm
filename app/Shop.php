@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
 
-class Goods extends Model
+class Shop extends Model
 {
     use SoftDeletes;
 
@@ -16,7 +16,7 @@ class Goods extends Model
      * @var string
      */
     // protected $table = 'users';
-    protected $table = 'zr_goods';
+    protected $table = 'tcl_shop';
     protected $primaryKey ='id';
 
     /**
@@ -60,21 +60,21 @@ class Goods extends Model
       return $this->belongsTo('App\InfoSelf', 'id', 'package_id');
     }
 
-    // 定义Goods表与Inventory表一对多关系
+    // 定义Shop表与Inventory表一对多关系
     public function hasManyInventory(){
 
       // return $this->hasMany('App\Inventory', 'goods_id', 'id')->where('status', '1');
       return $this->hasMany('App\Inventory', 'goods_id', 'id');
     }
 
-    // 定义Goods表与InventoryDetail表一对多关系
+    // 定义Shop表与InventoryDetail表一对多关系
     public function hasManyInventoryDetail(){
 
       // return $this->hasMany('App\Inventory', 'goods_id', 'id')->where('status', '1');
       return $this->hasMany('App\InventoryDetail', 'goods_id', 'id');
     }
 
-    // 定义User表与Goods表一对多关系
+    // 定义User表与Shop表一对多关系
     public function belongsToCreater(){
 
       return $this->belongsTo('App\User', 'creater_id', 'id')->select('id', 'nick_name', 'telephone');

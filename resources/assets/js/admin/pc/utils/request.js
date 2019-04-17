@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
-import store from '@/store'
-import { getToken } from '@/utils/auth'
+import store from '@adminPc/store'
+import { getToken } from '@adminPc/utils/auth'
 
 // create an axios instance
 const service = axios.create({

@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Goods;
+namespace App\Repositories\Shop;
 
-use App\Goods;
+use App\Shop;
 use Session;
 use Illuminate\Http\Request;
 use Gate;
@@ -13,40 +13,39 @@ use Illuminate\Support\Facades\Input;
 use DB;
 use Debugbar;
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\Goods\GoodsRepositoryInterface;
+use App\Repositories\Shop\ShopRepositoryInterface;
 
-class GoodsRepository implements GoodsRepositoryInterface
+class ShopRepository implements ShopRepositoryInterface
 {
 
     //默认查询数据
-    protected $select_columns = ['id','name', 'brand', 'goods_from', 'type', 'goods_spec', 'goods_unit', 'is_food', 'status', 'creater_id', 'remark', 'created_at', 'updated_at'];
+    protected $select_columns = ['id', 'pid', 'name', 'provence_id', 'city_id', 'telephone', 'address', 'qq_number', 'wx_number', 'email', 'status','user_id'];
 
-    // 根据ID获得商品信息
+    // 根据ID获得门店信息
     public function find($id)
     {
-        return Goods::select($this->select_columns)
+        return Shop::select($this->select_columns)
                        ->findOrFail($id);
     }
 
-    // 获得商品列表
-    public function getAllGoods()
+    // 获得门店列表
+    public function getAllShop()
     {   
-        return Goods::where('status', '1')
-                    ->with('belongsToCreater')
+        return Shop::with('belongsToCreater')
                     ->orderBy('created_at', 'DESC')
                     ->paginate(10);
     }
 
-    // 获得所有商品
-    public function getGoodss()
+    // 获得所有门店
+    public function getShops()
     {   
-        return Goods::select($this->select_columns)
+        return Shop::select($this->select_columns)
                     ->with('belongsToCreater')
                     ->where('status', '1')
                     ->get();
     }
 
-    // 创建商品
+    // 创建门店
     public function create($requestData)
     {   
         // dd($requestData->all());
@@ -54,54 +53,54 @@ class GoodsRepository implements GoodsRepositoryInterface
         $requestData['creater_id']    = Auth::id();
         $requestData['status']        = '1';
         
-        $goods = new Goods();
+        $shop = new Shop();
         $input =  array_replace($requestData->all());
         // $input =  array_filter($input);
-        $goods->fill($input);
-        // dd($goods);
-        $newGoods = $goods->create($input);
-        // dd($goods);
+        $shop->fill($input);
+        // dd($shop);
+        $newShop = $shop->create($input);
+        // dd($shop);
         // dd($requestData->month_price);
            
-        return $newGoods;
+        return $newShop;
     }
 
-    // 修改商品
+    // 修改门店
     public function update($requestData, $id)
     {   
         // dd($requestData->all());
-        $goods  = Goods::findorFail($id);
+        $shop  = Shop::findorFail($id);
         $input  = array_replace($requestData->all());
-        // dd($goods);
-        // dd($goods->hasManyGoodsInfo);
-        $goods->fill($input)->save();
+        // dd($shop);
+        // dd($shop->hasManyShopInfo);
+        $shop->fill($input)->save();
 
-        return $goods;
+        return $shop;
     }
 
-    // 删除商品
+    // 删除门店
     public function destroy($id)
     {
         try {
-            $goods = Goods::findorFail($id);
-            $goods->status = '0';
-            $goods->save();
+            $shop = Shop::findorFail($id);
+            $shop->status = '0';
+            $shop->save();
 
-            return $goods;
+            return $shop;
            
         } catch (\Illuminate\Database\QueryException $e) {
             return false;
         }      
     }
 
-    //判断商品是否重复
+    //判断门店是否重复
     public function isRepeat($requestData){
 
-        $goods = Goods::select('id', 'name')
+        $shop = Shop::select('id', 'name')
                         ->where('name', $requestData->name)
                         ->where('status', '1')
                         ->first();
         // dd(isset($cate));
-        return $goods;
+        return $shop;
     }
 }

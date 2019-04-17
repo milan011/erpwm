@@ -1,8 +1,8 @@
 /**
  * Defines the API route we are using.
  */
-var api_url = 'http://www.myvue.net/api';
-var app_url = 'http://www.myvue.net';
+var api_url = 'http://www.tclvue.net/api';
+var app_url = 'http://www.tclvue.net';
 /*var api_url = 'http://www.erpwm.com/api';
 var app_url = 'http://www.erpwm.com';*/
 /*var gaode_maps_js_api_key = '33c20882595f1fecc2d31c8c73a38da7';
@@ -90,6 +90,18 @@ const package_month = [
 //支付方式
 const collections_type = ['微信', '支付宝', '刷卡', '现金', '其他']
 
+//门店状态
+const shopStatus = {
+    0: '停用',
+    1: '启用',
+};
+
+//门店类型
+const shopType = {
+    1: '门店',
+    2: '加盟店',
+};
+
 export { 
     ROAST_CONFIG, 
     infoSelfStatus,
@@ -101,6 +113,8 @@ export {
     infoDianxinStatus,
     foodStatus,
     serviceReturnType,
+    shopStatus,
+    shopType,
 }
 
 /*export const zrConfig = {

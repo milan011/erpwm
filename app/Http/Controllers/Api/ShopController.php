@@ -3,25 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-// use App\GoodsPrice;
+// use App\ShopPrice;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Repositories\Goods\GoodsRepositoryInterface;
-use App\Http\Resources\Goods\GoodsResource;
-use App\Http\Resources\Goods\GoodsResourceCollection;
-//use App\Http\Requests\Goods\UpdateGoodsRequest;
+use App\Repositories\Shop\ShopRepositoryInterface;
+use App\Http\Resources\Shop\ShopResource;
+use App\Http\Resources\Shop\ShopResourceCollection;
+//use App\Http\Requests\Shop\UpdateShopRequest;
 //use App\Http\Requests\Package\StorePackageRequest;
 
-class GoodsController extends Controller
+class ShopController extends Controller
 {
-    protected $goods;
+    protected $shop;
 
     public function __construct(
 
-        GoodsRepositoryInterface $goods
+        ShopRepositoryInterface $shop
     ) {
     
-        $this->goods = $goods;
+        $this->shop = $shop;
         // $this->middleware('brand.create', ['only' => ['create']]);
     }
 
@@ -34,22 +34,22 @@ class GoodsController extends Controller
     {
         // dd($request->all());
 
-        $goodss = $this->goods->getAllGoods();
+        $shops = $this->shop->getAllShop();
 
-        // dd($goodss);
-        return new GoodsResource($goodss);
+        // dd($shops);
+        return new ShopResource($shops);
     }
 
     /**
-     * 所有商品列表(无分页)
+     * 所有门店列表(无分页)
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function goodsAll(Request $request)
+    public function shopAll(Request $request)
     {  
-        $goodss = $this->goods->getGoodss();
+        $shops = $this->shop->getShops();
 
-        return new GoodsResource($goodss);
+        return new ShopResource($shops);
     }
 
     /**
@@ -59,7 +59,7 @@ class GoodsController extends Controller
      */
     public function create()
     {
-        return view('admin.goods.create');
+        return view('admin.shop.create');
     }
 
     /**
@@ -68,18 +68,18 @@ class GoodsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $goodsRequest)
+    public function store(Request $shopRequest)
     {
-        // dd($goodsRequest->all());
-        if($this->goods->isRepeat($goodsRequest)){
-            return $this->baseFailed($message = '该商品已存在');
+        // dd($shopRequest->all());
+        if($this->shop->isRepeat($shopRequest)){
+            return $this->baseFailed($message = '该门店已存在');
         }
 
-        $new_goods = $this->goods->create($goodsRequest);
-        $new_goods->belongsToCreater;
+        $new_shop = $this->shop->create($shopRequest);
+        $new_shop->belongsToCreater;
 
-        if($new_goods){ //添加成功
-            return $this->baseSucceed($respond_data = $new_goods, $message = '添加成功');
+        if($new_shop){ //添加成功
+            return $this->baseSucceed($respond_data = $new_shop, $message = '添加成功');
         }else{  //添加失败
             return $this->baseFailed($message = '内部错误');
         }   
@@ -91,12 +91,12 @@ class GoodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getGoods($id)
+    public function getShop($id)
     {
-        $goods = $this->goods->find($id);
-        $goods->hasManyGoodsInfo;
+        $shop = $this->shop->find($id);
+        $shop->hasManyShopInfo;
 
-        return $this->baseSucceed($respond_data = $goods, $message = '');
+        return $this->baseSucceed($respond_data = $shop, $message = '');
     }
 
     /**
@@ -107,12 +107,12 @@ class GoodsController extends Controller
      */
     public function edit($id)
     {
-        $goods      = $this->goods->find($id); //商品详情
-        $goods_info = $goods->hasManyGoodsInfo->toJson(); //商品返还详情
+        $shop      = $this->shop->find($id); //门店详情
+        $shop_info = $shop->hasManyShopInfo->toJson(); //门店返还详情
 
-        // dd($goods);
-        // dd($goods_info);
-        return view('admin.goods.edit', compact('goods', 'goods_info'));
+        // dd($shop);
+        // dd($shop_info);
+        return view('admin.shop.edit', compact('shop', 'shop_info'));
     }
 
     /**
@@ -122,16 +122,16 @@ class GoodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $goodsRequest, $id)
+    public function update(Request $shopRequest, $id)
     {
-        // dd($goodsRequest->all());
-        $update_goods = $this->goods->isRepeat($goodsRequest);
-        if($update_goods && ($update_goods->id != $id)){
-            return $this->baseFailed($message = '您修改后的商品信息与现有商品冲突');
+        // dd($shopRequest->all());
+        $update_shop = $this->shop->isRepeat($shopRequest);
+        if($update_shop && ($update_shop->id != $id)){
+            return $this->baseFailed($message = '您修改后的门店信息与现有门店冲突');
         }
-        $goods = $this->goods->update($goodsRequest, $id);
-        // dd(redirect()->route('goods.index'));
-        return $this->baseSucceed($respond_data = $goods, $message = '修改成功');
+        $shop = $this->shop->update($shopRequest, $id);
+        // dd(redirect()->route('shop.index'));
+        return $this->baseSucceed($respond_data = $shop, $message = '修改成功');
     }
 
     /**
@@ -143,7 +143,7 @@ class GoodsController extends Controller
     public function destroy($id)
     {   
         // dd('删了');
-        $this->goods->destroy($id);        
+        $this->shop->destroy($id);        
         return $this->baseSucceed($message = '修改成功');
     }
 

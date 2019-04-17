@@ -15,7 +15,7 @@ const shopRouter = {
     children: [
       {
         path: 'index',
-        component: resolve => void(require(['@adminPc/views/goods/index'], resolve)),
+        component: resolve => void(require(['@adminPc/views/shop/index'], resolve)),
         name: 'shopList',
         meta: { title: 'shop' }
       }

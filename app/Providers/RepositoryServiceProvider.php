@@ -38,7 +38,7 @@ class RepositoryServiceProvider extends ServiceProvider
     $this->app->bind('App\Repositories\InfoDianxin\InfoDianxinRepositoryInterface','App\Repositories\InfoDianxin\InfoDianxinRepository');
     $this->app->bind('App\Repositories\PackageInfo\PackageInfoRepositoryInterface','App\Repositories\PackageInfo\PackageInfoRepository');
     $this->app->bind('App\Repositories\PackageInfo\PackageInfoRepositoryInterface','App\Repositories\PackageInfo\PackageInfoRepository');
-    $this->app->bind('App\Repositories\Goods\GoodsRepositoryInterface','App\Repositories\Goods\GoodsRepository');
+    $this->app->bind('App\Repositories\Shop\ShopRepositoryInterface','App\Repositories\Shop\ShopRepository');
     $this->app->bind('App\Repositories\Inventory\InventoryRepositoryInterface','App\Repositories\Inventory\InventoryRepository');
     $this->app->bind('App\Repositories\InventoryDetail\InventoryDetailRepositoryInterface','App\Repositories\InventoryDetail\InventoryDetailRepository');
     $this->app->bind('App\Repositories\Service\ServiceRepositoryInterface','App\Repositories\Service\ServiceRepository');

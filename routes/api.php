@@ -84,13 +84,13 @@ Route::group([
 
     Route::get('infoDianxin/chormeBroswerDown', 'InfoDianxinController@chormeBroswerDown');
     
-    //Goods
-    Route::get('goodsList', 'GoodsController@index');
-    Route::get('goodsAll', 'GoodsController@goodsAll'); //所有礼品列表,无分页
-    Route::post('goods', 'GoodsController@store');
-    Route::get('getGoodsInfo/{id}', 'GoodsController@getInfo');
-    Route::put('goods/{id}', 'GoodsController@update');
-    Route::delete('goods/{id}', 'GoodsController@destroy');
+    //Shop
+    Route::get('shopList', 'ShopController@index');
+    Route::get('shopAll', 'ShopController@shopAll'); //所有礼品列表,无分页
+    Route::post('shop', 'ShopController@store');
+    Route::get('getShopInfo/{id}', 'ShopController@getInfo');
+    Route::put('shop/{id}', 'ShopController@update');
+    Route::delete('shop/{id}', 'ShopController@destroy');
 
     //Service
     Route::get('serviceList', 'ServiceController@index');

@@ -1,12 +1,12 @@
 <?php
-namespace App\Repositories\Goods;
+namespace App\Repositories\Shop;
  
-interface GoodsRepositoryInterface
+interface ShopRepositoryInterface
 {
     
     public function find($id);
     
-    public function getAllGoods();
+    public function getAllShop();
 
     public function create($requestData);
 

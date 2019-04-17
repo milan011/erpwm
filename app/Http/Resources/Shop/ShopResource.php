@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Goods;
+namespace App\Http\Resources\Shop;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class GoodsResource extends Resource
+class ShopResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -30,7 +30,7 @@ class GoodsResource extends Resource
     /*public function with($request)
     {
         return [
-            'return_month_price' => $this->hasManyGoodsInfo(),
+            'return_month_price' => $this->hasManyShopInfo(),
         ];
     }*/
 }

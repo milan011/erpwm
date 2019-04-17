@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Goods;
+namespace App\Http\Resources\Shop;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class GoodsCollection extends ResourceCollection
+class ShopCollection extends ResourceCollection
 {
     public function toArray($request)
     {
