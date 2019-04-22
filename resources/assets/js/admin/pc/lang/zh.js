@@ -109,6 +109,7 @@ export default {
     publish: '发布',
     draft: '草稿',
     delete: '删除',
+    passReset: '密码重置',
     cancel: '取 消',
     confirm: '确 定'
   },
@@ -142,6 +143,7 @@ export default {
     name: '用户名',
     nick_name: '姓名',
     telephone: '电话',
+    userShop: '门店',
     password: '密码',
     passwordRepeat: '确认密码',
     email: '邮箱',

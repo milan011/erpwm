@@ -24,8 +24,8 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:zr_users',
-            'nick_name' => 'required|unique:zr_users',
+            'name' => 'required|unique:tcl_user',
+            'nick_name' => 'required|unique:tcl_user',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
             'telephone' => 'required|phone_number',

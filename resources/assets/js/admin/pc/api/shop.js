@@ -9,6 +9,7 @@ export function shopList(query, token = getToken()) {
     // url: '/user/list',
     url: ROAST_CONFIG.API_URL + '/shopList',
     method: 'get',
+    query,
     params: {token, page:query.page}
   })
 }

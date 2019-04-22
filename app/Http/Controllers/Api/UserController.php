@@ -146,6 +146,7 @@ class UserController extends Controller
      */
     public function update($id, Request $request)
     {
+        // dd($request->all());
         $user = $this->userRepository->update($id, $request);
 
         return $this->baseSucceed($respond_data = $user, $message = '修改成功');
@@ -211,7 +212,22 @@ class UserController extends Controller
         ]); 
     }
 
-    // 重置密码
+    //重置密码
+    public function passReset(Request $request)
+    {
+        // p($request->all());exit;
+        $user = $this->userRepository->find($request->id);
+        // dd($user);
+        
+        $user->password = bcrypt('123465');
+        $user->save();
+
+        return response([
+            'status' => 'success'
+        ]);
+    }
+
+    // 修改密码
     public function resetPassword(Request $request)
     {
         

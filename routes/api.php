@@ -27,6 +27,7 @@ Route::group([
     Route::post('userLogout', 'UserController@logout');
     Route::get('userList', 'UserController@index');
     Route::post('user', 'UserController@store');
+    Route::post('passReset', 'UserController@passReset');
     Route::put('user/{id}', 'UserController@update');
     Route::get('user/{user}/roles', 'UserController@getUserRoles');
     Route::post('giveUser/{user}/roles', 'UserController@giveUserRoles');

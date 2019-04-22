@@ -106582,6 +106582,7 @@ var _infoStatistics;
     publish: '发布',
     draft: '草稿',
     delete: '删除',
+    passReset: '密码重置',
     cancel: '取 消',
     confirm: '确 定'
   },
@@ -106615,6 +106616,7 @@ var _infoStatistics;
     name: '用户名',
     nick_name: '姓名',
     telephone: '电话',
+    userShop: '门店',
     password: '密码',
     passwordRepeat: '确认密码',
     email: '邮箱',
@@ -107101,7 +107103,7 @@ var shopRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(22).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/shop/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(21).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/shop/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'shopList',
     meta: { title: 'shop' }
@@ -107141,7 +107143,7 @@ var userRouter = {
   }, {
     path: 'permission',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(21).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(22).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/admin/pc/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'permissionList',
     meta: { title: 'permission' }

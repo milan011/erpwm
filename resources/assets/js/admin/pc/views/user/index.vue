@@ -64,10 +64,11 @@
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
         </template>
       </el-table-column> -->
-      <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <el-button type="success" size="mini" @click="handleSetRoles(scope.row)">{{ $t('table.setRoles') }}</el-button>
+          <el-button type="warning" size="mini" @click="handlePassReset(scope.row)">{{ $t('table.passReset') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
         </template>
@@ -94,21 +95,23 @@
         <el-form-item :label="$t('user.nick_name')" prop="nick_name">
           <el-input v-model="temp.nick_name"/>
         </el-form-item>
-        <el-form-item v-show="passwordVisible" :label="$t('user.password')" :prop="password">
+        <el-form-item v-show="passwordVisible" :label="$t('user.password')" prop="password">
           <el-input :type="passwordType" v-model="temp.password"/>
         </el-form-item>
-        <el-form-item v-show="passwordVisible" :label="$t('user.passwordRepeat')" :prop="password_confirmation">
+        <el-form-item v-show="passwordVisible" :label="$t('user.passwordRepeat')" prop="password_confirmation">
           <el-input :type="passwordType" v-model="temp.password_confirmation"/>
         </el-form-item>
         <el-form-item :label="$t('user.telephone')" prop="telephone">
           <el-input v-model="temp.telephone"/>
         </el-form-item>
-        <!-- <el-form-item :label="$t('user.email')" prop="email">
-          <el-input v-model="temp.email"/>
-        </el-form-item> -->
-        <el-form-item :label="$t('user.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="备注"/>
+        <el-form-item :label="$t('user.userShop')" prop="shop_id">
+          <el-select v-model="temp.shop_id" class="filter-item" placeholder="请选择门店">
+            <el-option v-for="shop in shopList" :key="shop.id" :label="shop.name" :value="shop.id"/>
+          </el-select>
         </el-form-item>
+        <!-- <el-form-item :label="$t('user.remark')">
+          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="备注"/>
+        </el-form-item> -->
         <!-- <el-form-item :label="$t('user.wx_number')" prop="wx_number">
           <el-input v-model="temp.wx_number"/>
         </el-form-item> -->
@@ -135,7 +138,8 @@
 
 <script>
 // import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
-import { fetchList, fetchPv, createUser, updateUser, deleteUser } from '@adminPc/api/user'
+import { fetchList, fetchPv, createUser, updateUser, deleteUser, passReset } from '@adminPc/api/user'
+import { shopAll } from '@adminPc/api/shop'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import { isTelephone } from '@/utils/validate'
@@ -192,6 +196,7 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      shopList: null,
       total: null,
       listLoading: true,
       listQuery: {
@@ -205,9 +210,10 @@ export default {
         name: null,
         nick_name: null,
         remark: '',
+        shop_id: null,
         password: '',
         password_confirmation: '',
-        email: '',
+        email: 'taochele@sina.com',
         telephone: ''
       },
       password: 'password',
@@ -225,6 +231,7 @@ export default {
       pvData: [],
       rules: {
         name: [{ required: true, message: '请输入用户名', trigger: 'change' }],
+        shop_id: [{ required: true, message: '请选择所属门店', trigger: 'blur' }],
         nick_name: [{ required: true, message: '请输入昵称', trigger: 'change' }],
         password: [{ required: true, message: '请输入密码', trigger: 'change' },
           { min: 6, max: 16, message: '密码长度必须是6-16位', trigger: 'change' }
@@ -246,6 +253,7 @@ export default {
   
   created() {
     this.getList()
+    this.getAllShop()
   },
   methods: {
     getList() {
@@ -258,6 +266,11 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+      })
+    },
+    getAllShop() {
+      shopAll().then(response => {
+        this.shopList = response.data.data
       })
     },
     handleFilter() {
@@ -314,26 +327,28 @@ export default {
       });
     },
     resetTemp() {
-      /*this.temp = {
+      this.temp = {
         id: undefined,
         name: 'wxm',
         nick_name: 'wxm',
         remark: '闺女',
+        shop_id: null,
         password: '111111',
         password_confirmation : '111111',
-        email: '',
+        email: 'taochele@sina.com',
         telephone: '13731080174'
-      }*/
-      this.temp = {
+      }
+      /*this.temp = {
         id: undefined,
         name: null,
         nick_name: null,
+        shop_id: null,
         remark: '',
         password: '',
         password_confirmation : '',
-        email: '',
+        email: 'taochele@sina.com',
         telephone: ''
-      }
+      }*/
     },
     handleCreate() {
       this.resetTemp()
@@ -425,13 +440,53 @@ export default {
         }
       })
     },
+    handlePassReset(row) {
+      this.$confirm('确定要重置?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // console.log(row.id)
+        const userId = { id : row.id}
+        passReset(userId).then((response) => {
+          // console.log(response.data);
+          if(response.data.status === 0){
+            this.$notify({
+              title: '失败',
+              message: '重置失败',
+              type: 'warning',
+              duration: 2000
+            })
+          }else{
+            this.$notify({
+              title: '成功',
+              message: '重置成功',
+              type: 'success',
+              duration: 2000
+            })
+          }   
+        })
+      }).catch((err) => {
+        console.log(err)
+        /*switch (error.response.status) {
+          case 422:
+            
+          break
+        }*/
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
+    },
     handleUpdate(row) {
+      // console.log(row)
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.userNameDisabled = true
-      this.password = null
-      this.password_confirmation = null
+      this.temp.password = '111111'
+      this.temp.password_confirmation = '111111'
       this.passwordVisible = false
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -476,4 +531,8 @@ export default {
     width: 70px;
     margin-left: 0px;
   } */
+
+  .el-form-item__error{
+    top:80%;
+  }
 </style>

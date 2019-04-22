@@ -93,8 +93,8 @@ class UserRepository implements UserRepositoryInterface
             $input = array_replace($requestData->all(), ['password' => "$password", 'creater_id' => Auth::id()]);
             $user = User::create($input);
 
-            $newRoles = Role::where('name', 'manager')->get();
-            $user->syncRoles($newRoles);
+            /*$newRoles = Role::where('name', 'manager')->get();
+            $user->syncRoles($newRoles);*/
             
             /*if (count($requestData->roles) > 0) {
                 $newRoles = Role::whereIn('id', $attributes['roles'])->get();
@@ -154,7 +154,7 @@ class UserRepository implements UserRepositoryInterface
 
             $user->nick_name = $requestData->nick_name;
             $user->telephone = $requestData->telephone;
-            $user->remark    = $requestData->remark;
+            $user->shop_id   = $requestData->shop_id;
 
             // 更新用户
             $user->save();

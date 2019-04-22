@@ -42,6 +42,15 @@ export function getUserRoles(data, token = getToken()) {
   }) 
 }
 
+export function passReset (data, token = getToken()) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/passReset',
+    method: 'post',
+    params: {token},
+    data
+  }) 
+}
+
 export function giveUserRoles(data, token = getToken()) {
   return request({
     url: ROAST_CONFIG.API_URL + '/giveUser/' + data.id + '/roles',
@@ -49,22 +58,6 @@ export function giveUserRoles(data, token = getToken()) {
     params: {token},
     data
   }) 
-}
-
-export function fetchArticle(id) {
-  return request({
-    url: '/article/detail',
-    method: 'get',
-    params: { id }
-  })
-}
-
-export function fetchPv(pv) {
-  return request({
-    url: '/article/pv',
-    method: 'get',
-    params: { pv }
-  })
 }
 
 export function createUser(data) {
