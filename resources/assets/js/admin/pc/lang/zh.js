@@ -44,6 +44,7 @@ export default {
     inventoryDetail: '库存明细',
     serviceList: '业务列表',
     serviceDetail: '业务明细',
+    notice: '公告管理',
 
   },
   navbar: {
@@ -166,6 +167,17 @@ export default {
     name: '门店',
     type: '类别',
     status: '状态',
+    shopCity: '城市',
+    telephone: '电话',
+    address: '地址',
+    stopUse: '停用',
+  },
+  notice: {
+    id: 'ID',
+    title: '标题',
+    type: '类型',
+    order: '排序',
+    content: '内容',
   },
   manager: {
     id: 'ID',

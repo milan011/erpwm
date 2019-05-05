@@ -54,10 +54,11 @@ class Shop extends Model
             ') values (?'.str_repeat(',?',count($array) - 1).')',array_values($array));
     }
 
-    // 定义套餐表与信息表一对多关系
-    public function belongsToInfoSelf(){
 
-      return $this->belongsTo('App\InfoSelf', 'id', 'package_id');
+    // 定义shop表与城市表一对多关系
+    public function belongsToCity(){
+
+      return $this->belongsTo('App\Area','city_id', 'id')->select('pid', 'id', 'name as city_name');
     }
 
     // 定义Shop表与Inventory表一对多关系

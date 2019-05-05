@@ -29,6 +29,11 @@
           <span>{{ shopTypeMap[scope.row.type] }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('shop.shopCity')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_city.city_name }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('shop.status')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
           <span><el-tag :type="scope.row.status | shopStatusFilter">{{ shopStatusMap[scope.row.status] }}</el-tag></span>
@@ -36,9 +41,9 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="handleShow(scope.row)">{{ $t('table.show') }}</el-button>
+          <!-- <el-button type="success" size="mini" @click="handleShow(scope.row)">{{ $t('table.show') }}</el-button> -->
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
+          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('shop.stopUse') }}
           </el-button>
         </template>
       </el-table-column>
@@ -61,13 +66,22 @@
           <el-input v-model="temp.name"/>
         </el-form-item>
         <el-form-item :label="$t('shop.type')" prop="type">
-          <el-input v-model="temp.type"/>
+          <el-select v-model="temp.type" class="filter-item" placeholder="类别">
+            <el-option v-for="(item, index) in shopTypeMap" :key="item" :label="item" :value='index'/>
+          </el-select>
         </el-form-item>
-        <el-form-item :label="$t('shop.status')" prop="status">
-          <el-input v-model="temp.status"/>
+        <el-form-item :label="$t('shop.shopCity')">
+          <el-cascader
+            :options="cityList"
+            v-model="temp.shopCity"
+            :show-all-levels="false">
+          </el-cascader>
         </el-form-item>
-        <el-form-item :label="$t('shop.type')" prop="type">
-          <el-input v-model="temp.type"/>
+        <el-form-item :label="$t('shop.telephone')" prop="telephone">
+          <el-input v-model="temp.telephone"/>
+        </el-form-item>
+        <el-form-item :label="$t('shop.address')" prop="address">
+          <el-input style="width:250%;" v-model="temp.address"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -86,7 +100,8 @@
 import { shopList, createShop, getShop, updateShop, deleteShop } from '@adminPc/api/shop'
 import waves from '@adminPc/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
-import { shopStatus, shopType }  from '@adminPc/config.js'
+import { isTelephone } from '@/utils/validate'
+import { shopStatus, shopType, cityHasTcl }  from '@adminPc/config.js'
 
 const calendarTypeOptions = [
   { key: 'web', display_name: 'web' },
@@ -120,7 +135,14 @@ export default {
     const validateReturnMonthPrice = (rule, value, callback) => { /*密码确认校验*/
       console.log(value)
       return false
-    };
+    }
+    const validateTelephone = (rule, value, callback) => {
+      if (!isTelephone(value)) {
+        callback(new Error('请输入正确格式手机号'))
+      } else {
+        callback()
+      }
+    }
     return {
       tableKey: 0,
       list: null,
@@ -129,20 +151,16 @@ export default {
       listQuery: {
         page: 1,
       },
+      cityList: cityHasTcl,
       calendarTypeOptions,
       showReviewer: false,
       temp: {
         id: undefined,
         name: '',
-        brand: '',
-        shop_from: '',
-        type: '',
-        //bottom_price: '',
-        in_price: '',
-        shop_spec: '',
-        shop_unit: '',  
-        remark: ' ',
-        is_food: '1'          
+        shopCity: ['zhinan', 'daohang'],
+        type: '',  
+        telephone: '',       
+        address: '',       
       },
       dialogFormVisible: false,
       shopStatusMap: shopStatus,
@@ -154,20 +172,14 @@ export default {
         create: '新增门店'
       },
       rules: {
-        /*bottom_price: [
-          { required: true, message: '请输入底价' },
-          { type: 'number',  message: '价格应为数字' },
-        ],*/
-        in_price: [
-          { required: true, message: '请输入进价' },
-          { type: 'number',  message: '价格应为数字' },
-        ],
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        brand: [{ required: true, message: '请输入品牌', trigger: 'blur' }],
-        shop_from: [{ required: true, message: '请输入进货地', trigger: 'blur' }],
-        type: [{ required: true, message: '请输入类别', trigger: 'blur' }],
-        shop_spec: [{ required: true, message: '请输入规格', trigger: 'blur' }],
-        shop_unit: [{ required: true, message: '请输入单位', trigger: 'blur' }],
+        shopCity: [{ required: true, message: '请选择城市', trigger: 'blur' }],
+        type: [{ required: true, message: '请选择类别', trigger: 'blur' }],
+        address: [{ required: true, message: '请输入地址', trigger: 'blur' }],
+        telephone: [
+          { required: true, message: '请输入有效手机号', trigger: 'blur' }, 
+          { validator: validateTelephone, trigger: 'change' }     
+        ]
       },
       downloadLoading: false
     }
@@ -218,7 +230,7 @@ export default {
 
     },
     handleModifyStatus(row, status) {
-      this.$confirm('确定要删除?', '提示', {
+      this.$confirm('确定要停用该门店?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -229,7 +241,7 @@ export default {
           if(response.data.status === 0){
             this.$notify({
               title: '失败',
-              message: '删除失败',
+              message: '停用失败',
               type: 'warning',
               duration: 2000
             })
@@ -239,7 +251,7 @@ export default {
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
-              message: '删除成功',
+              message: '停用成功',
               type: 'success',
               duration: 2000
             })
@@ -255,29 +267,19 @@ export default {
     resetTemp() {
       /*this.temp = {
         id: undefined,
-        name: '鲁花高油酸花生油',
-        brand: '鲁花',
-        shop_from: '山东鲁花集团商贸有限公司石家庄分公司',
-        type: '高油酸花生油',
-        bottom_price: 129,
-        in_price: 108,
-        shop_spec: '750ml*2',
-        shop_unit: '盒',  
-        is_food: '1',
-        remark: ' ' 
+        name: '一个店',
+        shopCity: ['10', '138'],
+        type: '1',  
+        telephone: '13933814568',       
+        address: '石家庄一个地方',  
       }*/
       this.temp = {
         id: undefined,
         name: '',
-        brand: '',
-        shop_from: '',
-        type: '',
-        //bottom_price: 0,
-        in_price: 0,
-        shop_spec: '',
-        shop_unit: '',  
-        is_food: '1',
-        remark: ' ' 
+        shopCity: ['10', '138'],
+        type: '1',  
+        telephone: '',       
+        address: '',  
       }
     },
     handleCreate() {
@@ -336,9 +338,13 @@ export default {
  
     },
     handleUpdate(row) {
-        //row.bottom_price   = parseInt(row.bottom_price)
-        row.in_price       = parseFloat(row.in_price)
+        // console.log(row)
         this.temp = Object.assign({}, row) // copy obj
+        // this.temp.shopCity = ['10', '138']
+        const pid = row.belongs_to_city.pid.toString(10) 
+        const id = row.belongs_to_city.id.toString(10) 
+        this.temp.shopCity = [pid, id]
+        // console.log(this.temp.shopCity)
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -350,12 +356,12 @@ export default {
         if (valid) {        
           const tempData = Object.assign({}, this.temp)         
             updateShop(tempData).then((response) => {
-              // console.log(response)
+              console.log(response.data.data)
               if(response.data.status){
                 for (const v of this.list) {
                   if (v.id === this.temp.id) {
                     const index = this.list.indexOf(v)
-                    this.list.splice(index, 1, this.temp)
+                    this.list.splice(index, 1, response.data.data)
                     break
                   }
                 }
@@ -425,5 +431,9 @@ export default {
     text-align: -webkit-center;
     font-size: 20px;
     padding: 10px 0px;
+  }
+  .el-cascader-menu{
+    height: auto;
+    border-right: solid 0px #e4e7ed;
   }
 </style>

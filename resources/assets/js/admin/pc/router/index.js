@@ -8,6 +8,7 @@ import Layout from '@adminPc/views/layout/Layout'
 
 /* Router Modules */
 import userRouter from './modules/user'
+import noticeRouter from './modules/notice'
 // import permissionRouter from './modules/permission'
 import roleRouter from './modules/role'
 import shopRouter from './modules/shop'
@@ -91,6 +92,7 @@ export default new Router({
 export const asyncRouterMap = [
   //infoStatisticsRouter,
   shopRouter,
+  noticeRouter,
   userRouter,
   // inventoryRouter,
   // permissionRouter,

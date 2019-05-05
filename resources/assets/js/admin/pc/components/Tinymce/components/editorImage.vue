@@ -1,18 +1,10 @@
 <template>
   <div class="upload-container">
-    <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click=" dialogVisible=true">上传图片
+    <el-button icon='el-icon-upload' size="mini" :style="{background:color,borderColor:color}" @click=" dialogVisible=true" type="primary">上传图片
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
-      <el-upload
-        :multiple="true"
-        :file-list="fileList"
-        :show-file-list="true"
-        :on-remove="handleRemove"
-        :on-success="handleSuccess"
-        :before-upload="beforeUpload"
-        class="editor-slide-upload"
-        action="https://httpbin.org/post"
-        list-type="picture-card">
+      <el-upload class="editor-slide-upload" action="https://httpbin.org/post" :multiple="true" :file-list="fileList" :show-file-list="true"
+        list-type="picture-card" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
       <el-button @click="dialogVisible = false">取 消</el-button>
@@ -25,7 +17,7 @@
 // import { getToken } from 'api/qiniu'
 
 export default {
-  name: 'EditorSlideUpload',
+  name: 'editorSlideUpload',
   props: {
     color: {
       type: String,
@@ -49,6 +41,7 @@ export default {
         this.$message('请等待所有图片上传成功 或 出现了网络问题，请刷新页面重新上传！')
         return
       }
+      console.log(arr)
       this.$emit('successCBK', arr)
       this.listObj = {}
       this.fileList = []

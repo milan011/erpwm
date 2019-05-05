@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+      <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
     </div>
     <el-table
@@ -25,6 +25,11 @@
       <el-table-column :label="$t('user.telephone')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.telephone }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('user.userShop')" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_shop.name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.date')" width="150px" align="center">
@@ -109,21 +114,6 @@
             <el-option v-for="shop in shopList" :key="shop.id" :label="shop.name" :value="shop.id"/>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item :label="$t('user.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="备注"/>
-        </el-form-item> -->
-        <!-- <el-form-item :label="$t('user.wx_number')" prop="wx_number">
-          <el-input v-model="temp.wx_number"/>
-        </el-form-item> -->
-        <!-- <el-form-item :label="$t('user.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item"/>
-          </el-select>
-        </el-form-item> -->
-        <!-- <el-form-item :label="$t('user.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;"/>
-        </el-form-item> -->
-        
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -185,7 +175,7 @@ export default {
       } else {
           callback();
       }
-    };
+    }
     const validateTelephone = (rule, value, callback) => {
       if (!isTelephone(value)) {
         callback(new Error('请输入正确格式手机号'))
@@ -327,7 +317,7 @@ export default {
       });
     },
     resetTemp() {
-      this.temp = {
+      /*this.temp = {
         id: undefined,
         name: 'wxm',
         nick_name: 'wxm',
@@ -337,8 +327,8 @@ export default {
         password_confirmation : '111111',
         email: 'taochele@sina.com',
         telephone: '13731080174'
-      }
-      /*this.temp = {
+      }*/
+      this.temp = {
         id: undefined,
         name: null,
         nick_name: null,
@@ -348,7 +338,7 @@ export default {
         password_confirmation : '',
         email: 'taochele@sina.com',
         telephone: ''
-      }*/
+      }
     },
     handleCreate() {
       this.resetTemp()

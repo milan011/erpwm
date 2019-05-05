@@ -12,6 +12,7 @@
 
 </head>
 <body>
+    <script src="{{URL::asset('static/tinymce4.7.5/tinymce.min.js')}}"></script>
     <div id="app"></div>
     
     <script src="{{ mix('js/appPc.js') }}"></script>

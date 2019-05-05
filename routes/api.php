@@ -87,15 +87,23 @@ Route::group([
     
     //Shop
     Route::get('shopList', 'ShopController@index');
-    Route::get('shopAll', 'ShopController@shopAll'); //所有礼品列表,无分页
+    Route::get('shopAll', 'ShopController@shopAll'); //所有门店列表,无分页
     Route::post('shop', 'ShopController@store');
     Route::get('getShopInfo/{id}', 'ShopController@getInfo');
     Route::put('shop/{id}', 'ShopController@update');
     Route::delete('shop/{id}', 'ShopController@destroy');
 
+    //Shop
+    Route::get('noticeList', 'NoticeController@index');
+    Route::get('noticeAll', 'NoticeController@noticeAll'); //所有公告列表,无分页
+    Route::post('notice', 'NoticeController@store');
+    Route::get('getNoticeInfo/{id}', 'NoticeController@getInfo');
+    Route::put('notice/{id}', 'NoticeController@update');
+    Route::delete('notice/{id}', 'NoticeController@destroy');
+
     //Service
     Route::get('serviceList', 'ServiceController@index');
-    Route::get('serviceAll', 'ServiceController@serviceAll'); //所有礼品列表,无分页
+    Route::get('serviceAll', 'ServiceController@serviceAll');
     Route::post('service', 'ServiceController@store');
     Route::get('getServiceInfo/{id}', 'ServiceController@getInfo');
     Route::put('service/{id}', 'ServiceController@update');

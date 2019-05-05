@@ -70,7 +70,7 @@ class ShopController extends Controller
      */
     public function store(Request $shopRequest)
     {
-        // dd($shopRequest->all());
+        dd($shopRequest->all());
         if($this->shop->isRepeat($shopRequest)){
             return $this->baseFailed($message = '该门店已存在');
         }
@@ -130,6 +130,7 @@ class ShopController extends Controller
             return $this->baseFailed($message = '您修改后的门店信息与现有门店冲突');
         }
         $shop = $this->shop->update($shopRequest, $id);
+        $shop->belongsToCity;
         // dd(redirect()->route('shop.index'));
         return $this->baseSucceed($respond_data = $shop, $message = '修改成功');
     }
@@ -147,23 +148,4 @@ class ShopController extends Controller
         return $this->baseSucceed($message = '修改成功');
     }
 
-    //ajax判断车型是否重复
-    public function checkRepeat(Request $request){
-
-        // dd($request->all());
-        if($this->category->isRepeat($request)){
-            //车型重复
-            return response()->json(array(
-                'status' => 1,
-                // 'data'   => $category,
-                'message'   => '系列名称重复'
-            ));
-        }else{
-            //车型不重复
-            return response()->json(array(
-                'status' => 0,
-                'message'   => '系列名称不重复'
-            ));
-        }
-    }
 }

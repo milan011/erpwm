@@ -36,7 +36,11 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::where('id', '!=', '1')->where('status', '1')->orderBy('created_at', 'DESC')->paginate(10);
+        $users = User::with('belongsToShop')
+                     ->where('id', '!=', '1')
+                     ->where('status', '1')
+                     ->orderBy('created_at', 'DESC')
+                     ->paginate(10);
 
         // return new UserResource($users);
 

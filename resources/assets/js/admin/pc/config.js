@@ -102,6 +102,46 @@ const shopType = {
     2: '加盟店',
 };
 
+//开通城市
+const cityHasTcl = [{
+        value: '10',
+        label: '河北',
+        children: [{
+          value: '138',
+          label: '石家庄',
+        }, {
+          value: '139',
+          label: '保定',
+        }, {
+          value: '140',
+          label: '沧州',
+        }, {
+          value: '141',
+          label: '承德',
+        }, {
+          value: '142',
+          label: '邯郸',
+        }, {
+          value: '143',
+          label: '衡水',
+        }, {
+          value: '144',
+          label: '廊坊',
+        }, {
+          value: '145',
+          label: '秦皇岛',
+        }, {
+          value: '146',
+          label: '唐山',
+        }, {
+          value: '147',
+          label: '邢台',
+        }, {
+          value: '148',
+          label: '张家口',
+        }]
+      }]
+
 export { 
     ROAST_CONFIG, 
     infoSelfStatus,
@@ -115,6 +155,7 @@ export {
     serviceReturnType,
     shopStatus,
     shopType,
+    cityHasTcl,
 }
 
 /*export const zrConfig = {

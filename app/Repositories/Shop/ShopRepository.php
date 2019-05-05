@@ -31,7 +31,8 @@ class ShopRepository implements ShopRepositoryInterface
     // 获得门店列表
     public function getAllShop()
     {   
-        return Shop::with('belongsToCreater')
+        return Shop::with('belongsToCreater', 'belongsToCity')
+                    ->where('status', '1')
                     ->orderBy('created_at', 'DESC')
                     ->paginate(10);
     }
@@ -70,10 +71,14 @@ class ShopRepository implements ShopRepositoryInterface
     {   
         // dd($requestData->all());
         $shop  = Shop::findorFail($id);
-        $input  = array_replace($requestData->all());
-        // dd($shop);
-        // dd($shop->hasManyShopInfo);
-        $shop->fill($input)->save();
+        // dd($requestData->shopCity);
+        $shop->name        = $requestData->name;
+        $shop->type        = $requestData->type;
+        $shop->provence_id = $requestData->shopCity[0];
+        $shop->city_id     = $requestData->shopCity[1];
+        $shop->telephone   = $requestData->telephone;
+        $shop->address     = $requestData->address;
+        $shop->save();
 
         return $shop;
     }
