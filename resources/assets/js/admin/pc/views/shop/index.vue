@@ -291,8 +291,8 @@ export default {
       })
     },
     createData() {
-      /*console.log(this.temp)
-      return false*/
+      console.log(this.temp)
+      return false
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           createShop(this.temp).then((response) => {

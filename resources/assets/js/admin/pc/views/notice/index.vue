@@ -14,9 +14,9 @@
       fit
       highlight-current-row
       style="width: 100%;">
-      <el-table-column :label="$t('table.id')" width="60%" align="center">
+      <el-table-column :label="$t('table.id')" width="80%" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.id }}ss</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('notice.title')" show-overflow-tooltip align="center">
@@ -138,10 +138,7 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        name: '',
-        noticeCity: ['zhinan', 'daohang'],
-        type: '',  
-        telephone: '',       
+        title: '',      
         content: '',       
       },
       dialogFormVisible: false,
@@ -154,14 +151,14 @@ export default {
         create: '新增公告'
       },
       rules: {
-        title: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        noticeCity: [{ required: true, message: '请选择城市', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择类别', trigger: 'blur' }],
+        title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+        content: [{ required: true, message: '输入内容', trigger: 'blur' }],
+        /*type: [{ required: true, message: '请选择类别', trigger: 'blur' }],
         address: [{ required: true, message: '请输入地址', trigger: 'blur' }],
         telephone: [
           { required: true, message: '请输入有效手机号', trigger: 'blur' }, 
           { validator: validateTelephone, trigger: 'change' }     
-        ]
+        ]*/
       },
       downloadLoading: false
     }
@@ -248,19 +245,13 @@ export default {
     resetTemp() {
       /*this.temp = {
         id: undefined,
-        name: '一个店',
-        noticeCity: ['10', '138'],
-        type: '1',  
-        telephone: '13933814568',       
-        address: '石家庄一个地方',  
+        title: '',      
+        content: '',   
       }*/
       this.temp = {
         id: undefined,
-        name: '',
-        noticeCity: ['10', '138'],
-        type: '1',  
-        telephone: '',       
-        address: '',  
+        title: '',      
+        content: '',   
       }
     },
     handleCreate() {
@@ -273,7 +264,7 @@ export default {
     },
     createData() {
       console.log(this.temp)
-      return false
+      // return false
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           createNotice(this.temp).then((response) => {
