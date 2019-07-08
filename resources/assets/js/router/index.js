@@ -8,20 +8,10 @@ import Layout from '@/views/layout/Layout'
 
 /* Router Modules */
 import userRouter from './modules/user'
-import permissionRouter from './modules/permission'
+import noticeRouter from './modules/notice'
 import roleRouter from './modules/role'
-import managerRouter from './modules/manager'
-import packageRouter from './modules/package'
-import infoSelfRouter from './modules/infoSelf'
-import infoDianxinRouter from './modules/infoDianxin'
-import infoStatisticsRouter from './modules/infoStatistics'
-import goodsRouter from './modules/goods'
-import serviceRouter from './modules/service'
-import inventoryRouter from './modules/inventory'
-/*import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'*/
+import shopRouter from './modules/shop'
+
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -62,10 +52,9 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        // component: () => import('@/views/dashboard/index'),
         component: resolve => void(require(['@/views/dashboard/index'], resolve)),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+        meta: { title: 'dashboard', icon: 'dashboard', affix: true, noCache: true }
       }
     ]
   },
@@ -78,26 +67,6 @@ export const constantRouterMap = [
   },
 
   // infoSelfRouter,
-  /*userRouter,
-  permissionRouter,
-  roleRouter,
-  managerRouter,
-  packageRouter,*/
-  
-  /*{
-    path: '',
-    component: Layout,
-    redirect: 'user',
-    children: [
-      {
-        path: 'user',
-        // component: () => import('@/views/dashboard/index'),
-        component: resolve => void(require(['@/components/hello'], resolve)),
-        name: 'user',
-        meta: { title: '用户管理', icon: 'user', noCache: true }
-      }
-    ]
-  },*/
 ]
 
 export default new Router({
@@ -107,17 +76,10 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  /*infoStatisticsRouter,
-  infoDianxinRouter,*/
+  shopRouter,
+  noticeRouter,
   userRouter,
-  permissionRouter,
-  roleRouter,
-  /*managerRouter,
-  packageRouter,
-  goodsRouter,
-  serviceRouter,
-  inventoryRouter,*/
-
+  
   { path: '*', redirect: '/404', hidden: true }
 ]
 

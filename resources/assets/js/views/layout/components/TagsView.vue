@@ -10,12 +10,13 @@
         class="tags-view-item"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{ generateTitle(tag.title) }}
-        <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
+        <!-- <span>{{ tag.meta }}sdfsdfsdfsdf</span> -->
+        <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
-      <li @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
+      <li v-show="canClose" @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
       <li @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
       <li @click="closeAllTags">{{ $t('tagsView.closeAll') }}</li>
     </ul>
@@ -25,6 +26,7 @@
 <script>
 import ScrollPane from '@/components/ScrollPane'
 import { generateTitle } from '@/utils/i18n'
+import path from 'path'
 
 export default {
   components: { ScrollPane },
@@ -33,12 +35,16 @@ export default {
       visible: false,
       top: 0,
       left: 0,
+      canClose: true,
       selectedTag: {}
     }
   },
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
+    },
+    routes() {
+      return this.$store.state.permission.routers
     }
   },
   watch: {
@@ -55,6 +61,7 @@ export default {
     }
   },
   mounted() {
+    this.initTags()
     this.addViewTags()
   },
   methods: {
@@ -68,6 +75,40 @@ export default {
     isActive(route) {
       return route.path === this.$route.path
     },
+    filterAffixTags(routes, basePath = '/') {
+      let tags = []
+      routes.forEach(route => {
+        
+        if (route.meta && route.meta.affix) {
+          const tagPath = path.resolve(basePath, route.path)
+          tags.push({
+            fullPath: tagPath,
+            path: tagPath,
+            name: route.name,
+            meta: { ...route.meta }
+          })
+        }
+        if (route.children) {
+          // alert('5')
+          const tempTags = this.filterAffixTags(route.children, route.path)
+          if (tempTags.length >= 1) {
+            tags = [...tags, ...tempTags]
+          }
+        }
+      })
+      return tags
+    },
+    initTags() {
+      // console.log(this.routes)
+      const affixTags = this.affixTags = this.filterAffixTags(this.routes)
+      for (const tag of affixTags) {
+        // Must have tag name
+        if (tag.name) {
+          // console.log(tag.name)
+          this.$store.dispatch('addVisitedView', tag)
+        }
+      }
+    },
     addViewTags() {
       const route = this.generateRoute()
       if (!route) {
@@ -77,6 +118,7 @@ export default {
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
+      // console.log(tags)
       this.$nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
@@ -119,6 +161,10 @@ export default {
       this.$router.push('/')
     },
     openMenu(tag, e) {
+      console.log(tag.meta.affix)
+      if(tag.meta.affix){
+        this.canClose = false
+      }
       this.visible = true
       this.selectedTag = tag
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left

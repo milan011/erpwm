@@ -15,8 +15,6 @@ let config = {
   resolve: {
     alias: {
       '@':path.resolve("resources/assets/js"),
-      '@adminPc':path.resolve("resources/assets/js/admin/pc"),
-      '@adminMobile':path.resolve("resources/assets/js/admin/mobile"),
       // 'vendor': path.resolve('resources/assets/js/vendor'),
     },
   },
@@ -76,8 +74,8 @@ let config = {
 
 mix.webpackConfig(config);
 
-/*mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css').version();*/
+mix.js('resources/assets/js/app.js', 'public/js')
+   .sass('resources/assets/sass/app.scss', 'public/css').version();
 
 /*mix.js('resources/assets/js/adminPc.js', 'public/js')
    .sass('resources/assets/sass/adminPc.scss', 'public/css')
@@ -86,11 +84,11 @@ mix.webpackConfig(config);
    .version();*/
 // mix.browserSync('tclvue.net');
 
- mix.js('resources/assets/js/admin/pc/appPc.js', 'public/js')
+/* mix.js('resources/assets/js/admin/pc/appPc.js', 'public/js')
  .sass('resources/assets/sass/appPc.scss', 'public/css')
  .js('resources/assets/js/admin/mobile/appMobile.js', 'public/js')
  .sass('resources/assets/sass/appMobile.scss', 'public/css')
- .version();
+ .version();*/
 
 /**
  * 发布时文件名打上 hash 以强制客户端更新

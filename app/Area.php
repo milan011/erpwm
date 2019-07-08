@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Area extends Model
-{	
+{
 
-	use SoftDeletes; //使用软删除
+    use SoftDeletes; //使用软删除
 
     /**
      * The database table used by the model.
@@ -17,8 +17,8 @@ class Area extends Model
      * @var string
      */
     // protected $table = 'users';
-    protected $table = 'area';
-    protected $primaryKey ='id';
+    protected $table      = 'area';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -28,52 +28,65 @@ class Area extends Model
     protected $fillable = [];
 
     /**
+     * 表明模型是否应该被打上时间戳
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * The attributes excluded from the model's JSON form.
      * //在模型数组或 JSON 显示中隐藏某些属性
      * @var array
      */
-    protected $hidden = [ ];
+    protected $hidden = [];
 
     // 定义Area表与User表一对多关系
     /*public function hasManyUser(){
 
-        return $this->hasMany('App\User', 'creater_id', 'id');
+    return $this->hasMany('App\User', 'creater_id', 'id');
     }*/
 
     // 定义Area表与Cars表一对多关系
-    public function hasManyCars(){
+    public function hasManyCars()
+    {
 
-      return $this->hasMany('App\Cars', 'plate_city', 'id');
+        return $this->hasMany('App\Cars', 'plate_city', 'id');
     }
 
     // 定义Area表与Shop表一对多关系
-    public function hasManyshops(){
+    public function hasManyshops()
+    {
 
-      return $this->hasMany('App\Shop','city_id', 'id');
+        return $this->hasMany('App\Shop', 'city_id', 'id');
     }
 
     // 定义Area表与Insurance表一对多关系
-    public function hasManyInsurancesByCity(){
+    public function hasManyInsurancesByCity()
+    {
 
-      return $this->hasMany('App\Insurance', 'insurance_city', 'id');
+        return $this->hasMany('App\Insurance', 'insurance_city', 'id');
     }
 
     // 定义Area表与Insurance表一对多关系
-    public function hasManyInsurancesByProvence(){
+    public function hasManyInsurancesByProvence()
+    {
 
-      return $this->hasMany('App\Insurance', 'insurance_city', 'id');
+        return $this->hasMany('App\Insurance', 'insurance_city', 'id');
     }
 
     // 定义Area表与Loans表一对多关系
-    public function hasManyLoansByCity(){
+    public function hasManyLoansByCity()
+    {
 
-      return $this->hasMany('App\Loan', 'insurance_city', 'id');
+        return $this->hasMany('App\Loan', 'insurance_city', 'id');
     }
 
     // 定义Area表与Loans表一对多关系
-    public function hasManyLoansByProvence(){
+    public function hasManyLoansByProvence()
+    {
 
-      return $this->hasMany('App\Loan', 'insurance_city', 'id');
+        return $this->hasMany('App\Loan', 'insurance_city', 'id');
     }
 
 }

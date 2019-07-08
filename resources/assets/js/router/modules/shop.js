@@ -1,6 +1,6 @@
 
 //权限管理路由组
-import Layout from '@adminPc/views/layout/Layout'
+import Layout from '@/views/layout/Layout'
 
 const shopRouter = {
     path: '/shop',
@@ -15,7 +15,7 @@ const shopRouter = {
     children: [
       {
         path: 'index',
-        component: resolve => void(require(['@adminPc/views/shop/index'], resolve)),
+        component: resolve => void(require(['@/views/shop/index'], resolve)),
         name: 'shopList',
         meta: { title: 'shop' }
       }

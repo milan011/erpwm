@@ -6,9 +6,9 @@ const userRouter = {
     path: '/user',
     component: Layout,
     redirect: '/user/index',
-    name: 'User',
+    name: 'user',
     meta: {
-      title: '',
+      title: 'user',
       icon: 'user',
       roles: ['admin', 'manager']
     },
@@ -17,15 +17,20 @@ const userRouter = {
         path: 'index',
         component: resolve => void(require(['@/views/user/index'], resolve)),
         name: 'userList',
-        meta: { title: 'user' }
+        meta: { title: 'userList' },
       },
-      /*{
-        hidden: true,
-        path: 'passwordReset',
-        component: resolve => void(require(['@/views/user/passwordReset'], resolve)),
-        name: 'userAdd',
-        meta: { title: 'passwordReset' }
-      }*/
+      {
+        path: 'permission',
+        component: resolve => void(require(['@/views/permissions/index'], resolve)),
+        name: 'permissionList',
+        meta: { title: 'permission' },
+      },
+      {
+        path: 'role',
+        component: resolve => void(require(['@/views/role/index'], resolve)),
+        name: 'roleList',
+        meta: { title: 'role' },
+      }
     ]
 }
 export default userRouter

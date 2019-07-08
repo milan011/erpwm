@@ -26,7 +26,7 @@ export default {
       'sidebar'
     ]),
     isCollapse() {
-      return !this.sidebar.opened
+      return true
     }
   }
 }

@@ -4,9 +4,12 @@
     <template v-if="hasOneShowingChild(item.children) && !onlyOneChild.children&&!item.alwaysShow">
       <a :href="onlyOneChild.path" target="_blank" @click="clickLink(onlyOneChild.path,$event)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon||item.meta.icon" :title="generateTitle(onlyOneChild.meta.title)" />
+          <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon||item.meta.icon"/>
+          <!-- <span :title="generateTitle(onlyOneChild.meta.title)"></span> -->
+          <span>{{generateTitle(onlyOneChild.meta.title)}}</span>
         </el-menu-item>
       </a>
+
     </template>
 
     <el-submenu v-else :index="item.name||item.path">
@@ -57,11 +60,15 @@ export default {
       onlyOneChild: null
     }
   },
+  created() {
+    console.log(this.item.children)
+  },
   methods: {
     hasOneShowingChild(children) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
-          return false
+          // return false
+
         } else {
           // temp set(will be used if only has one showing child )
           this.onlyOneChild = item
