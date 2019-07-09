@@ -105978,9 +105978,9 @@ var _infoStatistics;
     roleAdd: '添加角色',
     roleUpdate: '修改角色',
     roleDelete: '删除角色',
-    shop: '门店管理',
-    shopAdd: '添加门店',
-    shopUpdate: '修改门店',
+    set: '设置',
+    setBase: '基础信息',
+    setBaseTaxCategories: '税目维护',
     shopDelete: '删除门店',
     manager: '客户经理',
     managerAdd: '添加客户经理',
@@ -106348,7 +106348,7 @@ __WEBPACK_IMPORTED_MODULE_1__router__["c" /* default */].afterEach(function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__views_layout_Layout__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_user__ = __webpack_require__("./resources/assets/js/router/modules/user.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_notice__ = __webpack_require__("./resources/assets/js/router/modules/notice.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_set__ = __webpack_require__("./resources/assets/js/router/modules/set.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_role__ = __webpack_require__("./resources/assets/js/router/modules/role.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_shop__ = __webpack_require__("./resources/assets/js/router/modules/shop.js");
 
@@ -106427,39 +106427,7 @@ var constantRouterMap = [{
   routes: constantRouterMap
 }));
 
-var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_6__modules_shop__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_notice__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
-
-/***/ }),
-
-/***/ "./resources/assets/js/router/modules/notice.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-
-//权限管理路由组
-
-
-var noticeRouter = {
-  path: '/notice',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/notice/index',
-  name: 'notice',
-  meta: {
-    title: '',
-    icon: 'message'
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/notice/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'noticeList',
-    meta: { title: 'notice' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (noticeRouter);
+var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_6__modules_shop__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_set__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
 
 /***/ }),
 
@@ -106500,6 +106468,58 @@ var roleRouter = {
   }]
 };
 /* unused harmony default export */ var _unused_webpack_default_export = (roleRouter);
+
+/***/ }),
+
+/***/ "./resources/assets/js/router/modules/set.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
+
+//后台用户管理路由组
+
+
+var setRouter = {
+  path: '/set',
+  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
+  redirect: '/set/base/taxCategories',
+  name: 'set',
+  meta: {
+    title: 'set',
+    icon: 'user',
+    roles: ['admin', 'manager']
+  },
+  children: [{
+    path: 'base',
+    name: 'setBase',
+    meta: { title: 'setBase' },
+    children: [{
+      path: 'taxCategories',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(10).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'setBaseTaxCategories',
+      meta: { title: 'setBaseTaxCategories' }
+    }, {
+      path: 'permission',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'permissionList',
+      meta: { title: 'permission' }
+    }]
+  }, {
+    path: 'permission',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'permissionList',
+    meta: { title: 'permission' }
+  }]
+};
+/* harmony default export */ __webpack_exports__["a"] = (setRouter);
 
 /***/ }),
 
@@ -106559,7 +106579,7 @@ var userRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(3/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'userList',
     meta: { title: 'userList' }

@@ -21,7 +21,7 @@ class User extends Authenticatable
     protected $guard_name = 'api'; // 使用任何你想要的守卫
     protected $table      = 'www_users';
     protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'name', 'nick_name', 'password', 'telephone', 'phone', 'qq_number', 'wx_number', 'address', 'creater_id', 'shop_id', 'status', 'user_img', 'email'];
+    protected $fillable   = ['id', 'name', 'realname', 'password', 'customerid', 'supplierid', 'salesman', 'phone', 'email', 'defaultlocation', 'cancreatetender', 'lastvisitdate', 'branchcode', 'pagesize', 'modulesallowed', 'status', 'displayrecordsmax', 'theme', 'language', 'pdflanguage', 'department', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -37,7 +37,7 @@ class User extends Authenticatable
      *
      * @var bool
      */
-    public $timestamps = false;
+    // public $timestamps = false;
 
     // 是否超级管理员
     public function isSuperAdmin()

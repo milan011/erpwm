@@ -8,7 +8,7 @@ import Layout from '@/views/layout/Layout'
 
 /* Router Modules */
 import userRouter from './modules/user'
-import noticeRouter from './modules/notice'
+import setRouter from './modules/set'
 import roleRouter from './modules/role'
 import shopRouter from './modules/shop'
 
@@ -77,7 +77,7 @@ export default new Router({
 
 export const asyncRouterMap = [
   shopRouter,
-  noticeRouter,
+  setRouter,
   userRouter,
   
   { path: '*', redirect: '/404', hidden: true }
