@@ -68,16 +68,16 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
-    <switch-roles ref="roleChild"></switch-roles> <!-- 权限管理组件 -->
   </div>
 </template>
 
 <script>
 
-import { fetchList, createRole, updateRole, deleteRole, getRolePermissions, getPermissions, giveRolePermissions } from '@/api/role'
+import { getTaxCategoriesList, createTaxCategories, updateTaxCategories, deleteTaxCategories,  getTaxCategories} from '@/api/TaxCategories'
+import { fetchList, createRole } from '@/api/role'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
-import SwitchRoles from './components/Permission'
+// import SwitchRoles from './components/Permission'
 // import SwitchRoles from './components/RolePermission'
 
 const calendarTypeOptions = [
@@ -92,8 +92,8 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'roleList',
-  components: { SwitchRoles },
+  name: 'taxCategories',
+  // components: { SwitchRoles },
   directives: {
     waves
   },
@@ -136,8 +136,8 @@ export default {
       /*permissionDialogFormVisible: false,*/
       dialogStatus: '',
       textMap: {
-        update: '编辑角色',
-        create: '新增角色'
+        update: '编辑税目组',
+        create: '新增税目组'
       },
       // rolePermission:'权限编辑',
       // dialogPvVisible: false,
@@ -160,7 +160,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      getTaxCategoriesList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
 

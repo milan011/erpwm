@@ -20,6 +20,7 @@ export default {
     roleAdd:'添加角色',
     roleUpdate:'修改角色',
     roleDelete:'删除角色',
+    shop:'门店管理',
     set:'设置',
     setBase:'基础信息',
     setBaseTaxCategories:'税目维护',
