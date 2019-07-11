@@ -9,7 +9,7 @@ export function getTaxCategoriesList(query) {
     // url: '/taxCategories/list',
     url: ROAST_CONFIG.API_URL + '/taxCategoriesList',
     method: 'get',
-    params: {query,token, page:query.page}
+    params: { query, token, page: query.page }
   })
 }
 
@@ -18,7 +18,7 @@ export function taxCategoriesAll() {
     // url: '/taxCategories/list',
     url: ROAST_CONFIG.API_URL + '/taxCategoriesList',
     method: 'get',
-    params: {token, withOutPage:true}
+    params: { token, withOutPage: true }
   })
 }
 
@@ -44,7 +44,7 @@ export function deleteTaxCategories(data) {
   return request({
     url: ROAST_CONFIG.API_URL + '/taxCategories/' + data.id,
     method: 'delete',
-    params: {token},
+    params: { token },
     data
-  }) 
+  })
 }

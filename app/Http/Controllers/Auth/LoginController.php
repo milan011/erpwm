@@ -64,9 +64,10 @@ class LoginController extends Controller
             $remember = $request->input('remember');
         }
 
-        $login_data = ['name' => $username,
-            'password'            => $password,
-            'status'              => '1'];
+        $login_data = [
+            'userid'   => $username,
+            'password' => $password,
+        ];
 
         if (!$token = JWTAuth::attempt($login_data)) {
 

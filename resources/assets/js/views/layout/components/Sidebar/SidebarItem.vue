@@ -61,7 +61,7 @@ export default {
     }
   },
   created() {
-    console.log(this.item.children)
+    // console.log(this.item.children)
   },
   methods: {
     hasOneShowingChild(children) {

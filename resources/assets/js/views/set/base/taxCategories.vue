@@ -1,65 +1,36 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">       
+    <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
     </div>
-
-    <el-table
-      v-loading="listLoading"
-      :key="tableKey"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;">
-      <el-table-column :label="$t('table.id')" align="center">
+    <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
+      <el-table-column :label="$t('taxCategories.taxcatid')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.taxcatid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('role.name')" align="center">
+      <el-table-column :label="$t('taxCategories.taxcatname')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('role.guard_name')" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.guard_name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('role.description')" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span>{{ scope.row.taxcatname }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button type="success" size="mini" @click="handleSetPermission(scope.row)">{{ $t('table.editPermissions') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-
     <div class="pagination-container">
-      <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next"  @current-change="handleCurrentChange"/>
+      <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @current-change="handleCurrentChange" />
     </div>
-
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;">
-        <el-form-item :label="$t('role.name')" prop="name">
-          <el-input v-model="temp.name"/>
-        </el-form-item>
-        <el-form-item :label="$t('role.description')" prop="description">
-          <el-input v-model="temp.description"/>
-        </el-form-item>
-        <el-form-item :label="$t('role.guard_name')" prop="guard_name">
-          <el-select v-model="temp.guard_name" class="filter-item" placeholder="请选择标识">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
-          </el-select>
+        <el-form-item :label="$t('taxCategories.taxcatname')" prop="taxcatname">
+          <el-input v-model="temp.taxcatname" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -70,11 +41,8 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
-
-import { getTaxCategoriesList, createTaxCategories, updateTaxCategories, deleteTaxCategories,  getTaxCategories} from '@/api/TaxCategories'
-import { fetchList, createRole } from '@/api/role'
+  import { getTaxCategoriesList, createTaxCategories, updateTaxCategories, deleteTaxCategories,  getTaxCategories} from '@/api/TaxCategories'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 // import SwitchRoles from './components/Permission'
@@ -114,40 +82,27 @@ export default {
     return {
       tableKey: 0,
       list: null,
-      permissionList: null,
       total: null,
       listLoading: true,
       listQuery: {
         page: 1,
-        importance: undefined,
-        name: undefined,
-        guard_name: undefined,
       },
       calendarTypeOptions,
       showReviewer: false,
       temp: {
         id: undefined,
-        name: '',
-        guard_name: '',
-        description: '',
+        taxcatname: '',
       },
-      // permissionTemp: {},
       dialogFormVisible: false,
-      /*permissionDialogFormVisible: false,*/
       dialogStatus: '',
       textMap: {
         update: '编辑税目组',
         create: '新增税目组'
       },
-      // rolePermission:'权限编辑',
-      // dialogPvVisible: false,
       pvData: [],
       rules: {
-        guard_name: [{ required: true, message: '请选择标识', trigger: 'change' }],
-        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        description: [{ required: true, message: '请输入描述', trigger: 'blur' }]
+        taxcatname: [{ required: true, message: '请输入名称', trigger: 'blur' }],
       },
-      downloadLoading: false,
     }
   },
   created() {
@@ -161,6 +116,7 @@ export default {
     getList() {
       this.listLoading = true
       getTaxCategoriesList(this.listQuery).then(response => {
+        // console.log(response.data)
         this.list = response.data.data
         this.total = response.data.total
 
@@ -220,9 +176,7 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        name: '',
-        guard_name: '',
-        description: '',
+        taxcatname: '喝水税',
       }
     },
     handleCreate() {
@@ -236,17 +190,28 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createRole(this.temp).then((response) => {
-            // console.log(response.data);
-            this.temp.id = response.data.id
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
+          createTaxCategories(this.temp).then((response) => {
+            console.log(response.data);
+            const response_data = response.data
+            if(response_data.status){
+              this.temp.taxcatid = response_data.data.taxcatid
+              this.list.unshift(this.temp)
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
+            }else{
+              this.dialogFormVisible = false
+              this.$notify.error({
+                title: '失败',
+                message: response_data.message,
+                duration: 2000
+              })
+            }
+            
           })
         }
       })
@@ -291,12 +256,6 @@ export default {
       })
       const index = this.list.indexOf(row)
       this.list.splice(index, 1)
-    },
-    handleSetPermission(row) {  
-      this.$refs.roleChild.handlePermission(row) 
-    },
-    giveRolePermissions() {
-      this.$refs.roleChild.givePermissions()
     },
   }
 }

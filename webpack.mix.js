@@ -14,7 +14,7 @@ let path = require('path');
 let config = {
   resolve: {
     alias: {
-      '@':path.resolve("resources/assets/js"),
+      '@': path.resolve("resources/assets/js"),
       // 'vendor': path.resolve('resources/assets/js/vendor'),
     },
   },
@@ -44,27 +44,22 @@ let config = {
         }
       }
     ],*/
-    rules: [
-      {
-        test: /\.jsx?$/,
-        include: /(node_modules\/element-ui)/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: 'vue-app',
-              plugins: [
-                ["component", [
-                  {
-                    "libraryName": "element-ui",
-                    "styleLibraryName": "theme-default"
-                  }
-                ]],"transform-vue-jsx"]
-            }
-          }
-        ]
-      },
-    ]
+    rules: [{
+      test: /\.jsx?$/,
+      include: /(node_modules\/element-ui)/,
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          presets: 'vue-app',
+          plugins: [
+            ["component", [{
+              "libraryName": "element-ui",
+              "styleLibraryName": "theme-default"
+            }]], "transform-vue-jsx"
+          ]
+        }
+      }]
+    }, ]
   },
   // chunks:[]
 }
@@ -75,7 +70,7 @@ let config = {
 mix.webpackConfig(config);
 
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css').version();
+  .sass('resources/assets/sass/app.scss', 'public/css').version();
 
 /*mix.js('resources/assets/js/adminPc.js', 'public/js')
    .sass('resources/assets/sass/adminPc.scss', 'public/css')

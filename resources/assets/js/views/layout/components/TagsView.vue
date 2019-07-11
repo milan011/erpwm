@@ -161,7 +161,7 @@ export default {
       this.$router.push('/')
     },
     openMenu(tag, e) {
-      console.log(tag.meta.affix)
+      // console.log(tag.meta.affix)
       if(tag.meta.affix){
         this.canClose = false
       }

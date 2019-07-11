@@ -4122,7 +4122,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     };
   },
   created: function created() {
-    console.log(this.item.children);
+    // console.log(this.item.children)
   },
 
   methods: {
@@ -4447,7 +4447,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$router.push('/');
     },
     openMenu: function openMenu(tag, e) {
-      console.log(tag.meta.affix);
+      // console.log(tag.meta.affix)
       if (tag.meta.affix) {
         this.canClose = false;
       }
@@ -4493,13 +4493,6 @@ module.exports = { "default": __webpack_require__("./node_modules/core-js/librar
 
 /***/ }),
 
-/***/ "./node_modules/babel-runtime/core-js/object/define-property.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__("./node_modules/core-js/library/fn/object/define-property.js"), __esModule: true };
-
-/***/ }),
-
 /***/ "./node_modules/babel-runtime/core-js/object/keys.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4532,37 +4525,6 @@ module.exports = { "default": __webpack_require__("./node_modules/core-js/librar
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = { "default": __webpack_require__("./node_modules/core-js/library/fn/symbol/iterator.js"), __esModule: true };
-
-/***/ }),
-
-/***/ "./node_modules/babel-runtime/helpers/defineProperty.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _defineProperty = __webpack_require__("./node_modules/babel-runtime/core-js/object/define-property.js");
-
-var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (obj, key, value) {
-  if (key in obj) {
-    (0, _defineProperty2.default)(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-};
 
 /***/ }),
 
@@ -7133,18 +7095,6 @@ module.exports = __webpack_require__("./node_modules/core-js/library/modules/_co
 
 /***/ }),
 
-/***/ "./node_modules/core-js/library/fn/object/define-property.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__("./node_modules/core-js/library/modules/es6.object.define-property.js");
-var $Object = __webpack_require__("./node_modules/core-js/library/modules/_core.js").Object;
-module.exports = function defineProperty(it, key, desc) {
-  return $Object.defineProperty(it, key, desc);
-};
-
-
-/***/ }),
-
 /***/ "./node_modules/core-js/library/fn/object/keys.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9270,16 +9220,6 @@ addToUnscopables('entries');
 var $export = __webpack_require__("./node_modules/core-js/library/modules/_export.js");
 
 $export($export.S + $export.F, 'Object', { assign: __webpack_require__("./node_modules/core-js/library/modules/_object-assign.js") });
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js/library/modules/es6.object.define-property.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__("./node_modules/core-js/library/modules/_export.js");
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__("./node_modules/core-js/library/modules/_descriptors.js"), 'Object', { defineProperty: __webpack_require__("./node_modules/core-js/library/modules/_object-dp.js").f });
 
 
 /***/ }),
@@ -105950,12 +105890,6 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty__ = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty__);
-
-
-var _infoStatistics;
-
 /* harmony default export */ __webpack_exports__["a"] = ({
   route: {
     dashboard: '首页',
@@ -106114,135 +106048,16 @@ var _infoStatistics;
     creater: '创建者',
     add: '添加'
   },
+  taxCategories: {
+    taxcatid: '序号',
+    taxcatname: '税目'
+  },
   role: {
     id: '序号',
     name: '角色',
     guard_name: '标识',
     add: '添加',
     description: '角色描述'
-  },
-  shop: {
-    id: 'ID',
-    name: '门店',
-    type: '类别',
-    status: '状态',
-    shopCity: '城市',
-    telephone: '电话',
-    address: '地址',
-    stopUse: '停用'
-  },
-  notice: {
-    id: 'ID',
-    title: '标题',
-    type: '类型',
-    order: '排序',
-    content: '内容'
-  },
-  manager: {
-    id: 'ID',
-    name: '客户经理',
-    telephone: '电话',
-    wx_number: '微信号码',
-    creater: '创建者',
-    email: '邮箱',
-    address: '地址',
-    remark: '备注',
-    status: '状态',
-    add: '添加',
-    first_letter: '首字母'
-  },
-  info: {
-    id: 'ID',
-    code: '序号',
-    name: '客户',
-    telephone: '电话',
-    user_telephone: '客户电话',
-    manager_name: '客户经理',
-    manager_telephone: '客户经理电话',
-    project_name: '项目名称',
-    new_telephone: '入网号码',
-    uim_number: 'UIM码',
-    side_number: '副卡',
-    is_jituan: '集团卡',
-    old_bind: '绑老卡',
-    netin: '入网',
-    collections: '收款',
-    balance_month: '当前结算月',
-    collections_type: '收款方式',
-    creater: '创建者',
-    shop_month: '门店返还月',
-    shop: '门店',
-    side_number_num: '副卡',
-    side_uim_number: '副卡UIM码',
-    side_uim_number_num: '副卡UIM数量',
-    return_record: '返还记录',
-    remark: '备注',
-    status: '状态',
-    side_number_add: '添加',
-    side_number_remove: '删除',
-    add: '添加'
-  },
-  infoDianxin: {
-    id: '序号',
-    // code: '序号',
-    name: '门店名称',
-    return_telephone: '返款号码',
-    jituan: '集团名称',
-    manager: '客户经理',
-    jiakuan: '价款',
-    refunds: '返款金额',
-    exampleExcelDown: '标准表下载',
-    yongjin: '佣金方案',
-    balance_month: '结算月',
-    netin: '返还日期',
-    creater: '创建者',
-    import: '导入日期',
-    remark: '备注',
-    status: '状态',
-    infoDeal: '信息处理',
-    add: '添加'
-  },
-  infoStatistics: (_infoStatistics = {
-    name: '业务员',
-    info_nums_all: '主卡数(不绑老卡|绑老卡)',
-    old_bind: '绑老卡',
-    not_old_bind: '不绑老卡'
-  }, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_infoStatistics, 'old_bind', '不绑老卡|绑老卡'), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_infoStatistics, 'side_nums_all', '副卡数(不绑老卡|绑老卡)'), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_infoStatistics, 'subtotal', '小计(不绑老卡|绑老卡)'), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_infoStatistics, 'total', '总数'), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_infoStatistics, 'netin', '入网日期'), _infoStatistics),
-  service: {
-    name: '业务名称',
-    type: '返还方式',
-    return_price: '返还金额',
-    return_ratio: '返还比例',
-    remark: '备注'
-  },
-  serviceDetail: {
-    serviceName: '业务名称',
-    goodsList: '赠送礼品',
-    customer: '客户',
-    goodsAdd: '添加',
-    goodsRemove: '删除',
-    customer_telephone: '客户电话',
-    charge_price: '收费金额',
-    goods_num: '赠品数量',
-    goods_cost: '赠品金额',
-    inventory_percentage: '返佣',
-    inventory_profit: '利润',
-    inventoryer: '业务员',
-    inventer_ticheng: '提成',
-    remark: '备注'
-  },
-  inventory: {
-    goodsName: '礼品',
-    inventoryNow: '当前库存',
-    inventoryAdd: '添加库存'
-  },
-  inventoryDetail: {
-    serviceName: '业务',
-    goodsName: '礼品',
-    inventory_code: '单号',
-    type: '出/入库',
-    inventory_num: '数量',
-    remark: '备注'
   }
 });
 
@@ -106405,7 +106220,7 @@ var constantRouterMap = [{
   children: [{
     path: 'dashboard',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/dashboard/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/dashboard/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'Dashboard',
     meta: { title: 'dashboard', icon: 'dashboard', affix: true, noCache: true }
@@ -106455,14 +106270,14 @@ var roleRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'roleList',
     meta: { title: 'roleManger' }
   }, {
     path: 'permission',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'permissionList',
     meta: { title: 'permission' }
@@ -106495,21 +106310,21 @@ var setRouter = {
   children: [{
     path: 'base',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(11/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(2/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'setBase',
     meta: { title: 'setBase' },
     children: [{
       path: 'taxCategories',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(11/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(2/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'taxCategories',
       meta: { title: 'setBaseTaxCategories' }
     }, {
       path: 'role',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'roleList',
       meta: { title: 'role' }
@@ -106517,7 +106332,7 @@ var setRouter = {
   }, {
     path: 'permission',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'permissionList',
     meta: { title: 'permission' }
@@ -106583,21 +106398,21 @@ var userRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(3/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'userList',
     meta: { title: 'userList' }
   }, {
     path: 'permission',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/permissions/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'permissionList',
     meta: { title: 'permission' }
   }, {
     path: 'role',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(1/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/role/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'roleList',
     meta: { title: 'role' }

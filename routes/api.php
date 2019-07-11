@@ -52,9 +52,9 @@ Route::group([
     //TaxCategores
     Route::get('taxCategoriesList', 'TaxCategoriesController@index');
     Route::get('taxCategories/{id}', 'TaxCategoriesController@show');
-    Route::post('taxCategoires', 'TaxCategoriesController@store');
+    Route::post('taxCategories', 'TaxCategoriesController@store');
     Route::put('taxCategories/{id}', 'TaxCategoriesController@update');
-    Route::delete('taxCategoires/{id}', 'TaxCategoriesController@destroy');
+    Route::delete('taxCategories/{id}', 'TaxCategoriesController@destroy');
 
 });
 

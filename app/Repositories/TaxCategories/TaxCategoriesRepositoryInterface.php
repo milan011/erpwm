@@ -1,11 +1,11 @@
 <?php
-namespace App\Repositories\InfoSelf;
- 
-interface InfoSelfRepositoryInterface
+namespace App\Repositories\TaxCategories;
+
+interface TaxCategoriesRepositoryInterface
 {
-    
+
     public function find($id);
-    
+
     public function getAllInfos($requestData);
 
     public function create($requestData);
@@ -14,5 +14,5 @@ interface InfoSelfRepositoryInterface
 
     public function destroy($id);
 
-    public function isRepeat($requestData);
+    public function isRepeat($taxcatname);
 }

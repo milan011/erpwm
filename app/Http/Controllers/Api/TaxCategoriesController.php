@@ -4,25 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\TaxCategories;
-// use App\Http\Resources\TaxCategries\TaxCategriesResource;
 // use App\Http\Resources\TaxCategries\TaxCategriesResourceCollection;
-// use App\Repositories\TaxCategries\TaxCategriesRepositoryInterface;
-use Auth;
-use Carbon;
-use DB;
+use App\Repositories\TaxCategories\TaxCategoriesRepositoryInterface;
+// use App\Http\Resources\TaxCategories\TaxCategoriesResource;
+use App\TaxCategories;
 use Illuminate\Http\Request;
 
 class TaxCategoriesController extends Controller
 {
-    protected $TaxCategries;
+    protected $TaxCategories;
 
-    /*public function __construct(
-
-    TaxCategriesRepositoryInterface $TaxCategries
+    public function __construct(
+        TaxCategoriesRepositoryInterface $TaxCategories
     ) {
-    $this->TaxCategries = $TaxCategries;
-    }*/
+        $this->TaxCategories = $TaxCategories;
+    }
 
     /**
      * Display a listing of the resource.
@@ -34,11 +30,12 @@ class TaxCategoriesController extends Controller
 
         $query_list = jsonToArray($request->input('query')); //获取搜索信息
 
-        $taxCategriess = TaxCategories::get();
+        $TaxCategoriess = TaxCategories::orderBy('taxcatid', 'DESC')->paginate(10);
 
-        dd($taxCategriess);
+        // dd($TaxCategoriess);
 
-        return new TaxCategriesResource($taxCategriess);
+        // return new TaxCategoriesResource($TaxCategoriess);
+        return $TaxCategoriess;
     }
 
     /**
@@ -61,17 +58,17 @@ class TaxCategoriesController extends Controller
 
         // dd($request->all());
 
-        if ($this->TaxCategries->isRepeat($request->new_telephone)) {
-            return $this->baseFailed($message = '入网号码已存在');
+        if ($this->TaxCategories->isRepeat($request->taxcatname)) {
+            return $this->baseFailed($message = '税目名称重复');
         }
+        // dd('不重复');
+        // $this->isRepeat($request->taxcatname);
 
-        $info = $this->TaxCategries->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $new_taxCategories = $this->TaxCategories->create($request);
 
-        if ($info) {
+        if ($new_taxCategories) {
             //添加成功
-            return $this->baseSucceed($respond_data = $info, $message = '添加成功');
+            return $this->baseSucceed($respond_data = $new_taxCategories, $message = '添加成功');
         } else {
             //添加失败
             return $this->baseFailed($message = '内部错误');
