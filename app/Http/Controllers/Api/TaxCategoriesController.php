@@ -30,7 +30,7 @@ class TaxCategoriesController extends Controller
 
         $query_list = jsonToArray($request->input('query')); //获取搜索信息
 
-        $TaxCategoriess = TaxCategories::orderBy('taxcatid', 'DESC')->paginate(10);
+        $TaxCategoriess = TaxCategories::where('status', '1')->orderBy('taxcatid', 'DESC')->paginate(10);
 
         // dd($TaxCategoriess);
 
@@ -109,10 +109,12 @@ class TaxCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
+        $update_info = $this->TaxCategories->isRepeat($request->taxcatname);
+        if ($update_info && ($update_info->taxcatid != $id)) {
+            return $this->baseFailed($message = '您修改后的税目信息与现有税目冲突');
+        }
 
-        $info = $this->TaxCategries->update($request, $id);
-        $info->hasOnePackage;
+        $info = $this->TaxCategories->update($request, $id);
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -126,7 +128,7 @@ class TaxCategoriesController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->TaxCategries->destroy($id);
+        $this->TaxCategories->destroy($id);
         return $this->baseSucceed($message = '修改成功');
     }
 }

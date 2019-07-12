@@ -145,7 +145,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteRole(this.temp).then((response) => {
+        deleteTaxCategories(this.temp).then((response) => {
           // console.log(response.data);
           if(response.data.status === 0){
             this.$notify({
@@ -176,7 +176,7 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        taxcatname: '喝水税',
+        taxcatname: '',
       }
     },
     handleCreate() {
@@ -204,7 +204,7 @@ export default {
                 duration: 2000
               })
             }else{
-              this.dialogFormVisible = false
+              // this.dialogFormVisible = false
               this.$notify.error({
                 title: '失败',
                 message: response_data.message,
@@ -228,21 +228,32 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateRole(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
+          updateTaxCategories(tempData).then((response) => {
+            console.log(response.data)
+            const response_data = response.data
+            if(response_data.status){
+              for (const v of this.list) {
+                if (v.id === this.temp.id) {
+                  const index = this.list.indexOf(v)
+                  this.list.splice(index, 1, this.temp)
+                  break
+                }
               }
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '更新成功',
+                type: 'success',
+                duration: 2000
+              })
+            }else{
+              // this.dialogFormVisible = false
+              this.$notify.error({
+                title: '失败',
+                message: response_data.message,
+                duration: 2000
+              })
             }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
           })
         }
       })

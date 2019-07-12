@@ -89,62 +89,9 @@ class TaxCategoriesRepository implements TaxCategoriesRepositoryInterface
     public function update($requestData, $id)
     {
         // dd($requestData->all());
-        $info    = TaxCategories::select($this->select_columns)->findorFail($id); //获取信息
-        $manager = Manager::findOrFail($requestData['manage_id']); //获得客户经理信息
-        $package = Package::findOrFail($requestData['package_id']); //获得客户经理信息
-        // dd($manager);
-        // 处理副卡信息
-        // dd($requestData->all());
-        $side_list_info      = [];
-        $side_number_arr     = [];
-        $side_uim_number_arr = [];
-        $side_list           = [];
-        $side_number         = '';
-        $side_uim_number     = '';
+        $info = TaxCategories::select($this->select_columns)->findorFail($id); //获取信息
 
-        // dd(array_filter($requestData['side_numbers']));
-        // dd(array_filter($requestData['side_numbers']));
-        // dd(empty(array_filter($requestData['side_numbers'])));
-        if (!empty(array_filter($requestData['side_numbers']))) {
-            foreach ($requestData['side_numbers'] as $key => $value) {
-                $side_list_info[$key]['side'] = $value['side_number'];
-                $side_list_info[$key]['uim']  = $value['uim'];
-            }
-            // dd(array_filter($side_list_info));
-            $side_list = a_array_unique($side_list_info);
-            // dd($side_list);
-            foreach ($side_list as $key => $value) {
-                if ($value['side'] !== null) {
-                    $side_number_arr[]     = $value['side'];
-                    $side_uim_number_arr[] = $value['uim'];
-                }
-            }
-            // dd($side_number_arr);
-            $side_number     = implode("|", $side_number_arr);
-            $side_uim_number = implode("|", $side_uim_number_arr);
-        }
-
-        $side_uim_number_num = count(array_unique(array_filter($side_uim_number_arr)));
-
-        $info->name                = $requestData->name;
-        $info->user_telephone      = $requestData->user_telephone;
-        $info->manage_name         = $manager->name;
-        $info->manage_telephone    = $manager->telephone;
-        $info->manage_id           = $manager->id;
-        $info->package_id          = $package->id;
-        $info->package_month       = $package->month_nums;
-        $info->project_name        = $requestData->project_name;
-        $info->side_number_num     = count($side_number_arr);
-        $info->uim_number          = $requestData->uim_number;
-        $info->collections         = $requestData->collections;
-        $info->side_number         = $side_number;
-        $info->side_uim_number     = $side_uim_number;
-        $info->remark              = $requestData->remark;
-        $info->side_uim_number_num = $side_uim_number_num;
-        $info->collections_type    = $requestData->collections_type;
-        $info->netin               = $requestData->netin_year . '-' . $requestData->netin_month;
-        $info->old_bind            = ($requestData->old_bind) ? '1' : '0';
-        $info->is_jituan           = ($requestData->is_jituan) ? '1' : '0';
+        $info->taxcatname = $requestData->taxcatname;
 
         $info->save();
 
@@ -154,14 +101,20 @@ class TaxCategoriesRepository implements TaxCategoriesRepositoryInterface
     // 删除信息
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
-            $info         = TaxCategories::findorFail($id);
-            $info->status = '0';
+            $tax_authrates = new Taxauthrates(); //税率
+            $info          = TaxCategories::findorFail($id);
+            $info->status  = '0'; //删除税目
             $info->save();
 
+            $tax_authrates->where('taxcatid', $id)->delete(); //删除关联的税目
+
+            DB::commit();
             return $info;
 
         } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
             return false;
         }
     }
@@ -169,6 +122,6 @@ class TaxCategoriesRepository implements TaxCategoriesRepositoryInterface
     //名称是否重复
     public function isRepeat($taxcatname)
     {
-        return TaxCategories::where('taxcatname', $taxcatname)->first();
+        return TaxCategories::where('taxcatname', $taxcatname)->where('status', '1')->first();
     }
 }

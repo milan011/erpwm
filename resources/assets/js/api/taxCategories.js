@@ -34,7 +34,7 @@ export function createTaxCategories(data) {
 
 export function updateTaxCategories(data) {
   return request({
-    url: ROAST_CONFIG.API_URL + '/taxCategories/' + data.id,
+    url: ROAST_CONFIG.API_URL + '/taxCategories/' + data.taxcatid,
     method: 'put',
     params: { token },
     data
@@ -42,7 +42,7 @@ export function updateTaxCategories(data) {
 }
 export function deleteTaxCategories(data) {
   return request({
-    url: ROAST_CONFIG.API_URL + '/taxCategories/' + data.id,
+    url: ROAST_CONFIG.API_URL + '/taxCategories/' + data.taxcatid,
     method: 'delete',
     params: { token },
     data

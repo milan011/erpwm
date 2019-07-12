@@ -70,7 +70,6 @@ class LoginController extends Controller
         ];
 
         if (!$token = JWTAuth::attempt($login_data)) {
-
             // return response()->json(['error' => '账号密码错误或者数据过期请刷新后重新登录'], 401);
             return response()->json(
                 [
