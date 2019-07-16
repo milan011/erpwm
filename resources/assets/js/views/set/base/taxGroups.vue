@@ -19,6 +19,7 @@
       <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-button type="success" size="mini" @click="handleSetTax(scope.row)">{{ $t('taxGroups.setGroupTax') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
         </template>
@@ -39,6 +40,22 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+    <el-dialog :title="setGroupTax" :visible.sync="setGroupTaxVisible">
+      <el-form ref="permissionDForm" :model="taxGroupTemp" label-position="left" label-width="100px">
+        <!-- <el-checkbox-group v-for="(per, group_index) in permissions" :key="group_index" v-model="checkList">
+          <div style="margin-bottom:12px">
+            <span style="font-size:16px;margin-right:5px">{{group_index}}:</span>
+            <el-checkbox border size="medium" v-for="p in per" :label="p.name" :key="p.id">
+              {{p.description}}
+            </el-checkbox>
+          </div>
+        </el-checkbox-group> -->
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="setGroupTaxVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="setGroupTaxs">{{ $t('table.confirm') }}</el-button>
+      </div>
+  </el-dialog>
   </div>
 </template>
 <script>
@@ -87,6 +104,10 @@ export default {
       listQuery: {
         page: 1,
       },
+      taxGroupTemp: {
+          id: null,
+          permissions:[],
+      },
       calendarTypeOptions,
       showReviewer: false,
       temp: {
@@ -94,6 +115,8 @@ export default {
         taxgroupdescription: '',
       },
       dialogFormVisible: false,
+      setGroupTaxVisible: false,
+      setGroupTax: '税种分配',
       dialogStatus: '',
       textMap: {
         update: '编辑税收组',
@@ -125,6 +148,14 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+    },
+    handleSetTax(row){
+      this.setGroupTaxVisible = true
+      console.log(row)
+    },
+    setGroupTaxs(){
+      console.log('set')
+      
     },
     handleFilter() {
       this.listQuery.page = 1

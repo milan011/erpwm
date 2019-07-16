@@ -169,6 +169,7 @@ export default {
   taxGroups: {
     taxgroupid: '序号',
     taxgroupdescription: '税收组',
+    setGroupTax: '税种分配',
   },
   role: {
     id: '序号',
