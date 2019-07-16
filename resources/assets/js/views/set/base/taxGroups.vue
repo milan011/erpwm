@@ -6,14 +6,14 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('taxCategories.taxcatid')" align="center">
+      <el-table-column :label="$t('taxGroups.taxgroupid')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.taxcatid }}</span>
+          <span>{{ scope.row.taxgroupid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('taxCategories.taxcatname')" align="center">
+      <el-table-column :label="$t('taxGroups.taxgroupdescription')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.taxcatname }}</span>
+          <span>{{ scope.row.taxgroupdescription }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
@@ -29,8 +29,8 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;">
-        <el-form-item :label="$t('taxCategories.taxcatname')" prop="taxcatname">
-          <el-input v-model="temp.taxcatname" />
+        <el-form-item :label="$t('taxGroups.taxgroupdescription')" prop="taxgroupdescription">
+          <el-input v-model="temp.taxgroupdescription" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,7 +42,7 @@
   </div>
 </template>
 <script>
-  import { getTaxCategoriesList, createTaxCategories, updateTaxCategories, deleteTaxCategories,  getTaxCategories} from '@/api/taxCategories'
+  import { getTaxGroupsList, createTaxGroups, updateTaxGroups, deleteTaxGroups,  getTaxGroups} from '@/api/taxGroups'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 // import SwitchRoles from './components/Permission'
@@ -60,7 +60,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'taxCategories',
+  name: 'taxGroups',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -90,18 +90,18 @@ export default {
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        taxcatid: undefined,
-        taxcatname: '',
+        taxgroupid: undefined,
+        taxgroupdescription: '',
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑税目组',
-        create: '新增税目组'
+        update: '编辑税收组',
+        create: '新增税收组'
       },
       pvData: [],
       rules: {
-        taxcatname: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        taxgroupdescription: [{ required: true, message: '请输入名称', trigger: 'blur' }],
       },
     }
   },
@@ -115,7 +115,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getTaxCategoriesList(this.listQuery).then(response => {
+      getTaxGroupsList(this.listQuery).then(response => {
         // console.log(response.data)
         this.list = response.data.data
         this.total = response.data.total
@@ -145,12 +145,12 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteTaxCategories(this.temp).then((response) => {
+        deleteTaxGroups(this.temp).then((response) => {
           // console.log(response.data);
-          if(response.data.status === 0){
+          if(!response.data.status){
             this.$notify({
               title: '失败',
-              message: '删除失败',
+              message: response.data.message,
               type: 'warning',
               duration: 2000
             })
@@ -175,8 +175,8 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        taxcatid: undefined,
-        taxcatname: '',
+        taxgroupid: undefined,
+        taxgroupdescription: '',
       }
     },
     handleCreate() {
@@ -190,11 +190,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createTaxCategories(this.temp).then((response) => {
+          createTaxGroups(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.taxcatid = response_data.data.taxcatid
+              this.temp.taxgroupid = response_data.data.taxgroupid
               this.list.unshift(this.temp)
               this.dialogFormVisible = false
               this.$notify({
@@ -228,12 +228,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateTaxCategories(tempData).then((response) => {
+          updateTaxGroups(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.taxcatid === this.temp.taxcatid) {
+                if (v.taxgroupid === this.temp.taxgroupid) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, this.temp)
                   break

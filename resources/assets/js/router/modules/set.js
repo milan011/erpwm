@@ -15,21 +15,27 @@ const setRouter = {
     children: [
       {
         path: 'base',
-        component: resolve => void(require(['@/views/set/base/taxCategories.vue'], resolve)),
+        component: resolve => void(require(['@/views/set/base/index'], resolve)),
         name: 'setBase',
         meta: { title: 'setBase' },
         children: [
           {
+            path: 'taxProvinces',
+            component: resolve => void(require(['@/views/set/base/taxProvinces.vue'], resolve)),
+            name: 'taxProvinces',
+            meta: { title: 'taxProvinces' },
+          },
+          {
             path: 'taxCategories',
             component: resolve => void(require(['@/views/set/base/taxCategories.vue'], resolve)),
             name: 'taxCategories',
-            meta: { title: 'setBaseTaxCategories' },
+            meta: { title: 'taxCategories' },
           },
           {
-            path: 'role',
-            component: resolve => void(require(['@/views/role/index'], resolve)),
-            name: 'roleList',
-            meta: { title: 'role' },
+            path: 'taxGroups',
+            component: resolve => void(require(['@/views/set/base/taxGroups.vue'], resolve)),
+            name: 'taxGroups',
+            meta: { title: 'taxGroups' },
           },
         ]
       },

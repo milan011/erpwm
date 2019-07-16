@@ -1,12 +1,12 @@
 <?php
-namespace App\Repositories\InfoDianxin;
- 
-interface InfoDianxinRepositoryInterface
+namespace App\Repositories\TaxProvinces;
+
+interface TaxProvincesRepositoryInterface
 {
-    
+
     public function find($id);
-    
-    public function getAllDianXinInfos($requestData);
+
+    public function getList($queryList);
 
     public function create($requestData);
 

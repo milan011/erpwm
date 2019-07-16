@@ -27,7 +27,6 @@ class TaxCategoriesController extends Controller
      */
     public function index(Request $request)
     {
-
         $query_list = jsonToArray($request->input('query')); //获取搜索信息
 
         $TaxCategoriess = TaxCategories::where('status', '1')->orderBy('taxcatid', 'DESC')->paginate(10);
@@ -68,7 +67,7 @@ class TaxCategoriesController extends Controller
 
         if ($new_taxCategories) {
             //添加成功
-            return $this->baseSucceed($respond_data = $new_taxCategories, $message = '添加成功');
+            return $this->baseSucceed($new_taxCategories, '添加成功');
         } else {
             //添加失败
             return $this->baseFailed($message = '内部错误');
@@ -116,7 +115,7 @@ class TaxCategoriesController extends Controller
 
         $info = $this->TaxCategories->update($request, $id);
 
-        return $this->baseSucceed($respond_data = $info, $message = '修改成功');
+        return $this->baseSucceed($info, '修改成功');
     }
 
     /**

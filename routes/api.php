@@ -49,12 +49,26 @@ Route::group([
     Route::get('role/{role}/permissions', 'RoleController@getRolePermissions');
     Route::post('giveRole/{role}/permissions', 'RoleController@giveRolePermissions');
 
-    //TaxCategores
+    //TaxCategories
     Route::get('taxCategoriesList', 'TaxCategoriesController@index');
     Route::get('taxCategories/{id}', 'TaxCategoriesController@show');
     Route::post('taxCategories', 'TaxCategoriesController@store');
     Route::put('taxCategories/{id}', 'TaxCategoriesController@update');
     Route::delete('taxCategories/{id}', 'TaxCategoriesController@destroy');
+
+    //TaxProvinces
+    Route::get('taxProvincesList', 'TaxProvincesController@index');
+    Route::get('taxProvinces/{id}', 'TaxProvincesController@show');
+    Route::post('taxProvinces', 'TaxProvincesController@store');
+    Route::put('taxProvinces/{id}', 'TaxProvincesController@update');
+    Route::delete('taxProvinces/{id}', 'TaxProvincesController@destroy');
+
+    //TaxGroups
+    Route::get('taxGroupsList', 'TaxGroupsController@index');
+    Route::get('taxGroups/{id}', 'TaxGroupsController@show');
+    Route::post('taxGroups', 'TaxGroupsController@store');
+    Route::put('taxGroups/{id}', 'TaxGroupsController@update');
+    Route::delete('taxGroups/{id}', 'TaxGroupsController@destroy');
 
 });
 

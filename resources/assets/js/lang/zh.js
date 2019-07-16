@@ -23,7 +23,9 @@ export default {
     shop:'门店管理',
     set:'设置',
     setBase:'基础信息',
-    setBaseTaxCategories:'税目维护',
+    taxCategories:'税目维护',
+    taxProvinces: '纳税区域',
+    taxGroups:'税收组',
     shopDelete:'删除门店',
     manager:'客户经理',
     managerAdd:'添加客户经理',
@@ -159,6 +161,14 @@ export default {
   taxCategories: {
     taxcatid: '序号',
     taxcatname: '税目',
+  },
+  taxProvinces: {
+    taxprovinceid: '序号',
+    taxprovincename: '纳税区域',
+  },
+  taxGroups: {
+    taxgroupid: '序号',
+    taxgroupdescription: '税收组',
   },
   role: {
     id: '序号',

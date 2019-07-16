@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Http\Resources\Example\ExampleResource;
-use App\Http\Resources\Example\ExampleResourceCollection;
-use App\Repositories\Example\ExampleRepositoryInterface;
+// use App\Http\Resources\TaxGroups\TaxGroupsResource;
+// use App\Http\Resources\TaxGroups\TaxGroupsResourceCollection;
+use App\Repositories\TaxGroups\TaxGroupsRepositoryInterface;
 use Illuminate\Http\Request;
 
-class ExampleController extends Controller
+class TaxGroupsController extends Controller
 {
-    protected $example;
+    protected $taxGroups;
 
     public function __construct(
 
-        ExampleRepositoryInterface $example
+        TaxGroupsRepositoryInterface $taxGroups
     ) {
-        $this->example = $example;
+        $this->taxGroups = $taxGroups;
     }
 
     /**
@@ -29,9 +29,9 @@ class ExampleController extends Controller
     {
         $query_list = jsonToArray($request->input('query')); //获取搜索信息
 
-        $examples = $this->example->getList($query_list);
+        $taxGroupss = $this->taxGroups->getList($query_list);
 
-        return new ExampleResource($examples);
+        return $taxGroupss;
     }
 
     /**
@@ -54,13 +54,11 @@ class ExampleController extends Controller
 
         // dd($request->all());
 
-        if ($this->example->isRepeat($request->new_telephone)) {
-            return $this->baseFailed($message = '入网号码已存在');
+        if ($this->taxGroups->isRepeat($request->taxgroupdescription)) {
+            return $this->baseFailed($message = '税收组已存在');
         }
 
-        $info = $this->example->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info = $this->taxGroups->create($request);
 
         if ($info) {
             //添加成功
@@ -79,10 +77,10 @@ class ExampleController extends Controller
      */
     public function show($id)
     {
-        $info = $this->example->find($id);
+        $info = $this->taxGroups->find($id);
         $info->belongsToCreater;
 
-        return new ExampleResource($info);
+        return new TaxGroupsResource($info);
     }
 
     /**
@@ -106,9 +104,13 @@ class ExampleController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
+        $update_info = $this->taxGroups->isRepeat($request->taxgroupdescription);
 
-        $info = $this->example->update($request, $id);
-        $info->hasOnePackage;
+        if ($update_info && ($update_info->taxprovinceid != $id)) {
+            return $this->baseFailed($message = '您修改后的税收组信息与现有税收组冲突');
+        }
+
+        $info = $this->taxGroups->update($request, $id);
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -122,7 +124,13 @@ class ExampleController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->example->destroy($id);
-        return $this->baseSucceed($message = '修改成功');
+        $info = $this->taxGroups->destroy($id);
+
+        if ($info) {
+            return $this->baseSucceed($message = '修改成功');
+        } else {
+            return $this->baseFailed($message = '该税收组被客户或供应商使用,不允许删除');
+        }
+
     }
 }

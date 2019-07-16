@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Taxgroups extends Model
+class TaxGroups extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -33,19 +33,18 @@ class Taxgroups extends Model
      */
     public $timestamps = false;
 
-    // 定义User表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义taxgroups表与Suppliers表一对多关系
+    public function hasManySuppliers()
     {
 
-        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id');
+        return $this->hasMany('App\Suppliers', 'taxgroupid', 'taxgroupid');
     }
 
-    // 定义User表与Chance表一对多关系
-    public function hasManyChances()
+    // 定义taxgroups表与Suppliers表一对多关系
+    public function hasManyCustbranch()
     {
 
-        return $this->hasMany('App\Chance', 'creater', 'id');
+        return $this->hasMany('App\Custbranch', 'taxgroupid', 'taxgroupid');
     }
 
 }

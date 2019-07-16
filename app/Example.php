@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TaxGroupTaxes extends Model
+class Example extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,9 +13,9 @@ class TaxGroupTaxes extends Model
      * @var array
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
-    protected $table      = 'taxgrouptaxes';
-    protected $primaryKey = 'taxgroupid';
-    protected $fillable   = ['taxgroupid', 'taxauthid', 'calculationorder', 'taxontax'];
+    protected $table      = 'example';
+    protected $primaryKey = 'id';
+    protected $fillable   = ['id', 'examplename'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,7 +33,7 @@ class TaxGroupTaxes extends Model
      */
     public $timestamps = false;
 
-    // 定义User表与Shop表一对一关系
+    // 定义Example表与Shop表一对一关系
     public function belongsToShop()
     {
 
@@ -41,11 +41,10 @@ class TaxGroupTaxes extends Model
         return $this->belongsTo('App\Shop', 'shop_id', 'id');
     }
 
-    // 定义User表与Chance表一对多关系
-    public function hasManyChances()
+    // 定义Example表与Notice表一对多关系
+    public function hasManyNotice()
     {
 
-        return $this->hasMany('App\Chance', 'creater', 'id');
+        return $this->hasMany('App\Notice', 'user_id', 'id');
     }
-
 }

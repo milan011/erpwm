@@ -31,13 +31,10 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         // $this->app->bind('App\Repositories\Contracts\UserRepositoryInterface','App\Repositories\UserRepository');
         $this->app->bind('App\Repositories\User\UserRepositoryInterface', 'App\Repositories\User\UserRepository');
-        $this->app->bind('App\Repositories\Manager\ManagerRepositoryInterface', 'App\Repositories\Manager\ManagerRepository');
-        $this->app->bind('App\Repositories\Package\PackageRepositoryInterface', 'App\Repositories\Package\PackageRepository');
         $this->app->bind('App\Repositories\TaxCategories\TaxCategoriesRepositoryInterface', 'App\Repositories\TaxCategories\TaxCategoriesRepository');
+        $this->app->bind('App\Repositories\TaxProvinces\TaxProvincesRepositoryInterface', 'App\Repositories\TaxProvinces\TaxProvincesRepository');
+        $this->app->bind('App\Repositories\TaxGroups\TaxGroupsRepositoryInterface', 'App\Repositories\TaxGroups\TaxGroupsRepository');
 
-        $this->app->bind('App\Repositories\InfoDianxin\InfoDianxinRepositoryInterface', 'App\Repositories\InfoDianxin\InfoDianxinRepository');
-        $this->app->bind('App\Repositories\PackageInfo\PackageInfoRepositoryInterface', 'App\Repositories\PackageInfo\PackageInfoRepository');
-        $this->app->bind('App\Repositories\PackageInfo\PackageInfoRepositoryInterface', 'App\Repositories\PackageInfo\PackageInfoRepository');
         $this->app->bind('App\Repositories\Shop\ShopRepositoryInterface', 'App\Repositories\Shop\ShopRepository');
         $this->app->bind('App\Repositories\Inventory\InventoryRepositoryInterface', 'App\Repositories\Inventory\InventoryRepository');
         $this->app->bind('App\Repositories\InventoryDetail\InventoryDetailRepositoryInterface', 'App\Repositories\InventoryDetail\InventoryDetailRepository');

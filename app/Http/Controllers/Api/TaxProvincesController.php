@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Http\Resources\Example\ExampleResource;
-use App\Http\Resources\Example\ExampleResourceCollection;
-use App\Repositories\Example\ExampleRepositoryInterface;
+// use App\Http\Resources\TaxProvinces\TaxProvincesResource;
+// use App\Http\Resources\TaxProvinces\TaxProvincesResourceCollection;
+use App\Repositories\TaxProvinces\TaxProvincesRepositoryInterface;
 use Illuminate\Http\Request;
 
-class ExampleController extends Controller
+class TaxProvincesController extends Controller
 {
-    protected $example;
+    protected $taxProvinces;
 
     public function __construct(
 
-        ExampleRepositoryInterface $example
+        TaxProvincesRepositoryInterface $taxProvinces
     ) {
-        $this->example = $example;
+        $this->taxProvinces = $taxProvinces;
     }
 
     /**
@@ -29,9 +29,9 @@ class ExampleController extends Controller
     {
         $query_list = jsonToArray($request->input('query')); //获取搜索信息
 
-        $examples = $this->example->getList($query_list);
+        $taxProvincess = $this->taxProvinces->getList($query_list);
 
-        return new ExampleResource($examples);
+        return $taxProvincess;
     }
 
     /**
@@ -54,13 +54,11 @@ class ExampleController extends Controller
 
         // dd($request->all());
 
-        if ($this->example->isRepeat($request->new_telephone)) {
-            return $this->baseFailed($message = '入网号码已存在');
+        if ($this->taxProvinces->isRepeat($request->taxprovincename)) {
+            return $this->baseFailed($message = '该纳税区域已存在');
         }
 
-        $info = $this->example->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info = $this->taxProvinces->create($request);
 
         if ($info) {
             //添加成功
@@ -79,10 +77,10 @@ class ExampleController extends Controller
      */
     public function show($id)
     {
-        $info = $this->example->find($id);
+        $info = $this->taxProvinces->find($id);
         $info->belongsToCreater;
 
-        return new ExampleResource($info);
+        return new TaxProvincesResource($info);
     }
 
     /**
@@ -106,9 +104,12 @@ class ExampleController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
+        $update_info = $this->taxProvinces->isRepeat($request->taxprovincename);
+        if ($update_info && ($update_info->taxprovinceid != $id)) {
+            return $this->baseFailed($message = '您修改后的区域信息与现有区域冲突');
+        }
 
-        $info = $this->example->update($request, $id);
-        $info->hasOnePackage;
+        $info = $this->taxProvinces->update($request, $id);
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -122,7 +123,7 @@ class ExampleController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->example->destroy($id);
+        $this->taxProvinces->destroy($id);
         return $this->baseSucceed($message = '修改成功');
     }
 }

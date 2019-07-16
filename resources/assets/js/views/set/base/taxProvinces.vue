@@ -6,14 +6,14 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('taxCategories.taxcatid')" align="center">
+      <el-table-column :label="$t('taxProvinces.taxprovinceid')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.taxcatid }}</span>
+          <span>{{ scope.row.taxprovinceid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('taxCategories.taxcatname')" align="center">
+      <el-table-column :label="$t('taxProvinces.taxprovincename')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.taxcatname }}</span>
+          <span>{{ scope.row.taxprovincename }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
@@ -29,8 +29,8 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;">
-        <el-form-item :label="$t('taxCategories.taxcatname')" prop="taxcatname">
-          <el-input v-model="temp.taxcatname" />
+        <el-form-item :label="$t('taxProvinces.taxprovincename')" prop="taxprovincename">
+          <el-input v-model="temp.taxprovincename" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,7 +42,7 @@
   </div>
 </template>
 <script>
-  import { getTaxCategoriesList, createTaxCategories, updateTaxCategories, deleteTaxCategories,  getTaxCategories} from '@/api/taxCategories'
+  import { getTaxProvincesList, createTaxProvinces, updateTaxProvinces, deleteTaxProvinces,  getTaxProvinces} from '@/api/taxProvinces'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 // import SwitchRoles from './components/Permission'
@@ -60,7 +60,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'taxCategories',
+  name: 'provincesTax',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -90,18 +90,18 @@ export default {
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        taxcatid: undefined,
-        taxcatname: '',
+        taxprovinceid: undefined,
+        taxprovincename: '',
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑税目组',
-        create: '新增税目组'
+        update: '编辑纳税区域',
+        create: '新增纳税区域'
       },
       pvData: [],
       rules: {
-        taxcatname: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        taxprovincename: [{ required: true, message: '请输入名称', trigger: 'blur' }],
       },
     }
   },
@@ -115,7 +115,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getTaxCategoriesList(this.listQuery).then(response => {
+      getTaxProvincesList(this.listQuery).then(response => {
         // console.log(response.data)
         this.list = response.data.data
         this.total = response.data.total
@@ -145,7 +145,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteTaxCategories(this.temp).then((response) => {
+        deleteTaxProvinces(this.temp).then((response) => {
           // console.log(response.data);
           if(response.data.status === 0){
             this.$notify({
@@ -175,8 +175,8 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        taxcatid: undefined,
-        taxcatname: '',
+        taxprovinceid: undefined,
+        taxprovincename: '',
       }
     },
     handleCreate() {
@@ -190,11 +190,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createTaxCategories(this.temp).then((response) => {
+          createTaxProvinces(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.taxcatid = response_data.data.taxcatid
+              this.temp.taxprovinceid = response_data.data.taxprovinceid
               this.list.unshift(this.temp)
               this.dialogFormVisible = false
               this.$notify({
@@ -228,12 +228,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateTaxCategories(tempData).then((response) => {
+          updateTaxProvinces(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.taxcatid === this.temp.taxcatid) {
+                if (v.taxprovinceid === this.temp.taxprovinceid) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, this.temp)
                   break

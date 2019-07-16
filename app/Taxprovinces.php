@@ -32,20 +32,4 @@ class Taxprovinces extends Model
      * @var bool
      */
     public $timestamps = false;
-
-    // 定义User表与Shop表一对一关系
-    public function belongsToShop()
-    {
-
-        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id');
-    }
-
-    // 定义User表与Chance表一对多关系
-    public function hasManyChances()
-    {
-
-        return $this->hasMany('App\Chance', 'creater', 'id');
-    }
-
 }
