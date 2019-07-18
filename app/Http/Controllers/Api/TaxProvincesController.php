@@ -27,7 +27,7 @@ class TaxProvincesController extends Controller
      */
     public function index(Request $request)
     {
-        $query_list = jsonToArray($request->input('query')); //获取搜索信息
+        $query_list = jsonToArray($request); //获取搜索信息
 
         $taxProvincess = $this->taxProvinces->getList($query_list);
 

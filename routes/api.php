@@ -67,8 +67,16 @@ Route::group([
     Route::get('taxGroupsList', 'TaxGroupsController@index');
     Route::get('taxGroups/{id}', 'TaxGroupsController@show');
     Route::post('taxGroups', 'TaxGroupsController@store');
+    Route::post('taxGroupAuthorities', 'TaxGroupsController@taxGroupAuthorities');
     Route::put('taxGroups/{id}', 'TaxGroupsController@update');
     Route::delete('taxGroups/{id}', 'TaxGroupsController@destroy');
+
+    //TaxAuthorities
+    Route::get('taxAuthoritiesList', 'TaxAuthoritiesController@index');
+    Route::get('taxAuthorities/{id}', 'TaxAuthoritiesController@show');
+    Route::post('taxAuthorities', 'TaxAuthoritiesController@store');
+    Route::put('taxAuthorities/{id}', 'TaxAuthoritiesController@update');
+    Route::delete('taxAuthorities/{id}', 'TaxAuthoritiesController@destroy');
 
 });
 

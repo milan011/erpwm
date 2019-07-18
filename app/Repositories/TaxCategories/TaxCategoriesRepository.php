@@ -31,9 +31,16 @@ class TaxCategoriesRepository implements TaxCategoriesRepositoryInterface
     }
 
     // 根据不同参数获得信息列表
-    public function getAllInfos($queryList)
+    public function getList($queryList)
     {
+        $query = new TaxCategories(); // 返回的是一个Order实例,两种方法均可
 
+        if (empty($queryList)) {
+            //无分页,全部返还
+            return $query->get();
+        } else {
+            return $query->paginate(10);
+        }
     }
 
     // 创建信息

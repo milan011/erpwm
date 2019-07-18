@@ -33,12 +33,16 @@ class TaxGroupTaxes extends Model
      */
     public $timestamps = false;
 
-    // 定义User表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义TaxGroupTaxes表与TaxGroups表一对一关系
+    public function belongsToTaxGroups()
     {
+        return $this->belongsTo('App\TaxGroups', 'taxgroupid', 'taxgroupid');
+    }
 
-        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id');
+    // 定义TaxGroupTaxes表与TaxAuthorities表一对一关系
+    public function belongsToTaxAuthorities()
+    {
+        return $this->belongsTo('App\TaxAuthorities', 'taxauthid', 'taxid');
     }
 
     // 定义User表与Chance表一对多关系

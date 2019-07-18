@@ -6,18 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 // use App\Http\Resources\TaxGroups\TaxGroupsResource;
 // use App\Http\Resources\TaxGroups\TaxGroupsResourceCollection;
+use App\Repositories\TaxAuthorities\TaxAuthoritiesRepositoryInterface;
 use App\Repositories\TaxGroups\TaxGroupsRepositoryInterface;
 use Illuminate\Http\Request;
 
 class TaxGroupsController extends Controller
 {
     protected $taxGroups;
+    protected $taxAuthorities;
 
     public function __construct(
 
-        TaxGroupsRepositoryInterface $taxGroups
+        TaxGroupsRepositoryInterface $taxGroups,
+        TaxAuthoritiesRepositoryInterface $taxAuthorities
     ) {
-        $this->taxGroups = $taxGroups;
+        $this->taxGroups      = $taxGroups;
+        $this->taxAuthorities = $taxAuthorities;
     }
 
     /**
@@ -27,11 +31,47 @@ class TaxGroupsController extends Controller
      */
     public function index(Request $request)
     {
-        $query_list = jsonToArray($request->input('query')); //获取搜索信息
+        $query_list = jsonToArray($request); //获取搜索信息
 
         $taxGroupss = $this->taxGroups->getList($query_list);
 
         return $taxGroupss;
+    }
+
+    /**
+     * Display the specified resource.
+     * 根据税目组id分配税种信息
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function taxGroupAuthorities(Request $request)
+    {
+        $tax_group = $request->all();
+        // dd($tax_group['has_many_tax_group_taxes']);
+        // dd($request->taxgroupid);
+
+        $tax_authorities = $this->taxAuthorities->getList(['withOutPage' => true]);
+        // dd($tax_authorities);
+        foreach ($tax_authorities as $key => $value) {
+            // dd($value);
+            $value->group_id         = $tax_group['taxgroupid'];
+            $value->calculationorder = 0;
+            $value->taxontax         = 0;
+            $value->assigned         = false;
+            // $value->group_description = $tax_group['taxgroupdescription'];
+            foreach ($tax_group['has_many_tax_group_taxes'] as $k => $v) {
+
+                if ($value->taxid == $v['taxauthid']) {
+                    /*p($value->taxid);
+                    dd($v);*/
+                    $value->calculationorder = $v['calculationorder'];
+                    $value->taxontax         = $v['taxontax'];
+                    $value->assigned         = true;
+                }
+            }
+        }
+        // dd($tax_authorities);
+        return $tax_authorities;
     }
 
     /**

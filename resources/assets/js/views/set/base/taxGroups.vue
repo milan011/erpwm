@@ -41,15 +41,33 @@
       </div>
     </el-dialog>
     <el-dialog :title="setGroupTax" :visible.sync="setGroupTaxVisible">
+      <el-form :inline="true" v-for="(tax, group_index) in taxAuthoritiesList" :key="group_index" :model="tax" class="demo-form-inline">
+        <el-form-item label="税种">
+          <el-input v-model="tax.description" placeholder="税种"></el-input>
+        </el-form-item>
+        <el-form-item label="计算顺序">
+          <el-input v-model="tax.calculationorder" placeholder="计算顺序"></el-input>
+        </el-form-item>
+        <el-form-item label="之前的税种">
+          <el-input v-model="tax.taxontax" placeholder="之前的税种"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+      </el-form>
       <el-form ref="permissionDForm" :model="taxGroupTemp" label-position="left" label-width="100px">
-        <!-- <el-checkbox-group v-for="(per, group_index) in permissions" :key="group_index" v-model="checkList">
+        <el-checkbox-group v-for="(per, group_index) in taxAuthoritiesList" :key="group_index">
           <div style="margin-bottom:12px">
-            <span style="font-size:16px;margin-right:5px">{{group_index}}:</span>
-            <el-checkbox border size="medium" v-for="p in per" :label="p.name" :key="p.id">
+            <!-- <span style="font-size:16px;margin-right:5px">{{per.group_description}}:</span> -->
+            <span style="font-size:16px;margin-right:5px">{{per.description}}:</span>
+            <span style="font-size:16px;margin-right:5px">{{per.group_id}}:</span>
+            <span style="font-size:16px;margin-right:5px">{{per.calculationorder}}:</span>
+            <span style="font-size:16px;margin-right:5px">{{per.taxontax}}:</span>
+            <!-- <el-checkbox border size="medium" v-for="p in per" :label="p.description" :key="p.taxid">
               {{p.description}}
-            </el-checkbox>
+            </el-checkbox> -->
           </div>
-        </el-checkbox-group> -->
+        </el-checkbox-group>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="setGroupTaxVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -59,11 +77,12 @@
   </div>
 </template>
 <script>
-  import { getTaxGroupsList, createTaxGroups, updateTaxGroups, deleteTaxGroups,  getTaxGroups} from '@/api/taxGroups'
-import waves from '@/directive/waves' // 水波纹指令
-import { parseTime } from '@/utils'
-// import SwitchRoles from './components/Permission'
-// import SwitchRoles from './components/RolePermission'
+  import { getTaxGroupsList, getTaxGroupAuthorities, createTaxGroups, updateTaxGroups, deleteTaxGroups,  getTaxGroups} from '@/api/taxGroups'
+  import {taxAuthoritiesAll} from '@/api/taxAuthorities'
+  import waves from '@/directive/waves' // 水波纹指令
+  import { parseTime } from '@/utils'
+  import { isEmpty } from '@/common.js'
+  // import SwitchRoles from './components/RolePermission'
 
 const calendarTypeOptions = [
   { key: 'web', display_name: 'web' },
@@ -116,7 +135,7 @@ export default {
       },
       dialogFormVisible: false,
       setGroupTaxVisible: false,
-      setGroupTax: '税种分配',
+      setGroupTax: '',
       dialogStatus: '',
       textMap: {
         update: '编辑税收组',
@@ -126,13 +145,13 @@ export default {
       rules: {
         taxgroupdescription: [{ required: true, message: '请输入名称', trigger: 'blur' }],
       },
+      taxAuthoritiesList: []
     }
   },
   created() {
     // this.getList()
     Promise.all([
       this.getList(),
-      // this.getPermissionList()
     ])
   },
   methods: {
@@ -150,8 +169,15 @@ export default {
       })
     },
     handleSetTax(row){
-      this.setGroupTaxVisible = true
-      console.log(row)
+      getTaxGroupAuthorities(row).then(response => {
+        console.log(response.data)
+        this.taxAuthoritiesList = response.data
+        setTimeout(() => {
+          this.setGroupTax = '税种分配:' + row.taxgroupdescription
+          this.setGroupTaxVisible = true
+        }, 0.5 * 1000)
+      })
+      
     },
     setGroupTaxs(){
       console.log('set')

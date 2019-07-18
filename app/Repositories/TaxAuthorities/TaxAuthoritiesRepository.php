@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\Example;
+namespace App\Repositories\TaxAuthorities;
 
-use App\Example;
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\Example\ExampleRepositoryInterface;
+use App\Repositories\TaxAuthorities\TaxAuthoritiesRepositoryInterface;
+use App\TaxAuthorities;
 use Auth;
 use Datatables;
 use DB;
@@ -15,24 +15,24 @@ use PHPZen\LaravelRbac\Traits\Rbac;
 use Planbon;
 use Session;
 
-class ExampleRepository implements ExampleRepositoryInterface
+class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['taxcatid', 'taxcatname'];
+    protected $select_columns = ['taxcatid', 'description', 'taxglcode', 'purchtaxglaccount', 'bank', 'bankacctype', 'bankacc', 'bankswift'];
 
     // 根据ID获得信息
     public function find($id)
     {
-        return Example::select($this->select_columns)
+        return TaxAuthorities::select($this->select_columns)
             ->findOrFail($id);
     }
 
     // 根据不同参数获得信息列表
     public function getList($queryList)
     {
-        $query = new Example(); // 返回的是一个Order实例,两种方法均可
-
-        if (empty($queryList['page'])) {
+        $query = new TaxAuthorities(); // 返回的是一个Order实例,两种方法均可
+        // $query = $query->with('hasManyTaxGroupTaxes');
+        if ($queryList['withOutPage']) {
             //无分页,全部返还
             return $query->get();
         } else {
@@ -47,7 +47,7 @@ class ExampleRepository implements ExampleRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $tax_categories = new Example(); //税目
+            $tax_categories = new TaxAuthorities(); //税目
             $tax_authrates  = new Taxauthrates(); //税率
 
             $tax_authorities = TaxAuthorities::get(); ////税种
@@ -93,7 +93,7 @@ class ExampleRepository implements ExampleRepositoryInterface
     public function update($requestData, $id)
     {
         // dd($requestData->all());
-        $info = Example::select($this->select_columns)->findorFail($id); //获取信息
+        $info = TaxAuthorities::select($this->select_columns)->findorFail($id); //获取信息
 
         $info->taxcatname = $requestData->taxcatname;
 
@@ -108,7 +108,7 @@ class ExampleRepository implements ExampleRepositoryInterface
         DB::beginTransaction();
         try {
             $tax_authrates = new Taxauthrates(); //税率
-            $info          = Example::findorFail($id);
+            $info          = TaxAuthorities::findorFail($id);
             $info->status  = '0'; //删除税目
             $info->save();
 
@@ -126,6 +126,6 @@ class ExampleRepository implements ExampleRepositoryInterface
     //名称是否重复
     public function isRepeat($taxcatname)
     {
-        return Example::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return TaxAuthorities::where('taxcatname', $taxcatname)->where('status', '1')->first();
     }
 }

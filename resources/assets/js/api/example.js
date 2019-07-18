@@ -4,13 +4,12 @@ import { ROAST_CONFIG } from '../config.js'
 
 let token = getToken()
 
-export function fetchList(query) {
+export function getExampleList(query) {
   return request({
     // url: '/example/list',
     url: ROAST_CONFIG.API_URL + '/exampleList',
     method: 'get',
-    query,
-    params: {token, page:query.page}
+    params: {token, query, page:query.page}
   })
 }
 

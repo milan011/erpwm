@@ -32,8 +32,8 @@ class TaxGroupsRepository implements TaxGroupsRepositoryInterface
     public function getList($queryList)
     {
         $query = new TaxGroups(); // 返回的是一个Order实例,两种方法均可
-        $query = $query->orderBy('taxgroupid', 'DESC');
-        if (!empty($queryList['withNoPage'])) {
+        $query = $query->with('hasManyTaxGroupTaxes')->orderBy('taxgroupid', 'DESC');
+        if ($queryList['withOutPage']) {
             //无分页,全部返还
             return $query->get();
         } else {

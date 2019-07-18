@@ -22,6 +22,15 @@ export function taxGroupsAll() {
   })
 }
 
+export function getTaxGroupAuthorities(data) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/taxGroupAuthorities',
+    method: 'post',
+    params: { token },
+    data
+  })
+}
+
 export function createTaxGroups(data) {
   return request({
     url: ROAST_CONFIG.API_URL + '/taxGroups',

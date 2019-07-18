@@ -38,7 +38,7 @@ class TaxProvincesRepository implements TaxProvincesRepositoryInterface
         // $query = Order::query();  // 返回的是一个 QueryBuilder 实例
         $query = new TaxProvinces(); // 返回的是一个Order实例,两种方法均可
 
-        if (!empty($queryList['withNoPage'])) {
+        if (empty($queryList)) {
             //无分页,全部返还
             return $query->get();
         } else {

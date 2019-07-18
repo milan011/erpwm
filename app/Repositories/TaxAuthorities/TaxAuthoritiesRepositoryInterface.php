@@ -1,12 +1,12 @@
 <?php
-namespace App\Repositories\TaxCategories;
+namespace App\Repositories\TaxAuthorities;
 
-interface TaxCategoriesRepositoryInterface
+interface TaxAuthoritiesRepositoryInterface
 {
 
     public function find($id);
 
-    public function getList($requestData);
+    public function getList($queryList);
 
     public function create($requestData);
 

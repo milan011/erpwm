@@ -12,7 +12,7 @@ function p($s)
 // 获取最后一条sql
 function lastSql()
 {
-	\DB::connection()->enableQueryLog(); // 开启查询日志
+    \DB::connection()->enableQueryLog(); // 开启查询日志
 
     $sql = DB::getQueryLog();
 
@@ -22,11 +22,12 @@ function lastSql()
 }
 
 //二维数组去掉重复值
-function a_array_unique($array){
+function a_array_unique($array)
+{
     $out = array();
 
-    foreach ($array as $key=>$value) {
-        if (!in_array($value, $out)){
+    foreach ($array as $key => $value) {
+        if (!in_array($value, $out)) {
             $out[$key] = $value;
         }
     }
@@ -41,9 +42,9 @@ function a_array_unique($array){
 function getInfoCode($type = 'info')
 {
     // 信息编号为Unix时间戳后9位
-    $code = 'I-';   
-    $date = (string)(time());
-    $date =  substr ($date, 1); 
+    $code = 'I-';
+    $date = (string) (time());
+    $date = substr($date, 1);
     $code .= $date;
     return $code;
 }
@@ -51,7 +52,10 @@ function getInfoCode($type = 'info')
 /**
  * Json对象转数组
  */
-function jsonToArray($json = '')
+function jsonToArray($request)
 {
-    return json_decode($json, true);
+    $json                     = !empty($request->input('query')) ? $request->input('query') : '';
+    $jsonArray                = json_decode($json, true);
+    $jsonArray['withOutPage'] = !empty($request->withOutPage) ? $request->withOutPage : false;
+    return $jsonArray;
 }

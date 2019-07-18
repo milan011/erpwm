@@ -47,4 +47,22 @@ class TaxGroups extends Model
         return $this->hasMany('App\Custbranch', 'taxgroupid', 'taxgroupid');
     }
 
+    public function hasManyTaxGroupTaxes()
+    {
+        // return $this->hasMany('App\TaxGroupTaxes', 'taxgroupid', 'taxgroupid')->with('belongsToTaxAuthorities');
+        return $this->hasMany('App\TaxGroupTaxes', 'taxgroupid', 'taxgroupid');
+    }
+
+    public function hasManyTaxAuthorities()
+    {
+        return $this->hasManyThrough(
+            'App\TaxAuthorities',
+            'App\TaxGroupTaxes',
+            'taxgroupid', // TaxGroupTaxes表使用的外键...
+            'taxid', // TaxAuthorities表使用的外键...
+            'taxgroupid', // TaxGroup表主键...
+            'taxauthid' // TaxGroupTaxes表主键...
+        );
+    }
+
 }

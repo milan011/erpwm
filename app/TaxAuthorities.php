@@ -33,12 +33,10 @@ class TaxAuthorities extends Model
      */
     public $timestamps = false;
 
-    // 定义User表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义Taxauthrates表与TaxGroupTaxes表一对多关系
+    public function hasManyTaxGroupTaxes()
     {
-
-        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id');
+        return $this->hasMany('App\TaxGroupTaxes', 'taxauthid', 'taxid')->with('belongsToTaxGroups');
     }
 
     // 定义User表与Chance表一对多关系
