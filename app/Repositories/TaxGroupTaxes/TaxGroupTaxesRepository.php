@@ -1,9 +1,8 @@
 <?php
-namespace App\Repositories\TaxGroups;
+namespace App\Repositories\TaxGroupTaxes;
 
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\TaxGroups\TaxGroupsRepositoryInterface;
-use App\TaxGroups;
+use App\Repositories\TaxGroupTaxes\TaxGroupTaxesRepositoryInterface;
 use App\TaxGroupTaxes;
 use Auth;
 use Datatables;
@@ -16,22 +15,22 @@ use PHPZen\LaravelRbac\Traits\Rbac;
 use Planbon;
 use Session;
 
-class TaxGroupsRepository implements TaxGroupsRepositoryInterface
+class TaxGroupTaxesRepository implements TaxGroupTaxesRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['taxgroupid', 'taxgroupdescription'];
+    protected $select_columns = ['id', 'taxgroupid', 'taxauthid', 'calculationorder', 'taxontax'];
 
     // 根据ID获得信息
     public function find($id)
     {
-        return TaxGroups::select($this->select_columns)->with('hasManyTaxGroupTaxes')
+        return TaxGroupTaxes::select($this->select_columns)->with('hasManyTaxGroupTaxes')
             ->findOrFail($id);
     }
 
     // 根据不同参数获得信息列表
     public function getList($queryList)
     {
-        $query = new TaxGroups(); // 返回的是一个Order实例,两种方法均可
+        $query = new TaxGroupTaxes(); // 返回的是一个Order实例,两种方法均可
         $query = $query->with('hasManyTaxGroupTaxes')->orderBy('taxgroupid', 'DESC');
         if ($queryList['withOutPage']) {
             //无分页,全部返还
@@ -48,16 +47,19 @@ class TaxGroupsRepository implements TaxGroupsRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $tax_group = new TaxGroups(); //税目
+            $tax_group_taxs = new TaxGroupTaxes(); //税目
 
             // dd($tax_provinces);
             // dd($tax_authorities->get());
+
             $input = array_replace($requestData->all());
-            $tax_group->fill($input);
-            $tax_group = $tax_group->create($input);
+            // dd($input);
+            $input['taxauthid'] = $input['taxid'];
+            $tax_group_taxs->fill($input);
+            $tax_group_taxs = $tax_group_taxs->create($input);
 
             DB::commit();
-            return $tax_group;
+            return $tax_group_taxs;
 
         } catch (\Exception $e) {
             throw $e;
@@ -70,11 +72,10 @@ class TaxGroupsRepository implements TaxGroupsRepositoryInterface
     // 信息更新
     public function update($requestData, $id)
     {
-        // dd($requestData->all());
+        $info = TaxGroupTaxes::findorFail($id);
 
-        $info = TaxGroups::select($this->select_columns)->findorFail($id); //获取信息
-
-        $info->taxgroupdescription = $requestData->taxgroupdescription;
+        $info->calculationorder = $requestData->calculationorder;
+        $info->taxontax         = $requestData->taxontax;
 
         $info->save();
 
@@ -86,18 +87,9 @@ class TaxGroupsRepository implements TaxGroupsRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $tax_authrates = new TaxGroupTaxes(); //税率
-            $info          = TaxGroups::findorFail($id);
-            /*p($info->hasManySuppliers->count());
-            dd($info->hasManyCustbranch->count());
-            dd($info);*/
-            if (($info->hasManyCustbranch->count() != 0) || ($info->hasManySuppliers->count() != 0)) {
-                return false;
-            }
-            $info->delete(); //删除税收组
-            $info->hasManyTaxGroupTaxes()->delete();
+            $info = TaxGroupTaxes::findorFail($id);
 
-            // $tax_authrates->where('taxgroupid', $id)->delete(); //删除关联的税目
+            $info->delete(); //
 
             DB::commit();
             return $info;
@@ -111,6 +103,6 @@ class TaxGroupsRepository implements TaxGroupsRepositoryInterface
     //名称是否重复
     public function isRepeat($taxgroupdescription)
     {
-        return TaxGroups::where('taxgroupdescription', $taxgroupdescription)->first();
+        return TaxGroupTaxes::where('taxgroupdescription', $taxgroupdescription)->first();
     }
 }

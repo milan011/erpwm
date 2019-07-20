@@ -14,8 +14,8 @@ class TaxGroupTaxes extends Model
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
     protected $table      = 'taxgrouptaxes';
-    protected $primaryKey = 'taxgroupid';
-    protected $fillable   = ['taxgroupid', 'taxauthid', 'calculationorder', 'taxontax'];
+    protected $primaryKey = 'id';
+    protected $fillable   = ['id', 'taxgroupid', 'taxauthid', 'calculationorder', 'taxontax'];
 
     /**
      * The attributes that should be hidden for arrays.

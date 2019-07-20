@@ -1,12 +1,12 @@
 <?php
-namespace App\Repositories\Inventory;
- 
-interface InventoryRepositoryInterface
+namespace App\Repositories\TaxGroupTaxes;
+
+interface TaxGroupTaxesRepositoryInterface
 {
-    
+
     public function find($id);
-    
-    public function getAllInventory($query_list);
+
+    public function getList($query_list);
 
     public function create($requestData);
 

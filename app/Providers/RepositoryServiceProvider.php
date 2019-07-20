@@ -34,9 +34,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\TaxCategories\TaxCategoriesRepositoryInterface', 'App\Repositories\TaxCategories\TaxCategoriesRepository');
         $this->app->bind('App\Repositories\TaxProvinces\TaxProvincesRepositoryInterface', 'App\Repositories\TaxProvinces\TaxProvincesRepository');
         $this->app->bind('App\Repositories\TaxGroups\TaxGroupsRepositoryInterface', 'App\Repositories\TaxGroups\TaxGroupsRepository');
-
         $this->app->bind('App\Repositories\TaxAuthorities\TaxAuthoritiesRepositoryInterface', 'App\Repositories\TaxAuthorities\TaxAuthoritiesRepository');
-        $this->app->bind('App\Repositories\Inventory\InventoryRepositoryInterface', 'App\Repositories\Inventory\InventoryRepository');
+        $this->app->bind('App\Repositories\TaxGroupTaxes\TaxGroupTaxesRepositoryInterface', 'App\Repositories\TaxGroupTaxes\TaxGroupTaxesRepository');
+
         $this->app->bind('App\Repositories\InventoryDetail\InventoryDetailRepositoryInterface', 'App\Repositories\InventoryDetail\InventoryDetailRepository');
         $this->app->bind('App\Repositories\Service\ServiceRepositoryInterface', 'App\Repositories\Service\ServiceRepository');
         $this->app->bind('App\Repositories\ServiceDetail\ServiceDetailRepositoryInterface', 'App\Repositories\ServiceDetail\ServiceDetailRepository');

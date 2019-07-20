@@ -8,20 +8,24 @@ use App\Http\Requests;
 // use App\Http\Resources\TaxGroups\TaxGroupsResourceCollection;
 use App\Repositories\TaxAuthorities\TaxAuthoritiesRepositoryInterface;
 use App\Repositories\TaxGroups\TaxGroupsRepositoryInterface;
+use App\Repositories\TaxGroupTaxes\TaxGroupTaxesRepositoryInterface;
 use Illuminate\Http\Request;
 
 class TaxGroupsController extends Controller
 {
     protected $taxGroups;
     protected $taxAuthorities;
+    protected $TaxGroupTaxes;
 
     public function __construct(
 
         TaxGroupsRepositoryInterface $taxGroups,
+        TaxGroupTaxesRepositoryInterface $TaxGroupTaxes,
         TaxAuthoritiesRepositoryInterface $taxAuthorities
     ) {
         $this->taxGroups      = $taxGroups;
         $this->taxAuthorities = $taxAuthorities;
+        $this->TaxGroupTaxes  = $TaxGroupTaxes;
     }
 
     /**
@@ -40,26 +44,28 @@ class TaxGroupsController extends Controller
 
     /**
      * Display the specified resource.
-     * 根据税目组id分配税种信息
+     * 根据税目组id获取分配税种信息
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function taxGroupAuthorities(Request $request)
     {
-        $tax_group = $request->all();
+        $tax_group = $this->taxGroups->find($request->taxgroupid);
         // dd($tax_group['has_many_tax_group_taxes']);
         // dd($request->taxgroupid);
+        // dd($tax_group);
 
         $tax_authorities = $this->taxAuthorities->getList(['withOutPage' => true]);
         // dd($tax_authorities);
         foreach ($tax_authorities as $key => $value) {
             // dd($value);
-            $value->group_id         = $tax_group['taxgroupid'];
-            $value->calculationorder = 0;
+            $value->taxgroupid       = $tax_group->taxgroupid;
+            $value->calculationorder = 1;
             $value->taxontax         = 0;
             $value->assigned         = false;
+            $value->taxGroupTaxsId   = null;
             // $value->group_description = $tax_group['taxgroupdescription'];
-            foreach ($tax_group['has_many_tax_group_taxes'] as $k => $v) {
+            foreach ($tax_group->hasManyTaxGroupTaxes as $k => $v) {
 
                 if ($value->taxid == $v['taxauthid']) {
                     /*p($value->taxid);
@@ -67,11 +73,46 @@ class TaxGroupsController extends Controller
                     $value->calculationorder = $v['calculationorder'];
                     $value->taxontax         = $v['taxontax'];
                     $value->assigned         = true;
+                    $value->taxGroupTaxsId   = $v['id'];
                 }
             }
         }
         // dd($tax_authorities);
         return $tax_authorities;
+    }
+
+    /**
+     * Display the specified resource.
+     * 分配税目组税种
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function setTaxGroupAuthorities(Request $request)
+    {
+        // dd($request->all());
+        $taxGroupTaxes_obj = $this->TaxGroupTaxes;
+        switch ($request->del) {
+            case 'add':
+                #新增分配
+                $info    = $taxGroupTaxes_obj->create($request);
+                $message = '税种分配成功';
+                break;
+            case 'update':
+                # 修改已分配税种信息
+                $info    = $taxGroupTaxes_obj->update($request, $request->taxGroupTaxsId);
+                $message = '税种修改成功';
+                break;
+            case 'delete':
+                # 删除已分配税种
+                $info    = $taxGroupTaxes_obj->destroy($request->taxGroupTaxsId);
+                $message = '税种删除成功';
+                break;
+            default:
+                return $this->baseFailed($message = '内部错误');
+                break;
+        }
+
+        return $this->baseSucceed($respond_data = $info, $message);
     }
 
     /**

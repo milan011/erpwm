@@ -68,6 +68,7 @@ Route::group([
     Route::get('taxGroups/{id}', 'TaxGroupsController@show');
     Route::post('taxGroups', 'TaxGroupsController@store');
     Route::post('taxGroupAuthorities', 'TaxGroupsController@taxGroupAuthorities');
+    Route::post('setTaxGroupAuthorities', 'TaxGroupsController@setTaxGroupAuthorities');
     Route::put('taxGroups/{id}', 'TaxGroupsController@update');
     Route::delete('taxGroups/{id}', 'TaxGroupsController@destroy');
 

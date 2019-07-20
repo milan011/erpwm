@@ -42,42 +42,56 @@
     </el-dialog>
     <el-dialog :title="setGroupTax" :visible.sync="setGroupTaxVisible">
       <el-form :inline="true" v-for="(tax, group_index) in taxAuthoritiesList" :key="group_index" :model="tax" class="demo-form-inline">
-        <el-form-item label="税种">
-          <el-input v-model="tax.description" placeholder="税种"></el-input>
+        <el-form-item label="税种:">
+          <span>{{ tax.description }}</span>
         </el-form-item>
-        <el-form-item label="计算顺序">
-          <el-input v-model="tax.calculationorder" placeholder="计算顺序"></el-input>
+        <el-form-item label="计算顺序:" >
+          <el-input-number 
+            v-model="tax.calculationorder" 
+            size="mini"  
+            :min="0" 
+            :max="5" 
+            style="width: 90px;"
+            label="计算顺序">
+          </el-input-number>
         </el-form-item>
-        <el-form-item label="之前的税种">
-          <el-input v-model="tax.taxontax" placeholder="之前的税种"></el-input>
+        <el-form-item label="之前税种:">
+          <el-select 
+            style="width: 90px;" 
+            v-model="tax.taxontax" 
+            class="filter-item" 
+            placeholder="之前税种">
+            <el-option v-for="(status, status_index) in tanxontaxStatus" :key="status_index" :label="status" :value="status_index"/>
+          </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">查询</el-button>
+          <el-button-group v-if="tax.assigned">
+            <el-button 
+            size="mini" 
+            type="danger"   
+            @click="taxGroupDelete(tax)">
+              删除
+            </el-button>
+            <el-button 
+            size="mini" 
+            type="success" 
+            @click="taxGroupUpdate(tax)">
+              修改
+            </el-button>
+          </el-button-group>
+          <el-button-group v-else>
+            <el-button size="mini" type="success" @click="taxGroupAdd(tax)">分配</el-button>
+          </el-button-group>
         </el-form-item>
       </el-form>
-      <el-form ref="permissionDForm" :model="taxGroupTemp" label-position="left" label-width="100px">
-        <el-checkbox-group v-for="(per, group_index) in taxAuthoritiesList" :key="group_index">
-          <div style="margin-bottom:12px">
-            <!-- <span style="font-size:16px;margin-right:5px">{{per.group_description}}:</span> -->
-            <span style="font-size:16px;margin-right:5px">{{per.description}}:</span>
-            <span style="font-size:16px;margin-right:5px">{{per.group_id}}:</span>
-            <span style="font-size:16px;margin-right:5px">{{per.calculationorder}}:</span>
-            <span style="font-size:16px;margin-right:5px">{{per.taxontax}}:</span>
-            <!-- <el-checkbox border size="medium" v-for="p in per" :label="p.description" :key="p.taxid">
-              {{p.description}}
-            </el-checkbox> -->
-          </div>
-        </el-checkbox-group>
-      </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="setGroupTaxVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="setGroupTaxs">{{ $t('table.confirm') }}</el-button>
+        <el-button type="primary" @click="setGroupTaxVisible = false">{{ $t('table.confirm') }}</el-button>
       </div>
   </el-dialog>
   </div>
 </template>
 <script>
-  import { getTaxGroupsList, getTaxGroupAuthorities, createTaxGroups, updateTaxGroups, deleteTaxGroups,  getTaxGroups} from '@/api/taxGroups'
+  import { getTaxGroupsList, getTaxGroupAuthorities, createTaxGroups, updateTaxGroups, deleteTaxGroups,  getTaxGroups, setTaxGroupAuthorities} from '@/api/taxGroups'
   import {taxAuthoritiesAll} from '@/api/taxAuthorities'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
@@ -123,6 +137,7 @@ export default {
       listQuery: {
         page: 1,
       },
+      tanxontaxStatus:['否', '是'],
       taxGroupTemp: {
           id: null,
           permissions:[],
@@ -173,15 +188,74 @@ export default {
         console.log(response.data)
         this.taxAuthoritiesList = response.data
         setTimeout(() => {
-          this.setGroupTax = '税种分配:' + row.taxgroupdescription
+          this.setGroupTax = '税目组:' + row.taxgroupdescription
           this.setGroupTaxVisible = true
         }, 0.5 * 1000)
       })
       
     },
-    setGroupTaxs(){
-      console.log('set')
-      
+    taxGroupAdd(tax){
+      tax.del = 'add'
+      setTaxGroupAuthorities(tax).then(response => {
+        if(!response.data.status){
+          this.$notify({
+            title: '失败',
+            message: response.data.message,
+            type: 'warning',
+            duration: 2000
+          })
+        }else{
+          this.$notify({
+            title: '成功',
+            message: response.data.message,
+            type: 'success',
+            duration: 2000
+          })
+        }
+        this.setGroupTaxVisible = false
+      })
+    },
+    taxGroupUpdate(tax){
+      tax.del = 'update'
+      setTaxGroupAuthorities(tax).then(response => {
+        if(!response.data.status){
+          this.$notify({
+            title: '失败',
+            message: response.data.message,
+            type: 'warning',
+            duration: 2000
+          })
+        }else{
+          this.$notify({
+            title: '成功',
+            message: response.data.message,
+            type: 'success',
+            duration: 2000
+          })
+        }
+        this.setGroupTaxVisible = false
+      })
+    },
+    taxGroupDelete(tax){
+      tax.del = 'delete'
+      setTaxGroupAuthorities(tax).then(response => {
+        if(!response.data.status){
+          this.$notify({
+            title: '失败',
+            message: response.data.message,
+            type: 'warning',
+            duration: 2000
+          })
+        }else{
+          this.$notify({
+            title: '成功',
+            message: response.data.message,
+            type: 'success',
+            duration: 2000
+          })
+        }
+        this.setGroupTaxVisible = false
+      })
     },
     handleFilter() {
       this.listQuery.page = 1
