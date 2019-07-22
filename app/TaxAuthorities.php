@@ -15,7 +15,7 @@ class TaxAuthorities extends Model
     protected $guard_name = 'api'; // 使用任何你想要的守卫
     protected $table      = 'taxauthorities';
     protected $primaryKey = 'taxid';
-    protected $fillable   = ['taxcatid', 'description', 'taxglcode', 'purchtaxglaccount', 'bank', 'bankacctype', 'bankacc', 'bankswift'];
+    protected $fillable   = ['taxid', 'description', 'taxglcode', 'purchtaxglaccount', 'bank', 'bankacctype', 'bankacc', 'bankswift'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -39,6 +39,12 @@ class TaxAuthorities extends Model
         return $this->hasMany('App\TaxGroupTaxes', 'taxauthid', 'taxid')->with('belongsToTaxGroups');
     }
 
+    // 定义TaxAuthorities表与Taxauthrates表一对多关系
+    public function hasManyTaxauthrates()
+    {
+        return $this->hasMany('App\Taxauthrates', 'taxauthority', 'taxid');
+    }
+
     // 定义User表与Chance表一对多关系
     public function hasManyChances()
     {
@@ -46,4 +52,18 @@ class TaxAuthorities extends Model
         return $this->hasMany('App\Chance', 'creater', 'id');
     }
 
+    // 定义TaxAuthorities表与ChartMaster表一对一关系
+    public function belongsToChartMasterByTaxglcode()
+    {
+        return $this->belongsTo('App\ChartMaster', 'taxglcode', 'id')->withDefault(['accountname' => '',
+        ]);
+    }
+
+    // 定义TaxAuthorities表与ChartMaster表一对一关系
+    public function belongsToChartMasterByPurchtaxglaccount()
+    {
+        return $this->belongsTo('App\ChartMaster', 'purchtaxglaccount', 'id')->withDefault([
+            'accountname' => '',
+        ]);
+    }
 }

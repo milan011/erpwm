@@ -4,6 +4,9 @@ namespace App\Repositories\TaxAuthorities;
 use App\Repositories\BaseInterface\Repository;
 use App\Repositories\TaxAuthorities\TaxAuthoritiesRepositoryInterface;
 use App\TaxAuthorities;
+use App\Taxauthrates;
+use App\TaxCategories;
+use App\Taxprovinces;
 use Auth;
 use Datatables;
 use DB;
@@ -18,7 +21,7 @@ use Session;
 class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['taxcatid', 'description', 'taxglcode', 'purchtaxglaccount', 'bank', 'bankacctype', 'bankacc', 'bankswift'];
+    protected $select_columns = ['taxid', 'description', 'taxglcode', 'purchtaxglaccount', 'bank', 'bankacctype', 'bankacc', 'bankswift'];
 
     // 根据ID获得信息
     public function find($id)
@@ -31,9 +34,11 @@ class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
     public function getList($queryList)
     {
         $query = new TaxAuthorities(); // 返回的是一个Order实例,两种方法均可
-        // $query = $query->with('hasManyTaxGroupTaxes');
+        $query = $query->with('belongsToChartMasterByTaxglcode', 'belongsToChartMasterByPurchtaxglaccount');
+        $query->orderBy('taxid', 'DESC');
         if ($queryList['withOutPage']) {
             //无分页,全部返还
+
             return $query->get();
         } else {
             return $query->paginate(10);
@@ -43,29 +48,29 @@ class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
     // 创建信息
     public function create($requestData)
     {
-
+        // dd($requestData->all());
         DB::beginTransaction();
         try {
 
-            $tax_categories = new TaxAuthorities(); //税目
-            $tax_authrates  = new Taxauthrates(); //税率
+            $tax_authorities = new TaxAuthorities(); //税目
+            $tax_authrates   = new Taxauthrates(); //税率
 
-            $tax_authorities = TaxAuthorities::get(); ////税种
-            $tax_provinces   = Taxprovinces::get(); //纳税区域
+            $tax_categories = TaxCategories::get(); ////税种
+            $tax_provinces  = Taxprovinces::get(); //纳税区域
 
             // dd($tax_provinces);
             // dd($tax_authorities->get());
             $input = array_replace($requestData->all());
-            $tax_categories->fill($input);
-            $tax_categories = $tax_categories->create($input);
-            // dd($tax_categories);
+            $tax_authorities->fill($input);
+            $tax_authorities = $tax_authorities->create($input);
+            // dd($tax_authorities);
             $authrates_arr = []; //需要插入税率表的数据
 
             foreach ($tax_provinces as $key => $value) {
-                foreach ($tax_authorities as $k => $v) {
-                    $authrates_arr[$key][$k]['taxauthority']        = $v->taxid;
+                foreach ($tax_categories as $k => $v) {
+                    $authrates_arr[$key][$k]['taxauthority']        = $tax_authorities->taxid;
                     $authrates_arr[$key][$k]['dispatchtaxprovince'] = $value->taxprovinceid;
-                    $authrates_arr[$key][$k]['taxcatid']            = $tax_categories->taxcatid;
+                    $authrates_arr[$key][$k]['taxcatid']            = $v->taxcatid;
                     $authrates_arr[$key][$k]['taxrate']             = 0;
                 }
             }
@@ -79,7 +84,7 @@ class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
             }
 
             DB::commit();
-            return $tax_categories;
+            return $tax_authorities;
 
         } catch (\Exception $e) {
             throw $e;
@@ -95,8 +100,13 @@ class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
         // dd($requestData->all());
         $info = TaxAuthorities::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
-
+        $info->description       = $requestData->description;
+        $info->taxglcode         = $requestData->taxglcode;
+        $info->purchtaxglaccount = $requestData->purchtaxglaccount;
+        $info->bank              = !empty($requestData->bank) ? $requestData->bank : '';
+        $info->bankacctype       = !empty($requestData->bankacctype) ? $requestData->bankacctype : '';
+        $info->bankacc           = !empty($requestData->bankacc) ? $requestData->bankacc : '';
+        $info->bankswift         = !empty($requestData->bankswift) ? $requestData->bankswift : '';
         $info->save();
 
         return $info;
@@ -109,10 +119,9 @@ class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
         try {
             $tax_authrates = new Taxauthrates(); //税率
             $info          = TaxAuthorities::findorFail($id);
-            $info->status  = '0'; //删除税目
-            $info->save();
+            $info->delete(); //删除税目
 
-            $tax_authrates->where('taxcatid', $id)->delete(); //删除关联的税目
+            $tax_authrates->where('taxauthority', $id)->delete(); //删除关联的税目
 
             DB::commit();
             return $info;
@@ -124,8 +133,8 @@ class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
     }
 
     //名称是否重复
-    public function isRepeat($taxcatname)
+    public function isRepeat($description)
     {
-        return TaxAuthorities::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return TaxAuthorities::where('description', $description)->first();
     }
 }

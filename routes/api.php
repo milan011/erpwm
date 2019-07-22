@@ -75,9 +75,18 @@ Route::group([
     //TaxAuthorities
     Route::get('taxAuthoritiesList', 'TaxAuthoritiesController@index');
     Route::get('taxAuthorities/{id}', 'TaxAuthoritiesController@show');
+    Route::post('getTaxRates', 'TaxAuthoritiesController@getTaxRates');
+    Route::post('setTaxRates', 'TaxAuthoritiesController@setTaxRates');
     Route::post('taxAuthorities', 'TaxAuthoritiesController@store');
     Route::put('taxAuthorities/{id}', 'TaxAuthoritiesController@update');
     Route::delete('taxAuthorities/{id}', 'TaxAuthoritiesController@destroy');
+
+    // ChartMaster chartMaster
+    Route::get('chartMasterList', 'ChartMasterController@index');
+    Route::get('chartMaster/{id}', 'ChartMasterController@show');
+    Route::post('chartMaster', 'ChartMasterController@store');
+    Route::put('chartMaster/{id}', 'ChartMasterController@update');
+    Route::delete('chartMaster/{id}', 'ChartMasterController@destroy');
 
 });
 

@@ -37,6 +37,12 @@ const setRouter = {
             name: 'taxGroups',
             meta: { title: 'taxGroups' },
           },
+          {
+            path: 'taxAuthorities',
+            component: resolve => void(require(['@/views/set/base/taxAuthorities.vue'], resolve)),
+            name: 'taxAuthorities',
+            meta: { title: 'taxAuthorities' },
+          },
         ]
       },
       {

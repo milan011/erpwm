@@ -29,7 +29,7 @@ export function getTaxGroupAuthorities(data) {
     params: { token },
     data
   })
-}setTaxGroupAuthorities
+}
 
 export function setTaxGroupAuthorities(data) {
   return request({

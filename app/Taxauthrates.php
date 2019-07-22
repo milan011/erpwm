@@ -39,6 +39,18 @@ class Taxauthrates extends Model
         return $this->belongsTo('App\TaxGroupTaxes', 'taxauthid', 'taxid');
     }
 
+    // 定义Taxauthrates表与Taxprovinces表一对一关系
+    public function belongsToTaxprovinces()
+    {
+        return $this->belongsTo('App\Taxprovinces', 'dispatchtaxprovince', 'taxprovinceid');
+    }
+
+    // 定义Taxauthrates表与TaxGroupTaxes表一对一关系
+    public function belongsToTaxCategories()
+    {
+        return $this->belongsTo('App\TaxCategories', 'taxcatid', 'taxcatid');
+    }
+
     // 定义User表与Chance表一对多关系
     public function hasManyChances()
     {

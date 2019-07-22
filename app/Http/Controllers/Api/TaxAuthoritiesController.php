@@ -55,13 +55,13 @@ class TaxAuthoritiesController extends Controller
 
         // dd($request->all());
 
-        if ($this->taxAuthorities->isRepeat($request->new_telephone)) {
-            return $this->baseFailed($message = '入网号码已存在');
+        if ($this->taxAuthorities->isRepeat($request->description)) {
+            return $this->baseFailed($message = '该税种已存在');
         }
 
         $info = $this->taxAuthorities->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info->belongsToChartMasterByTaxglcode;
+        $info->belongsToChartMasterByPurchtaxglaccount;
 
         if ($info) {
             //添加成功
@@ -70,6 +70,67 @@ class TaxAuthoritiesController extends Controller
             //添加失败
             return $this->baseFailed($message = '内部错误');
         }
+    }
+
+    /**
+     * Display the specified resource.
+     * 根据税种id获取税率信息
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getTaxRates(Request $request)
+    {
+        // dd($request->all());
+        $tax_authorities = $this->taxAuthorities->find($request->taxid);
+        // dd($tax_authorities);
+        $tax_authorities = $tax_authorities->hasManyTaxauthrates;
+        // dd($tax_authorities);
+        // dd($tax_authorities[0]->belongsToTaxCategories);
+        // dd($tax_authorities[0]->belongsToTaxprovinces);
+        // dd($tax_group['has_many_tax_group_taxes']);
+        // dd($request->taxid);
+        // dd($tax_group);
+        foreach ($tax_authorities as $key => $value) {
+            $value['province_name'] = $value->belongsToTaxprovinces->taxprovincename;
+            $value['taxcatname']    = $value->belongsToTaxCategories->taxcatname;
+        }
+
+        // dd($tax_authorities->groupBy('taxcatid'));
+        return $tax_authorities->groupBy('taxcatid');
+    }
+
+    /**
+     * Display the specified resource.
+     * 分配税种税率
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function setTaxRates(Request $request)
+    {
+        dd($request->all());
+        $taxGroupTaxes_obj = $this->TaxGroupTaxes;
+        switch ($request->del) {
+            case 'add':
+                #新增分配
+                $info    = $taxGroupTaxes_obj->create($request);
+                $message = '税种分配成功';
+                break;
+            case 'update':
+                # 修改已分配税种信息
+                $info    = $taxGroupTaxes_obj->update($request, $request->taxGroupTaxsId);
+                $message = '税种修改成功';
+                break;
+            case 'delete':
+                # 删除已分配税种
+                $info    = $taxGroupTaxes_obj->destroy($request->taxGroupTaxsId);
+                $message = '税种删除成功';
+                break;
+            default:
+                return $this->baseFailed($message = '内部错误');
+                break;
+        }
+
+        return $this->baseSucceed($respond_data = $info, $message);
     }
 
     /**
@@ -107,9 +168,16 @@ class TaxAuthoritiesController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
+        // dd($id);
+        $update_info = $this->taxAuthorities->isRepeat($request->description);
+
+        if ($update_info && ($update_info->taxid != $id)) {
+            return $this->baseFailed($message = '税收部门已存在');
+        }
 
         $info = $this->taxAuthorities->update($request, $id);
-        $info->hasOnePackage;
+        $info->belongsToChartMasterByTaxglcode;
+        $info->belongsToChartMasterByPurchtaxglaccount;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -124,6 +192,6 @@ class TaxAuthoritiesController extends Controller
     {
         // dd($id);
         $this->taxAuthorities->destroy($id);
-        return $this->baseSucceed($message = '修改成功');
+        return $this->baseSucceed($message = '删除成功');
     }
 }

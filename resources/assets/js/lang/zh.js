@@ -26,7 +26,7 @@ export default {
     taxCategories:'税目维护',
     taxProvinces: '纳税区域',
     taxGroups:'税收组',
-    shopDelete:'删除门店',
+    taxAuthorities:'税收主管部门及税率',
     manager:'客户经理',
     managerAdd:'添加客户经理',
     managerUpdate:'修改客户经理',
@@ -170,6 +170,24 @@ export default {
     taxgroupid: '序号',
     taxgroupdescription: '税收组',
     setGroupTax: '税种分配',
+  },
+  taxAuthorities:{
+    taxid : '序号',
+    description : '税种描述',
+    taxglcode : '销项税会计科目',
+    purchtaxglaccount : '进项税会计科目',
+    bank : '纳税专户银行',
+    bankacctype : '银行交易类型',
+    bankacc : '银行账户',
+    bankswift : '银行单编号',
+    setTaxRate: '税率设置'
+  },
+  taxauthrates:{
+    id : '序号',
+    taxauthority : '税种',
+    dispatchtaxprovince : '纳税区域',
+    taxcatid : '税种',
+    taxrate : '税率',
   },
   role: {
     id: '序号',

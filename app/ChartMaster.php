@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Example extends Model
+class ChartMaster extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,9 +13,9 @@ class Example extends Model
      * @var array
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
-    protected $table      = 'example';
+    protected $table      = 'chartmaster';
     protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'examplename'];
+    protected $fillable   = ['id', 'accountcode', 'accountname', 'group_'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,20 +33,18 @@ class Example extends Model
      */
     public $timestamps = false;
 
-    // 定义Example表与Shop表一对一关系
+    // 定义chartmaster表与Shop表一对一关系
     public function belongsToShop()
     {
 
         // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
-        ]);
+        return $this->belongsTo('App\Shop', 'shop_id', 'id');
     }
 
-    // 定义Example表与Notice表一对多关系
+    // 定义chartmaster表与Notice表一对多关系
     public function hasManyNotice()
     {
 
-        return $this->hasMany('App\Notice', 'user_id', 'id')->withDefault(['accountname' => '',
-        ]);
+        return $this->hasMany('App\Notice', 'user_id', 'id');
     }
 }

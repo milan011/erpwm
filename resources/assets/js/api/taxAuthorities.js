@@ -31,6 +31,24 @@ export function createTaxAuthorities(data) {
   })
 }
 
+export function getTaxRates(data) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/getTaxRates',
+    method: 'post',
+    params: { token },
+    data
+  })
+}
+
+export function setTaxRates(data) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/setTaxRates',
+    method: 'post',
+    params: { token },
+    data
+  })
+}
+
 export function updateTaxAuthorities(data) {
   return request({
     url: ROAST_CONFIG.API_URL + '/taxAuthorities/' + data.taxid,
