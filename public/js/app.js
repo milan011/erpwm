@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		13: 0
+/******/ 		14: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -105919,6 +105919,7 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     taxProvinces: '纳税区域',
     taxGroups: '税收组',
     taxAuthorities: '税收主管部门及税率',
+    periodsInquiry: '会计期间',
     manager: '客户经理',
     managerAdd: '添加客户经理',
     managerUpdate: '修改客户经理',
@@ -106081,6 +106082,10 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     taxcatid: '税种',
     taxrate: '税率'
   },
+  periodsInquiry: {
+    periodno: '期间编号',
+    lastdate_in_period: '期末日期'
+  },
   role: {
     id: '序号',
     name: '角色',
@@ -106232,14 +106237,14 @@ var constantRouterMap = [{
   name: 'login',
   path: '/login',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(9).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/login/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(10).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/login/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   }
   // hidden: true,
 }, {
   name: 'chormeDownLoad',
   path: '/chormeDownLoad',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(10).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/chormeDownLoad/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(11).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/chormeDownLoad/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   }
   // hidden: true,
 }, {
@@ -106258,7 +106263,7 @@ var constantRouterMap = [{
   hidden: true,
   path: '/user/passwordReset',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(11).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/passwordReset.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(12).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/passwordReset.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   },
   name: 'userAdd',
   meta: { title: 'passwordReset' }
@@ -106339,7 +106344,7 @@ var setRouter = {
   children: [{
     path: 'base',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(12).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(13).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'setBase',
     meta: { title: 'setBase' },
@@ -106371,6 +106376,13 @@ var setRouter = {
       },
       name: 'taxAuthorities',
       meta: { title: 'taxAuthorities' }
+    }, {
+      path: 'periodsInquiry',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(9).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/periodsInquiry.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'periodsInquiry',
+      meta: { title: 'periodsInquiry' }
     }]
   }, {
     path: 'permission',
@@ -106497,8 +106509,8 @@ var getters = {
   name: function name(state) {
     return state.user.name;
   },
-  nickName: function nickName(state) {
-    return state.user.nickName;
+  userid: function userid(state) {
+    return state.user.userid;
   },
   introduction: function introduction(state) {
     return state.user.introduction;
@@ -107037,7 +107049,7 @@ var user = {
     code: '',
     token: Object(__WEBPACK_IMPORTED_MODULE_2__utils_auth__["a" /* getToken */])(),
     name: '',
-    nickName: '',
+    userid: '',
     avatar: '',
     introduction: '',
     roles: [],
@@ -107071,9 +107083,10 @@ var user = {
     SET_ROLES: function SET_ROLES(state, roles) {
       state.roles = roles;
     },
-    SET_NICK_NAME: function SET_NICK_NAME(state, nickName) {
-      state.nickName = nickName;
+    SET_USER_ID: function SET_USER_ID(state, id) {
+      state.userid = id;
     }
+
   },
 
   actions: {
@@ -107128,7 +107141,7 @@ var user = {
             reject('getInfo: roles must be a non-null array !');
           }
           commit('SET_NAME', data.name);
-          commit('SET_NICK_NAME', data.nick_name);
+          commit('SET_USER_ID', data.id);
           commit('SET_AVATAR', data.avatar);
           commit('SET_INTRODUCTION', data.introduction);
           resolve(response);
@@ -107634,6 +107647,8 @@ service.interceptors.request.use(function (config) {
     // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
     // config.headers['X-Token'] = getToken()
     config.headers['token'] = Object(__WEBPACK_IMPORTED_MODULE_4__utils_auth__["a" /* getToken */])();
+    config.headers['uid'] = __WEBPACK_IMPORTED_MODULE_3__store__["a" /* default */].getters.userid;
+    config.headers['uname'] = __WEBPACK_IMPORTED_MODULE_3__store__["a" /* default */].getters.name;
   }
   return config;
 }, function (error) {

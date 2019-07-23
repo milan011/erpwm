@@ -132,6 +132,28 @@ class TaxAuthoritiesRepository implements TaxAuthoritiesRepositoryInterface
         }
     }
 
+    //设置税率
+    public function setRate($tax_id, $rate)
+    {
+        /*p($tax_id);
+        dd($rate);*/
+        DB::beginTransaction();
+        try {
+            $tax_authrates = new Taxauthrates(); //税率
+            $info          = $tax_authrates->findorFail($tax_id);
+            $info->taxrate = $rate; //设置税率
+            // dd($info);
+            $info->save();
+
+            DB::commit();
+            return $info;
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
+
     //名称是否重复
     public function isRepeat($description)
     {

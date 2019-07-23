@@ -27,6 +27,7 @@ export default {
     taxProvinces: '纳税区域',
     taxGroups:'税收组',
     taxAuthorities:'税收主管部门及税率',
+    periodsInquiry: '会计期间',
     manager:'客户经理',
     managerAdd:'添加客户经理',
     managerUpdate:'修改客户经理',
@@ -188,6 +189,10 @@ export default {
     dispatchtaxprovince : '纳税区域',
     taxcatid : '税种',
     taxrate : '税率',
+  },
+  periodsInquiry:{
+    periodno: '期间编号',
+    lastdate_in_period: '期末日期',
   },
   role: {
     id: '序号',

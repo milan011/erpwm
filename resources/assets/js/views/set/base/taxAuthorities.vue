@@ -121,7 +121,7 @@
             {{ $t('taxauthrates.taxcatid') }}
           </div>
         </el-col>
-        <el-col :span="8"><div class="grid-content bg-purple-dark self-style">{{ $t('taxauthrates.taxrate') }}</div></el-col>               
+        <el-col :span="8"><div class="grid-content bg-purple-dark self-style">{{ $t('taxauthrates.taxrate') }}%</div></el-col>               
       </el-row>
       <el-form ref="rateDataForm" 
         :rules="rateRules" 
@@ -147,7 +147,7 @@
                   v-model='t.taxrate' 
                   size="mini"  
                   :min="0" 
-                  :max="100" 
+                  :max="1" 
                   :precision="2"
                   :step="0.1"
                   style="width: 120px;"
@@ -297,8 +297,8 @@ export default {
     },
     setTaxRateDel(){
       console.log(this.taxAuthoritiesList)
-      return false
-      setTaxRates(tax).then(response => {
+      // return false
+      setTaxRates(this.taxAuthoritiesList).then(response => {
         if(!response.data.status){
           this.$notify({
             title: '失败',

@@ -107,30 +107,26 @@ class TaxAuthoritiesController extends Controller
      */
     public function setTaxRates(Request $request)
     {
-        dd($request->all());
-        $taxGroupTaxes_obj = $this->TaxGroupTaxes;
-        switch ($request->del) {
-            case 'add':
-                #新增分配
-                $info    = $taxGroupTaxes_obj->create($request);
-                $message = '税种分配成功';
-                break;
-            case 'update':
-                # 修改已分配税种信息
-                $info    = $taxGroupTaxes_obj->update($request, $request->taxGroupTaxsId);
-                $message = '税种修改成功';
-                break;
-            case 'delete':
-                # 删除已分配税种
-                $info    = $taxGroupTaxes_obj->destroy($request->taxGroupTaxsId);
-                $message = '税种删除成功';
-                break;
-            default:
-                return $this->baseFailed($message = '内部错误');
-                break;
+        // dd($request->all());
+        $rate_list = $request->all();
+        unset($rate_list['token']);
+        $list = [];
+        foreach ($rate_list as $key => $value) {
+            foreach ($value as $k => $v) {
+                $list[] = $v;
+            }
+        }
+        // dd($list);
+        foreach ($list as $key => $value) {
+            $info = $this->taxAuthorities->setRate($value['id'], $value['taxrate']);
+            // dd(lastSql());
+            if (!$info) {
+                //添加失败
+                return $this->baseFailed($message = '设置失败');
+            }
         }
 
-        return $this->baseSucceed($respond_data = $info, $message);
+        return $this->baseSucceed($respond_data = $info, '设置税率成功');
     }
 
     /**

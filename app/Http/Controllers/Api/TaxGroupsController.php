@@ -187,7 +187,7 @@ class TaxGroupsController extends Controller
         // dd($request->all());
         $update_info = $this->taxGroups->isRepeat($request->taxgroupdescription);
 
-        if ($update_info && ($update_info->taxprovinceid != $id)) {
+        if ($update_info && ($update_info->taxgroupid != $id)) {
             return $this->baseFailed($message = '您修改后的税收组信息与现有税收组冲突');
         }
 

@@ -88,6 +88,8 @@ Route::group([
     Route::put('chartMaster/{id}', 'ChartMasterController@update');
     Route::delete('chartMaster/{id}', 'ChartMasterController@destroy');
 
+    // PeriodsInquiry
+    Route::get('periodsInquiryList', 'PeriodsInquiryController@index');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

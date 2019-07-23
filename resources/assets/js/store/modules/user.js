@@ -8,7 +8,7 @@ const user = {
     code: '',
     token: getToken(),
     name: '',
-    nickName: '',
+    userid: '',
     avatar: '',
     introduction: '',
     roles: [],
@@ -42,9 +42,10 @@ const user = {
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
-    SET_NICK_NAME: (state, nickName) => {
-      state.nickName = nickName
+    SET_USER_ID: (state, id) => {
+      state.userid = id
     }
+
   },
 
   actions: {
@@ -91,7 +92,7 @@ const user = {
             reject('getInfo: roles must be a non-null array !')
           }
           commit('SET_NAME', data.name)
-          commit('SET_NICK_NAME', data.nick_name)
+          commit('SET_USER_ID', data.id)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
           resolve(response)

@@ -1,37 +1,36 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <!-- <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ $t('table.add') }}
-      </el-button>
+      </el-button> -->
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('taxGroups.taxgroupid')" align="center">
+      <el-table-column :label="$t('periodsInquiry.periodno')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.taxgroupid }}</span>
+          <span>{{ scope.row.periodno }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('taxGroups.taxgroupdescription')" align="center">
+      <el-table-column :label="$t('periodsInquiry.lastdate_in_period')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.taxgroupdescription }}</span>
+          <span>{{ scope.row.lastdate_in_period }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
+      <!-- <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button type="success" size="mini" @click="handleSetTax(scope.row)">{{ $t('taxGroups.setGroupTax') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <div class="pagination-container">
-      <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @current-change="handleCurrentChange" />
+      <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" :page-size="10" @current-change="handleCurrentChange" />
     </div>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <!-- <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;">
-        <el-form-item :label="$t('taxGroups.taxgroupdescription')" prop="taxgroupdescription">
-          <el-input v-model="temp.taxgroupdescription" />
+        <el-form-item :label="$t('periodsInquiry.taxprovincename')" prop="taxprovincename">
+          <el-input v-model="temp.taxprovincename" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -39,64 +38,15 @@
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('table.confirm') }}</el-button>
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
-    </el-dialog>
-    <el-dialog :title="setGroupTax" :visible.sync="setGroupTaxVisible">
-      <el-form :inline="true" v-for="(tax, group_index) in taxAuthoritiesList" :key="group_index" :model="tax" class="demo-form-inline">
-        <el-form-item label="税种:">
-          <span>{{ tax.description }}</span>
-        </el-form-item>
-        <el-form-item label="计算顺序:" >
-          <el-input-number 
-            v-model="tax.calculationorder" 
-            size="mini"  
-            :min="0" 
-            :max="5" 
-            style="width: 90px;"
-            label="计算顺序">
-          </el-input-number>
-        </el-form-item>
-        <el-form-item label="之前税种:">
-          <el-select 
-            style="width: 90px;" 
-            v-model="tax.taxontax" 
-            class="filter-item" 
-            placeholder="之前税种">
-            <el-option v-for="(status, status_index) in tanxontaxStatus" :key="status_index" :label="status" :value="status_index"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button-group v-if="tax.assigned">
-            <el-button 
-            size="mini" 
-            type="danger"   
-            @click="taxGroupDelete(tax)">
-              删除
-            </el-button>
-            <el-button 
-            size="mini" 
-            type="success" 
-            @click="taxGroupUpdate(tax)">
-              修改
-            </el-button>
-          </el-button-group>
-          <el-button-group v-else>
-            <el-button size="mini" type="success" @click="taxGroupAdd(tax)">分配</el-button>
-          </el-button-group>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="setGroupTaxVisible = false">{{ $t('table.confirm') }}</el-button>
-      </div>
-  </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
-  import { getTaxGroupsList, getTaxGroupAuthorities, createTaxGroups, updateTaxGroups, deleteTaxGroups,  getTaxGroups, setTaxGroupAuthorities} from '@/api/taxGroups'
-  import {taxAuthoritiesAll} from '@/api/taxAuthorities'
-  import waves from '@/directive/waves' // 水波纹指令
-  import { parseTime } from '@/utils'
-  import { isEmpty } from '@/common.js'
-  // import SwitchRoles from './components/RolePermission'
+  import { getPeriodsInquiryList, createPeriodsInquiry, updatePeriodsInquiry, deletePeriodsInquiry,  getPeriodsInquiry} from '@/api/periodsInquiry'
+import waves from '@/directive/waves' // 水波纹指令
+import { parseTime } from '@/utils'
+// import SwitchRoles from './components/Permission'
+// import SwitchRoles from './components/RolePermission'
 
 const calendarTypeOptions = [
   { key: 'web', display_name: 'web' },
@@ -110,7 +60,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'taxGroups',
+  name: 'periodsInquiry',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -137,42 +87,36 @@ export default {
       listQuery: {
         page: 1,
       },
-      tanxontaxStatus:['否', '是'],
-      taxGroupTemp: {
-          id: null,
-          permissions:[],
-      },
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        taxgroupid: undefined,
-        taxgroupdescription: '',
+        taxprovinceid: undefined,
+        taxprovincename: '',
       },
       dialogFormVisible: false,
-      setGroupTaxVisible: false,
-      setGroupTax: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑税收组',
-        create: '新增税收组'
+        update: '编辑会计期间',
+        create: '新增会计期间'
       },
       pvData: [],
       rules: {
-        taxgroupdescription: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        taxprovincename: [{ required: true, message: '请输入名称', trigger: 'blur' }],
       },
-      taxAuthoritiesList: []
     }
   },
   created() {
     // this.getList()
     Promise.all([
       this.getList(),
+      // this.getPermissionList()
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getTaxGroupsList(this.listQuery).then(response => {
+      getPeriodsInquiryList(this.listQuery).then(response => {
+        // console.log(response.data)
         this.list = response.data.data
         this.total = response.data.total
 
@@ -180,80 +124,6 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
-      })
-    },
-    handleSetTax(row){
-      getTaxGroupAuthorities(row).then(response => {
-        console.log(response.data)
-        this.taxAuthoritiesList = response.data
-        setTimeout(() => {
-          this.setGroupTax = '税目组:' + row.taxgroupdescription
-          this.setGroupTaxVisible = true
-        }, 0.5 * 1000)
-      })
-      
-    },
-    taxGroupAdd(tax){
-      tax.del = 'add'
-      setTaxGroupAuthorities(tax).then(response => {
-        if(!response.data.status){
-          this.$notify({
-            title: '失败',
-            message: response.data.message,
-            type: 'warning',
-            duration: 2000
-          })
-        }else{
-          this.$notify({
-            title: '成功',
-            message: response.data.message,
-            type: 'success',
-            duration: 2000
-          })
-        }
-        this.setGroupTaxVisible = false
-      })
-    },
-    taxGroupUpdate(tax){
-      tax.del = 'update'
-      setTaxGroupAuthorities(tax).then(response => {
-        if(!response.data.status){
-          this.$notify({
-            title: '失败',
-            message: response.data.message,
-            type: 'warning',
-            duration: 2000
-          })
-        }else{
-          this.$notify({
-            title: '成功',
-            message: response.data.message,
-            type: 'success',
-            duration: 2000
-          })
-        }
-        this.setGroupTaxVisible = false
-      })
-    },
-    taxGroupDelete(tax){
-      tax.del = 'delete'
-      setTaxGroupAuthorities(tax).then(response => {
-        if(!response.data.status){
-          this.$notify({
-            title: '失败',
-            message: response.data.message,
-            type: 'warning',
-            duration: 2000
-          })
-        }else{
-          this.$notify({
-            title: '成功',
-            message: response.data.message,
-            type: 'success',
-            duration: 2000
-          })
-        }
-        this.setGroupTaxVisible = false
       })
     },
     handleFilter() {
@@ -275,12 +145,12 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteTaxGroups(this.temp).then((response) => {
+        deletePeriodsInquiry(this.temp).then((response) => {
           // console.log(response.data);
-          if(!response.data.status){
+          if(response.data.status === 0){
             this.$notify({
               title: '失败',
-              message: response.data.message,
+              message: '删除失败',
               type: 'warning',
               duration: 2000
             })
@@ -305,8 +175,8 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        taxgroupid: undefined,
-        taxgroupdescription: '',
+        taxprovinceid: undefined,
+        taxprovincename: '',
       }
     },
     handleCreate() {
@@ -320,11 +190,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createTaxGroups(this.temp).then((response) => {
+          createPeriodsInquiry(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.taxgroupid = response_data.data.taxgroupid
+              this.temp.taxprovinceid = response_data.data.taxprovinceid
               this.list.unshift(this.temp)
               this.dialogFormVisible = false
               this.$notify({
@@ -358,12 +228,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateTaxGroups(tempData).then((response) => {
+          updatePeriodsInquiry(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.taxgroupid === this.temp.taxgroupid) {
+                if (v.taxprovinceid === this.temp.taxprovinceid) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, this.temp)
                   break
