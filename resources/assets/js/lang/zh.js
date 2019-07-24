@@ -23,6 +23,8 @@ export default {
     shop:'门店管理',
     set:'设置',
     setBase:'基础信息',
+    setGatherPay: '应收应付',
+    saleType: '销售方式',
     taxCategories:'税目维护',
     taxProvinces: '纳税区域',
     taxGroups:'税收组',
@@ -193,6 +195,11 @@ export default {
   periodsInquiry:{
     periodno: '期间编号',
     lastdate_in_period: '期末日期',
+  },
+  saleType:{
+    id: '序号',
+    typeabbrev: '编号',
+    sales_type : '名称',
   },
   role: {
     id: '序号',

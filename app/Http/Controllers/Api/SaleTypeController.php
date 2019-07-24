@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Http\Resources\Example\ExampleResource;
-use App\Http\Resources\Example\ExampleResourceCollection;
-use App\Repositories\Example\ExampleRepositoryInterface;
+// use App\Http\Resources\SaleType\SaleTypeResource;
+// use App\Http\Resources\SaleType\SaleTypeResourceCollection;
+use App\Repositories\SaleType\SaleTypeRepositoryInterface;
 use Illuminate\Http\Request;
 
-class ExampleController extends Controller
+class SaleTypeController extends Controller
 {
-    protected $example;
+    protected $SaleType;
 
     public function __construct(
 
-        ExampleRepositoryInterface $example
+        SaleTypeRepositoryInterface $SaleType
     ) {
-        $this->example = $example;
+        $this->SaleType = $SaleType;
     }
 
     /**
@@ -29,9 +29,9 @@ class ExampleController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $examples = $this->example->getList($query_list);
+        $SaleTypes = $this->SaleType->getList($query_list);
 
-        return new ExampleResource($examples);
+        return $SaleTypes;
     }
 
     /**
@@ -54,13 +54,11 @@ class ExampleController extends Controller
 
         // dd($request->all());
 
-        if ($this->example->isRepeat($request->new_telephone)) {
-            return $this->baseFailed($message = '数据重复');
+        if ($this->SaleType->isRepeat($request->sales_type)) {
+            return $this->baseFailed($message = '名称重复');
         }
 
-        $info = $this->example->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info = $this->SaleType->create($request);
 
         if ($info) {
             //添加成功
@@ -79,10 +77,10 @@ class ExampleController extends Controller
      */
     public function show($id)
     {
-        $info = $this->example->find($id);
+        $info = $this->SaleType->find($id);
         $info->belongsToCreater;
 
-        return new ExampleResource($info);
+        return new SaleTypeResource($info);
     }
 
     /**
@@ -106,14 +104,13 @@ class ExampleController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->example->isRepeat($request->examplename);
+        $update_info = $this->SaleType->isRepeat($request->sales_type);
 
-        if ($update_info && ($update_info->taxprovinceid != $id)) {
-            return $this->baseFailed($message = '您修改后的信息与现有冲突');
+        if ($update_info && ($update_info->id != $id)) {
+            return $this->baseFailed($message = '您修改后的名称与现有冲突');
         }
 
-        $info = $this->example->update($request, $id);
-        $info->hasOnePackage;
+        $info = $this->SaleType->update($request, $id);
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -127,7 +124,7 @@ class ExampleController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->example->destroy($id);
+        $this->SaleType->destroy($id);
         return $this->baseSucceed($message = '修改成功');
     }
 }

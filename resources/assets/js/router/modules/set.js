@@ -52,10 +52,24 @@ const setRouter = {
         ]
       },
       {
-        path: 'permission',
-        component: resolve => void(require(['@/views/permissions/index'], resolve)),
-        name: 'permissionList',
-        meta: { title: 'permission' },
+        path: 'gatherPay',
+        component: resolve => void(require(['@/views/set/gatherPay/index'], resolve)),
+        name: 'setGatherPay',
+        meta: { title: 'setGatherPay' },
+        children: [
+          {
+            path: 'saleType',
+            component: resolve => void(require(['@/views/set/gatherPay/saleType.vue'], resolve)),
+            name: 'saleType',
+            meta: { title: 'saleType' },
+          },
+          {
+            path: 'taxCategories',
+            component: resolve => void(require(['@/views/set/base/taxCategories.vue'], resolve)),
+            name: 'taxCategories',
+            meta: { title: 'taxCategories' },
+          },
+        ]
       },
     ]
 }

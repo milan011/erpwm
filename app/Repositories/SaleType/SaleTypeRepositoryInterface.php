@@ -1,12 +1,12 @@
 <?php
-namespace App\Repositories\InventoryDetail;
- 
-interface InventoryDetailRepositoryInterface
+namespace App\Repositories\SaleType;
+
+interface SaleTypeRepositoryInterface
 {
-    
+
     public function find($id);
-    
-    public function getAllInventoryDetail($query_list);
+
+    public function getList($query_list);
 
     public function create($requestData);
 

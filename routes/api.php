@@ -90,6 +90,13 @@ Route::group([
 
     // PeriodsInquiry
     Route::get('periodsInquiryList', 'PeriodsInquiryController@index');
+
+    // SaleType
+    Route::get('saleTypeList', 'SaleTypeController@index');
+    Route::get('saleType/{id}', 'SaleTypeController@show');
+    Route::post('saleType', 'SaleTypeController@store');
+    Route::put('saleType/{id}', 'SaleTypeController@update');
+    Route::delete('saleType/{id}', 'SaleTypeController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {
