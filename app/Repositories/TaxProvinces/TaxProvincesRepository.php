@@ -62,9 +62,7 @@ class TaxProvincesRepository implements TaxProvincesRepositoryInterface
             $input = array_replace($requestData->all());
             $tax_provinces->fill($input);
             $tax_provinces = $tax_provinces->create($input);
-
-            dd($tax_provinces);
-
+            // dd($tax_provinces);
             $authrates_arr = []; //需要插入税率表的数据
 
             foreach ($tax_categories as $key => $value) {

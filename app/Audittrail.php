@@ -14,8 +14,8 @@ class Audittrail extends Model
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
     protected $table      = 'audittrail';
-    protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'transactiondate', 'userid', 'username', 'querystring'];
+    // protected $primaryKey = 'id';
+    protected $fillable = ['transactiondate', 'userid', 'username', 'querystring'];
 
     /**
      * The attributes that should be hidden for arrays.

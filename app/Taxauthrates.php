@@ -42,7 +42,8 @@ class Taxauthrates extends Model
     // 定义Taxauthrates表与Taxprovinces表一对一关系
     public function belongsToTaxprovinces()
     {
-        return $this->belongsTo('App\Taxprovinces', 'dispatchtaxprovince', 'taxprovinceid');
+        return $this->belongsTo('App\Taxprovinces', 'dispatchtaxprovince', 'taxprovinceid')->withDefault(['taxprovincename' => '',
+        ]);
     }
 
     // 定义Taxauthrates表与TaxGroupTaxes表一对一关系

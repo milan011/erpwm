@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Audittrail;
+use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +24,12 @@ class AppServiceProvider extends ServiceProvider
         // dd($request->header('uid'));
         //将增,删,改sql保存
         $user_id = $request->header('uid');
-        DB::listen(function ($query) use ($user_id) {
+        $user    = User::find($user_id);
+        // dd($user->realname);
+        $user_name = !empty($user->realname) ? $user->realname : '';
+        // dd($user_name);
+        // dd(User::find($user_id)->realname);
+        DB::listen(function ($query) use ($user_name, $user_id) {
 
             $sql = str_replace('?', '"' . '%s' . '"', $query->sql);
             $sql = @vsprintf($sql, $query->bindings);
@@ -34,18 +40,25 @@ class AppServiceProvider extends ServiceProvider
             if ($action == 'update' || $action == 'delete' || $action == 'insert') {
                 // dd($sql);
                 // dd($query);
-                $domain = strstr($sql, 'audittrail');
+                $auditrail_table = strstr($sql, 'audittrail');
 
-                if (!$domain) {
-                    // $actionModel = new Audittrail();
+                if (!$auditrail_table) {
+                    $actionModel = new Audittrail();
 
                     $sqlData['querystring']     = $sql;
                     $sqlData['transactiondate'] = date('Y-m-d H:i:s');
                     $sqlData['userid']          = $user_id;
-                    // dd($sqlData);
-                    $log_path = 'logs\sql-' . date('Y-m-d') . '.log';
-                    $filepath = storage_path($log_path);
-                    file_put_contents($filepath, $sqlData['querystring'] . '用户' . $user_id . "\r\n", FILE_APPEND);
+                    $sqlData['username']        = $user_name;
+
+                    // dd(collect($sqlData)->toJson());
+                    if ($action != 'insert') {
+                        $actionModel->create($sqlData);
+                    } else {
+                        $logData  = collect($sqlData)->toJson();
+                        $log_path = 'logs\sql-' . date('Y-m-d') . '.log';
+                        $filepath = storage_path($log_path);
+                        file_put_contents($filepath, $logData . "\r\n", FILE_APPEND);
+                    }
                 }
 
             }
