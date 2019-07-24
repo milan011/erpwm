@@ -12,6 +12,7 @@
         "laravel/framework": "5.5.*",
         "laravel/passport": "~4.0",
         "laravel/tinker": "~1.0",
+        "markhilton/monolog-mysql": "^0.1.6",
         "spatie/laravel-permission": "^2.12",
         "tymon/jwt-auth": "^0.5.12"
     },
