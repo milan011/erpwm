@@ -36,10 +36,9 @@ class AppServiceProvider extends ServiceProvider
             $sql = str_replace("\\", "", $sql);
             // Log::channel("sql")->info(' execution time: ' . $query->time . 'ms; ' . $tmp . "\t");
             $action = substr($sql, 0, 6);
+
             //如果是更新删除操作则存储到数据库里
             if ($action == 'update' || $action == 'delete' || $action == 'insert') {
-                // dd($sql);
-                // dd($query);
                 $auditrail_table = strstr($sql, 'audittrail');
 
                 if (!$auditrail_table) {

@@ -39,8 +39,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\ChartMaster\ChartMasterRepositoryInterface', 'App\Repositories\ChartMaster\ChartMasterRepository');
         $this->app->bind('App\Repositories\PeriodsInquiry\PeriodsInquiryRepositoryInterface', 'App\Repositories\PeriodsInquiry\PeriodsInquiryRepository');
         $this->app->bind('App\Repositories\SaleType\SaleTypeRepositoryInterface', 'App\Repositories\SaleType\SaleTypeRepository');
+        $this->app->bind('App\Repositories\CustomerType\CustomerTypeRepositoryInterface', 'App\Repositories\CustomerType\CustomerTypeRepository');
+        $this->app->bind('App\Repositories\SupplierType\SupplierTypeRepositoryInterface', 'App\Repositories\SupplierType\SupplierTypeRepository');
+        $this->app->bind('App\Repositories\CreditStatus\CreditStatusRepositoryInterface', 'App\Repositories\CreditStatus\CreditStatusRepository');
+        $this->app->bind('App\Repositories\PaymentTerm\PaymentTermRepositoryInterface', 'App\Repositories\PaymentTerm\PaymentTermRepository');
 
-        $this->app->bind('App\Repositories\ServiceDetailGoods\ServiceDetailGoodsRepositoryInterface', 'App\Repositories\ServiceDetailGoods\ServiceDetailGoodsRepository');
-        $this->app->bind('App\Repositories\Notice\NoticeRepositoryInterface', 'App\Repositories\Notice\NoticeRepository');
     }
 }

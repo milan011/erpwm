@@ -6,14 +6,14 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('saleType.id')" align="center">
+      <el-table-column :label="$t('customerType.typeid')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.typeid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('saleType.sales_type')" align="center">
+      <el-table-column :label="$t('customerType.typename')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.sales_type }}</span>
+          <span>{{ scope.row.typename }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
@@ -29,8 +29,8 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;">
-        <el-form-item :label="$t('saleType.sales_type')" prop="sales_type">
-          <el-input v-model="temp.sales_type" />
+        <el-form-item :label="$t('customerType.typename')" prop="typename">
+          <el-input v-model="temp.typename" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,7 +42,7 @@
   </div>
 </template>
 <script>
-  import { getSaleTypeList, createSaleType, updateSaleType, deleteSaleType,} from '@/api/saleType'
+  import { getCustomerTypeList, createCustomerType, updateCustomerType, deleteCustomerType,} from '@/api/customerType'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
@@ -60,7 +60,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'saleType',
+  name: 'customerType',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -88,27 +88,23 @@ export default {
         page: 1,
       },
       tanxontaxStatus:['否', '是'],
-      taxGroupTemp: {
-          id: null,
-          permissions:[],
-      },
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        id: undefined,
-        sales_type: '',
+        typeid: undefined,
+        typename: '',
       },
       dialogFormVisible: false,
       setGroupTaxVisible: false,
       setGroupTax: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑销售方式',
-        create: '新增销售方式'
+        update: '编辑客户类型',
+        create: '新增客户类型'
       },
       pvData: [],
       rules: {
-        sales_type: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        typename: [{ required: true, message: '请输入名称', trigger: 'blur' }],
       },
       taxAuthoritiesList: []
     }
@@ -122,7 +118,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getSaleTypeList(this.listQuery).then(response => {
+      getCustomerTypeList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
 
@@ -151,7 +147,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteSaleType(this.temp).then((response) => {
+        deleteCustomerType(this.temp).then((response) => {
           // console.log(response.data);
           if(!response.data.status){
             this.$notify({
@@ -181,8 +177,8 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        id: undefined,
-        sales_type: '',
+        typeid: undefined,
+        typename: '',
       }
     },
     handleCreate() {
@@ -196,11 +192,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createSaleType(this.temp).then((response) => {
+          createCustomerType(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.id = response_data.data.id
+              this.temp.typeid = response_data.data.typeid
               this.list.unshift(this.temp)
               this.dialogFormVisible = false
               this.$notify({
@@ -234,12 +230,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateSaleType(tempData).then((response) => {
+          updateCustomerType(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.id === this.temp.id) {
+                if (v.typeid === this.temp.typeid) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, this.temp)
                   break

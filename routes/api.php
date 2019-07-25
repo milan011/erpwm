@@ -97,6 +97,34 @@ Route::group([
     Route::post('saleType', 'SaleTypeController@store');
     Route::put('saleType/{id}', 'SaleTypeController@update');
     Route::delete('saleType/{id}', 'SaleTypeController@destroy');
+
+    // CustomerType
+    Route::get('customerTypeList', 'CustomerTypeController@index');
+    Route::get('customerType/{id}', 'CustomerTypeController@show');
+    Route::post('customerType', 'CustomerTypeController@store');
+    Route::put('customerType/{id}', 'CustomerTypeController@update');
+    Route::delete('customerType/{id}', 'CustomerTypeController@destroy');
+
+    // SupplierType
+    Route::get('supplierTypeList', 'SupplierTypeController@index');
+    Route::get('supplierType/{id}', 'SupplierTypeController@show');
+    Route::post('supplierType', 'SupplierTypeController@store');
+    Route::put('supplierType/{id}', 'SupplierTypeController@update');
+    Route::delete('supplierType/{id}', 'SupplierTypeController@destroy');
+
+    // CreditStatus
+    Route::get('creditStatusList', 'CreditStatusController@index');
+    Route::get('creditStatus/{id}', 'CreditStatusController@show');
+    Route::post('creditStatus', 'CreditStatusController@store');
+    Route::put('creditStatus/{id}', 'CreditStatusController@update');
+    Route::delete('creditStatus/{id}', 'CreditStatusController@destroy');
+
+    // PaymentTerm
+    Route::get('paymentTermList', 'PaymentTermController@index');
+    Route::get('paymentTerm/{id}', 'PaymentTermController@show');
+    Route::post('paymentTerm', 'PaymentTermController@store');
+    Route::put('paymentTerm/{id}', 'PaymentTermController@update');
+    Route::delete('paymentTerm/{id}', 'PaymentTermController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

@@ -6,16 +6,36 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('saleType.id')" align="center">
+      <el-table-column :label="$t('paymentTerm.id')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('saleType.sales_type')" align="center">
+      <el-table-column :label="$t('paymentTerm.termsindicator')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.sales_type }}</span>
+          <span>{{ scope.row.termsindicator }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('paymentTerm.terms')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.terms }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('paymentTerm.paymenttype')" align="center">
+        <template slot-scope="scope">
+          <span>
+            <el-tag :type="scope.row.paymenttype | statusFilter">
+              {{ paymentTypeMap[scope.row.paymenttype] }}
+            </el-tag>
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('paymentTerm.panmentEnd')" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.paymenttype == '1'">次月{{ scope.row.dayinfollowingmonth }}日前</span>
+          <span v-else>{{ scope.row.daysbeforedue }}天后</span>
+        </template>
+      </el-table-column>     
       <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
@@ -29,8 +49,23 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;">
-        <el-form-item :label="$t('saleType.sales_type')" prop="sales_type">
-          <el-input v-model="temp.sales_type" />
+        <el-form-item :label="$t('paymentTerm.termsindicator')" prop="termsindicator">
+          <el-input v-model.number="temp.termsindicator" />
+        </el-form-item>
+        <el-form-item :label="$t('paymentTerm.terms')" prop="terms">
+          <el-input v-model="temp.terms" />
+        </el-form-item>
+        <el-form-item :label="$t('paymentTerm.paymenttype')">
+          <el-radio-group @change="changeType" v-model="temp.paymenttype">
+            <el-radio-button label="1">次月截止</el-radio-button>
+            <el-radio-button label="2">N天后截止</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item v-show="currentPaymentType == '1'" :label="$t('paymentTerm.dayinfollowingmonth')" prop="dayinfollowingmonth">
+          <el-input v-model.number="temp.dayinfollowingmonth" />
+        </el-form-item>
+        <el-form-item v-show="currentPaymentType == '2'" :label="$t('paymentTerm.daysbeforedue')" prop="daysbeforedue">
+          <el-input v-model.number="temp.daysbeforedue" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,7 +77,7 @@
   </div>
 </template>
 <script>
-  import { getSaleTypeList, createSaleType, updateSaleType, deleteSaleType,} from '@/api/saleType'
+  import { getPaymentTermList, createPaymentTerm, updatePaymentTerm, deletePaymentTerm,} from '@/api/paymentTerm'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
@@ -60,7 +95,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'saleType',
+  name: 'paymentTerm',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -68,9 +103,8 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        1: 'success',
+        2: 'info',
       }
       return statusMap[status]
     },
@@ -88,27 +122,41 @@ export default {
         page: 1,
       },
       tanxontaxStatus:['否', '是'],
-      taxGroupTemp: {
-          id: null,
-          permissions:[],
-      },
       calendarTypeOptions,
       showReviewer: false,
       temp: {
         id: undefined,
-        sales_type: '',
+        termsindicator: '',
+        terms: '',
+        daysbeforedue: '',
+        dayinfollowingmonth: '',
+        paymenttype: '',
       },
+      currentPaymentType: '1',
       dialogFormVisible: false,
       setGroupTaxVisible: false,
       setGroupTax: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑销售方式',
-        create: '新增销售方式'
+        update: '编辑付款条款',
+        create: '新增付款条款'
       },
+      paymentTypeMap:{1: '次月截止', 2:'N天后'},
       pvData: [],
       rules: {
-        sales_type: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        termsindicator: [        
+          {type: 'number', message: '编码为数字类型', trigger: 'blur'},
+          { required: true, message: '请输入编码', trigger: 'blur' },
+        ],
+        terms: [{ required: true, message: '请输入描述', trigger: 'blur' }],
+        dayinfollowingmonth: [        
+          {type: 'number',min: 1, max: 31, message: '请输入1-31数字', trigger: 'blur'},
+          { required: true, message: '请输入日期', trigger: 'blur' },
+        ],
+        daysbeforedue:[        
+          {type: 'number', min: 1, max: 300, message: '请输入1-300数字', trigger: 'blur'},
+          { required: true, message: '请输入天数', trigger: 'blur' },
+        ],
       },
       taxAuthoritiesList: []
     }
@@ -122,7 +170,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getSaleTypeList(this.listQuery).then(response => {
+      getPaymentTermList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
 
@@ -131,6 +179,16 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+    },
+    changeType(val){
+      this.currentPaymentType = val
+      /*if(val == '1'){
+        //清除截止天数
+        this.temp.daysbeforedue = 0
+      }else{
+        //清除下月天数
+        this.temp.dayinfollowingmonth = 0
+      }*/
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -151,7 +209,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteSaleType(this.temp).then((response) => {
+        deletePaymentTerm(this.temp).then((response) => {
           // console.log(response.data);
           if(!response.data.status){
             this.$notify({
@@ -182,7 +240,11 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        sales_type: '',
+        termsindicator: undefined,
+        terms: '',
+        daysbeforedue: '',
+        dayinfollowingmonth: '',
+        paymenttype: '1',
       }
     },
     handleCreate() {
@@ -196,7 +258,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createSaleType(this.temp).then((response) => {
+          createPaymentTerm(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
@@ -223,8 +285,12 @@ export default {
       })
     },
     handleUpdate(row) {
+      row.daysbeforedue = parseInt(row.daysbeforedue)
+      row.dayinfollowingmonth = parseInt(row.dayinfollowingmonth)
+      row.termsindicator = parseInt(row.termsindicator)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
+      this.currentPaymentType = this.temp.paymenttype
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -234,7 +300,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateSaleType(tempData).then((response) => {
+          updatePaymentTerm(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){

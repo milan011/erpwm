@@ -64,10 +64,28 @@ const setRouter = {
             meta: { title: 'saleType' },
           },
           {
-            path: 'taxCategories',
-            component: resolve => void(require(['@/views/set/base/taxCategories.vue'], resolve)),
-            name: 'taxCategories',
-            meta: { title: 'taxCategories' },
+            path: 'customerType',
+            component: resolve => void(require(['@/views/set/gatherPay/customerType.vue'], resolve)),
+            name: 'customerType',
+            meta: { title: 'customerType' },
+          },
+          {
+            path: 'supplierType',
+            component: resolve => void(require(['@/views/set/gatherPay/supplierType.vue'], resolve)),
+            name: 'supplierType',
+            meta: { title: 'supplierType' },
+          },
+          {
+            path: 'creditStatus',
+            component: resolve => void(require(['@/views/set/gatherPay/creditStatus.vue'], resolve)),
+            name: 'creditStatus',
+            meta: { title: 'creditStatus' },
+          },
+          {
+            path: 'paymentTerm',
+            component: resolve => void(require(['@/views/set/gatherPay/paymentTerm.vue'], resolve)),
+            name: 'paymentTerm',
+            meta: { title: 'paymentTerm' },
           },
         ]
       },
