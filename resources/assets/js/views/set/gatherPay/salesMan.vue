@@ -118,28 +118,23 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 const validateTelephone = (rule, value, callback) => {
-  console.log('电话')
-  console.log(rule)
-  console.log(value)
   if (!isTelephone(value)) {
-    console.log('没通过')
     callback(new Error('请输入正确格式手机号'))
   } else {
-    console.log('通过')
     callback()
   }
 }
 const validateFax = (rule, value, callback) => {
-  console.log('传真')
-  console.log(rule)
-  console.log(value)
-  if (!isFax(value)) {
-    console.log('没通过')
-    callback(new Error('请输入正确格式传真号'))
-  } else {
-    console.log('通过')
+  if(val != ''){
+      if (!isFax(value)) {
+      callback(new Error('请输入正确格式传真号'))
+    } else {
+      callback()
+    }
+  }else{
     callback()
   }
+  
 }
 
 export default {
