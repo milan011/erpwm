@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\Example\ExampleResource;
-// use App\Http\Resources\Example\ExampleResourceCollection;
-use App\Repositories\Example\ExampleRepositoryInterface;
+// use App\Http\Resources\SalesMan\SalesManResource;
+// use App\Http\Resources\SalesMan\SalesManResourceCollection;
+use App\Repositories\SalesMan\SalesManRepositoryInterface;
 use Illuminate\Http\Request;
 
-class ExampleController extends Controller
+class SalesManController extends Controller
 {
-    protected $example;
+    protected $salesMan;
 
     public function __construct(
 
-        ExampleRepositoryInterface $example
+        SalesManRepositoryInterface $salesMan
     ) {
-        $this->example = $example;
+        $this->salesMan = $salesMan;
     }
 
     /**
@@ -29,9 +29,9 @@ class ExampleController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $examples = $this->example->getList($query_list);
+        $salesMans = $this->salesMan->getList($query_list);
 
-        return $examples;
+        return $salesMans;
     }
 
     /**
@@ -52,13 +52,13 @@ class ExampleController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
+        dd($request->all());
 
-        if ($this->example->isRepeat($request->name)) {
+        if ($this->salesMan->isRepeat($request->salesmanname, $request->smantel)) {
             return $this->baseFailed($message = '数据重复');
         }
 
-        $info = $this->example->create($request);
+        $info = $this->salesMan->create($request);
         $info->hasOnePackage;
         $info->belongsToCreater;
 
@@ -79,10 +79,10 @@ class ExampleController extends Controller
      */
     public function show($id)
     {
-        $info = $this->example->find($id);
+        $info = $this->salesMan->find($id);
         $info->belongsToCreater;
 
-        return new ExampleResource($info);
+        return new SalesManResource($info);
     }
 
     /**
@@ -106,13 +106,13 @@ class ExampleController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->example->isRepeat($request->name);
+        $update_info = $this->salesMan->isRepeat($request->salesmanname, $request->smantel);
 
         if ($update_info && ($update_info->id != $id)) {
             return $this->baseFailed($message = '您修改后的信息与现有冲突');
         }
 
-        $info = $this->example->update($request, $id);
+        $info = $this->salesMan->update($request, $id);
         $info->hasOnePackage;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
@@ -127,7 +127,7 @@ class ExampleController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->example->destroy($id);
+        $this->salesMan->destroy($id);
         return $this->baseSucceed($message = '修改成功');
     }
 }

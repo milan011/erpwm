@@ -50,8 +50,23 @@ export function isTelephone(telephone) {
   const re = /^1[0-9]{10}$/
   // console.log(telephone)
   // return false
+  // console.log(re.test(telephone))
   return re.test(telephone)
 }
+
+/**
+ * validate telephone
+ * @param email
+ * @returns {boolean}
+ */
+export function isFax(fax) {
+  const re = /^(\d{3,4}-)?\d{7,8}$/
+  // console.log(telephone)
+  // return false
+  return re.test(fax)
+}
+
+
 
 /**
  * 校验符合格式的返还日期

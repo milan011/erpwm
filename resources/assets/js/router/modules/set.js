@@ -93,6 +93,18 @@ const setRouter = {
             name: 'purchorderAuth',
             meta: { title: 'purchorderAuth' },
           },
+          {
+            path: 'paymentMethod',
+            component: resolve => void(require(['@/views/set/gatherPay/paymentMethod.vue'], resolve)),
+            name: 'paymentMethod',
+            meta: { title: 'paymentMethod' },
+          },
+          {
+            path: 'salesMan',
+            component: resolve => void(require(['@/views/set/gatherPay/salesMan.vue'], resolve)),
+            name: 'salesMan',
+            meta: { title: 'salesMan' },
+          },
         ]
       },
     ]

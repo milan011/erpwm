@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\Example\ExampleResource;
-// use App\Http\Resources\Example\ExampleResourceCollection;
-use App\Repositories\Example\ExampleRepositoryInterface;
+// use App\Http\Resources\PaymentMethod\PaymentMethodResource;
+// use App\Http\Resources\PaymentMethod\PaymentMethodResourceCollection;
+use App\Repositories\PaymentMethod\PaymentMethodRepositoryInterface;
 use Illuminate\Http\Request;
 
-class ExampleController extends Controller
+class PaymentMethodController extends Controller
 {
-    protected $example;
+    protected $payment_method;
 
     public function __construct(
 
-        ExampleRepositoryInterface $example
+        PaymentMethodRepositoryInterface $payment_method
     ) {
-        $this->example = $example;
+        $this->payment_method = $payment_method;
     }
 
     /**
@@ -29,9 +29,9 @@ class ExampleController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $examples = $this->example->getList($query_list);
+        $payment_methods = $this->payment_method->getList($query_list);
 
-        return $examples;
+        return $payment_methods;
     }
 
     /**
@@ -54,11 +54,11 @@ class ExampleController extends Controller
 
         // dd($request->all());
 
-        if ($this->example->isRepeat($request->name)) {
+        if ($this->payment_method->isRepeat($request->paymentname)) {
             return $this->baseFailed($message = '数据重复');
         }
 
-        $info = $this->example->create($request);
+        $info = $this->payment_method->create($request);
         $info->hasOnePackage;
         $info->belongsToCreater;
 
@@ -79,10 +79,10 @@ class ExampleController extends Controller
      */
     public function show($id)
     {
-        $info = $this->example->find($id);
+        $info = $this->payment_method->find($id);
         $info->belongsToCreater;
 
-        return new ExampleResource($info);
+        return new PaymentMethodResource($info);
     }
 
     /**
@@ -106,13 +106,13 @@ class ExampleController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->example->isRepeat($request->name);
+        $update_info = $this->payment_method->isRepeat($request->paymentname);
 
-        if ($update_info && ($update_info->id != $id)) {
+        if ($update_info && ($update_info->paymentid != $id)) {
             return $this->baseFailed($message = '您修改后的信息与现有冲突');
         }
 
-        $info = $this->example->update($request, $id);
+        $info = $this->payment_method->update($request, $id);
         $info->hasOnePackage;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
@@ -127,7 +127,7 @@ class ExampleController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->example->destroy($id);
+        $this->payment_method->destroy($id);
         return $this->baseSucceed($message = '修改成功');
     }
 }

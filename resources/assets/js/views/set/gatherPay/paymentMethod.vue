@@ -6,17 +6,51 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('saleType.id')" align="center">
+      <el-table-column :label="$t('paymentMethod.paymentid')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.paymentid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('saleType.sales_type')" align="center">
+      <el-table-column :label="$t('paymentMethod.paymentname')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.sales_type }}</span>
+          <span>{{ scope.row.paymentname }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
+      <el-table-column :label="$t('paymentMethod.paymenttype')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span><el-tag :type="scope.row.paymenttype | statusFilter">
+              {{ paymenttypeStatus[scope.row.paymenttype] }}
+            </el-tag></span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('paymentMethod.receipttype')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>
+            <el-tag :type="scope.row.receipttype | statusFilter">
+              {{ receipttypeStatus[scope.row.receipttype] }}
+            </el-tag>
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('paymentMethod.usepreprintedstationery')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>
+            <el-tag :type="scope.row.usepreprintedstationery | statusFilter">
+              {{ usepreprintedstationeryStatus[scope.row.usepreprintedstationery] }}
+            </el-tag>
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('paymentMethod.opencashdrawer')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>
+            <el-tag :type="scope.row.opencashdrawer | statusFilter">
+              {{ opencashdrawerStatus[scope.row.opencashdrawer] }}
+            </el-tag>
+          </span>
+        </template>
+      </el-table-column>    
+      <el-table-column :label="$t('table.actions')" width="180%" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
@@ -29,8 +63,40 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('saleType.sales_type')" prop="sales_type">
-          <el-input v-model="temp.sales_type" />
+        <el-form-item :label="$t('paymentMethod.paymentname')" prop="paymentname">
+          <el-input v-model="temp.paymentname" />
+        </el-form-item>
+        <el-form-item :label="$t('paymentMethod.paymenttype')" prop="paymenttype">
+          <el-select 
+            v-model="temp.paymenttype" 
+            class="filter-item"  
+            placeholder="">
+            <el-option v-for="(payment, index) in paymenttypeStatus" :key="index" :label="payment" :value="index"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('paymentMethod.receipttype')">
+          <el-select 
+            v-model="temp.receipttype" 
+            class="filter-item" 
+            placeholder="">
+            <el-option v-for="(receipt, index) in receipttypeStatus" :key="index" :label="receipt" :value="index"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('paymentMethod.usepreprintedstationery')" prop="usepreprintedstationery">
+          <el-select 
+            v-model="temp.usepreprintedstationery" 
+            class="filter-item" 
+            placeholder="">
+            <el-option v-for="(usepreprinted, index) in usepreprintedstationeryStatus" :key="index" :label="usepreprinted" :value="index"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('paymentMethod.opencashdrawer')" prop="opencashdrawer">
+          <el-select 
+            v-model="temp.opencashdrawer" 
+            class="filter-item" 
+            placeholder="">
+            <el-option v-for="(opencash, index) in opencashdrawerStatus" :key="index" :label="opencash" :value="index"/>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,7 +108,7 @@
   </div>
 </template>
 <script>
-  import { getSaleTypeList, createSaleType, updateSaleType, deleteSaleType,} from '@/api/saleType'
+  import { getPaymentMethodList, createPaymentMethod, updatePaymentMethod, deletePaymentMethod,} from '@/api/paymentMethod'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
@@ -60,7 +126,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'saleType',
+  name: 'paymentMethod',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -68,9 +134,8 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        1: 'success',
+        0: 'danger',
       }
       return statusMap[status]
     },
@@ -87,30 +152,34 @@ export default {
       listQuery: {
         page: 1,
       },
-      tanxontaxStatus:['否', '是'],
-      taxGroupTemp: {
-          id: null,
-          permissions:[],
-      },
+      receipttypeStatus:['否', '是'],
+      usepreprintedstationeryStatus:['否', '是'],
+      paymenttypeStatus:['否', '是'],
+      opencashdrawerStatus:['否', '是'],
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        id: undefined,
-        sales_type: '',
+        paymentid: undefined,
+        paymentname: '',
+        paymenttype: '1',
+        usepreprintedstationery: '1',
+        receipttype: '0',
+        opencashdrawer: '0',
       },
       dialogFormVisible: false,
       setGroupTaxVisible: false,
       setGroupTax: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑销售方式',
-        create: '新增销售方式'
+        update: '编辑授权',
+        create: '新增授权'
       },
       pvData: [],
       rules: {
-        sales_type: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        paymentname: [        
+          { required: true, message: '请输入名称', trigger: 'blur' },
+        ],
       },
-      taxAuthoritiesList: []
     }
   },
   created() {
@@ -122,7 +191,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getSaleTypeList(this.listQuery).then(response => {
+      getPaymentMethodList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
 
@@ -151,7 +220,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteSaleType(this.temp).then((response) => {
+        deletePaymentMethod(this.temp).then((response) => {
           // console.log(response.data);
           if(!response.data.status){
             this.$notify({
@@ -181,8 +250,12 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        id: undefined,
-        sales_type: '',
+        paymentid: undefined,
+        paymentname: '',
+        paymenttype: 1,
+        receipttype: 1,
+        usepreprintedstationery: 0,  
+        opencashdrawer: 0,
       }
     },
     handleCreate() {
@@ -196,12 +269,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createSaleType(this.temp).then((response) => {
+          createPaymentMethod(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.id = response_data.data.id
-              this.list.unshift(this.temp)
+              this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -223,6 +295,10 @@ export default {
       })
     },
     handleUpdate(row) {
+      row.paymenttype = parseInt(row.paymenttype)
+      row.usepreprintedstationery = parseInt(row.usepreprintedstationery)
+      row.receipttype = parseInt(row.receipttype)
+      row.opencashdrawer = parseInt(row.opencashdrawer)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -234,14 +310,14 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateSaleType(tempData).then((response) => {
+          updatePaymentMethod(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.id === this.temp.id) {
+                if (v.panmentid === this.temp.panmentid) {
                   const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, this.temp)
+                  this.list.splice(index, 1, response_data.data)
                   break
                 }
               }
