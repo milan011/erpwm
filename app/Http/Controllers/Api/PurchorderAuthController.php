@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\PaymentTerm\PaymentTermResource;
-// use App\Http\Resources\PaymentTerm\PaymentTermResourceCollection;
-use App\Repositories\PaymentTerm\PaymentTermRepositoryInterface;
+// use App\Http\Resources\PurchorderAuth\PurchorderAuthResource;
+// use App\Http\Resources\PurchorderAuth\PurchorderAuthResourceCollection;
+use App\Repositories\PurchorderAuth\PurchorderAuthRepositoryInterface;
 use Illuminate\Http\Request;
 
-class PaymentTermController extends Controller
+class PurchorderAuthController extends Controller
 {
-    protected $paymentTerm;
+    protected $purchorderAuth;
 
     public function __construct(
 
-        PaymentTermRepositoryInterface $paymentTerm
+        PurchorderAuthRepositoryInterface $purchorderAuth
     ) {
-        $this->paymentTerm = $paymentTerm;
+        $this->purchorderAuth = $purchorderAuth;
     }
 
     /**
@@ -29,9 +29,9 @@ class PaymentTermController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $paymentTerms = $this->paymentTerm->getList($query_list);
+        $purchorderAuths = $this->purchorderAuth->getList($query_list);
 
-        return $paymentTerms;
+        return $purchorderAuths;
     }
 
     /**
@@ -54,11 +54,13 @@ class PaymentTermController extends Controller
 
         // dd($request->all());
 
-        if ($this->paymentTerm->isRepeat($request->terms)) {
+        if ($this->purchorderAuth->isRepeat($request->userid, $request->currabrev)) {
             return $this->baseFailed($message = '数据重复');
         }
 
-        $info = $this->paymentTerm->create($request);
+        $info = $this->purchorderAuth->create($request);
+        $info->belongsToUser;
+        $info->belongsToCurrencies;
 
         if ($info) {
             //添加成功
@@ -77,10 +79,10 @@ class PaymentTermController extends Controller
      */
     public function show($id)
     {
-        $info = $this->paymentTerm->find($id);
+        $info = $this->purchorderAuth->find($id);
         $info->belongsToCreater;
 
-        return new PaymentTermResource($info);
+        return new PurchorderAuthResource($info);
     }
 
     /**
@@ -104,14 +106,15 @@ class PaymentTermController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->paymentTerm->isRepeat($request->terms);
+        $update_info = $this->purchorderAuth->isRepeat($request->userid, $request->currabrev);
 
         if ($update_info && ($update_info->id != $id)) {
             return $this->baseFailed($message = '您修改后的信息与现有冲突');
         }
 
-        $info = $this->paymentTerm->update($request, $id);
-        $info->hasOnePackage;
+        $info = $this->purchorderAuth->update($request, $id);
+        $info->belongsToUser;
+        $info->belongsToCurrencies;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -125,16 +128,7 @@ class PaymentTermController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $info = $this->paymentTerm->destroy($id);
-        // dd($info);
-
-        if ($info) {
-            //删除成功
-            return $this->baseSucceed($message = '删除成功');
-        } else {
-            //删除失败
-            return $this->baseFailed($message = '该付款条款已被供应商或客户使用');
-        }
-
+        $this->purchorderAuth->destroy($id);
+        return $this->baseSucceed($message = '修改成功');
     }
 }

@@ -29,6 +29,7 @@ export default {
     supplierType: '供应商类型',
     creditStatus: '信用等级',
     paymentTerm: '付款条款',
+    purchorderAuth: '采购订单授权',
     taxCategories:'税目维护',
     taxProvinces: '纳税区域',
     taxGroups:'税收组',
@@ -215,5 +216,14 @@ export default {
     panmentEnd: '付款截止',
     status: '状态',
     paymenttype: '截止类型',
+  },
+  purchorderAuth:{
+    id: '序号',
+    userid: '用户',
+    uid: 'UID',
+    currabrev: '币种',
+    cancreate: '创建订单',
+    authlevel: '授权水平',
+    offhold: '发行发票',
   },
 }

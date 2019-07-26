@@ -53,6 +53,12 @@ class PaymentTermRepository implements PaymentTermRepositoryInterface
             // dd($tax_authorities->get());
             $input = array_replace($requestData->all());
             // dd($input);
+            if ($requestData->paymenttype == '1') {
+                //次月截止
+                $input['daysbeforedue'] = 0;
+            } else {
+                $input['dayinfollowingmonth'] = 0;
+            }
             $payment_term->fill($input);
             $payment_term = $payment_term->create($input);
 
@@ -73,11 +79,19 @@ class PaymentTermRepository implements PaymentTermRepositoryInterface
         // dd($requestData->all());
         $info = PaymentTerm::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->termsindicator      = $requestData->termsindicator;
-        $info->terms               = $requestData->terms;
-        $info->daysbeforedue       = $requestData->daysbeforedue;
-        $info->dayinfollowingmonth = $requestData->dayinfollowingmonth;
-        $info->paymenttype         = $requestData->paymenttype;
+        $info->termsindicator = $requestData->termsindicator;
+        $info->terms          = $requestData->terms;
+
+        $info->paymenttype = $requestData->paymenttype;
+
+        if ($requestData->paymenttype == '1') {
+            //次月截止
+            $info->daysbeforedue       = 0;
+            $info->dayinfollowingmonth = $requestData->dayinfollowingmonth;
+        } else {
+            $info->daysbeforedue       = $requestData->daysbeforedue;
+            $info->dayinfollowingmonth = 0;
+        }
 
         $info->save();
 
@@ -87,9 +101,17 @@ class PaymentTermRepository implements PaymentTermRepositoryInterface
     // 删除信息
     public function destroy($id)
     {
+
         DB::beginTransaction();
         try {
-            $info         = PaymentTerm::findorFail($id);
+            $info = PaymentTerm::with('hasManyDebtorsMaster', 'hasManySuppliers')
+                ->findorFail($id);
+            $debtors_num   = $info->hasManyDebtorsMaster->count();
+            $suppliers_num = $info->hasManySuppliers->count();
+            if (($debtors_num > 0) || ($suppliers_num > 0)) {
+                //付款条款已被使用
+                return false;
+            }
             $info->status = '0'; //删除税目
             $info->save();
 

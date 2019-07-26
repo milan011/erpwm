@@ -125,6 +125,20 @@ Route::group([
     Route::post('paymentTerm', 'PaymentTermController@store');
     Route::put('paymentTerm/{id}', 'PaymentTermController@update');
     Route::delete('paymentTerm/{id}', 'PaymentTermController@destroy');
+
+    //PurchorderAuth
+    Route::get('purchorderAuthList', 'PurchorderAuthController@index');
+    Route::get('purchorderAuth/{id}', 'PurchorderAuthController@show');
+    Route::post('purchorderAuth', 'PurchorderAuthController@store');
+    Route::put('purchorderAuth/{id}', 'PurchorderAuthController@update');
+    Route::delete('purchorderAuth/{id}', 'PurchorderAuthController@destroy');
+
+    // Currencies
+    Route::get('currenciesList', 'CurrenciesController@index');
+    Route::get('currencies/{id}', 'CurrenciesController@show');
+    Route::post('currencies', 'CurrenciesController@store');
+    Route::put('currencies/{id}', 'CurrenciesController@update');
+    Route::delete('currencies/{id}', 'CurrenciesController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

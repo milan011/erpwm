@@ -43,6 +43,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\SupplierType\SupplierTypeRepositoryInterface', 'App\Repositories\SupplierType\SupplierTypeRepository');
         $this->app->bind('App\Repositories\CreditStatus\CreditStatusRepositoryInterface', 'App\Repositories\CreditStatus\CreditStatusRepository');
         $this->app->bind('App\Repositories\PaymentTerm\PaymentTermRepositoryInterface', 'App\Repositories\PaymentTerm\PaymentTermRepository');
+        $this->app->bind('App\Repositories\Currencies\CurrenciesRepositoryInterface', 'App\Repositories\Currencies\CurrenciesRepository');
+        $this->app->bind('App\Repositories\PurchorderAuth\PurchorderAuthRepositoryInterface', 'App\Repositories\PurchorderAuth\PurchorderAuthRepository');
 
     }
 }

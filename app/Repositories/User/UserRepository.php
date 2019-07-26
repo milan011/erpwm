@@ -15,7 +15,7 @@ use Spatie\Permission\Models\Role;
 class UserRepository implements UserRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['id', 'name', 'realname', 'password', 'customerid', 'supplierid', 'salesman', 'phone', 'email', 'defaultlocation', 'cancreatetender', 'lastvisitdate', 'branchcode', 'pagesize', 'modulesallowed', 'status', 'displayrecordsmax', 'theme', 'language', 'pdflanguage', 'department', 'created_at', 'updated_at'];
+    protected $select_columns = ['id', 'userid', 'realname', 'password', 'customerid', 'supplierid', 'salesman', 'phone', 'email', 'defaultlocation', 'cancreatetender', 'lastvisitdate', 'branchcode', 'pagesize', 'modulesallowed', 'status', 'displayrecordsmax', 'theme', 'language', 'pdflanguage', 'department', 'created_at', 'updated_at'];
 
     public function model()
     {

@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PaymentTerm extends Model
+class DebtorsMaster extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,9 +13,9 @@ class PaymentTerm extends Model
      * @var array
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
-    protected $table      = 'paymentterms';
+    protected $table      = 'debtorsmaster';
     protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'termsindicator', 'terms', 'daysbeforedue', 'dayinfollowingmonth', 'paymenttype'];
+    protected $fillable   = ['id', 'debtorno', 'name', 'address1', 'address2', 'address3', 'address4', 'address5', 'address6', 'salestype', 'currcode', 'clientsince', 'paymentterms', 'holdreason', 'discount', 'pymtdiscount', 'lastpaid', 'lastpaiddate', 'creditlimit', 'invaddrbranch', 'discountcode', 'ediinvoices', 'ediorders', 'edireference', 'editransport', 'ediaddress', 'ediserveruser', 'ediserverpwd', 'taxref', 'customerpoline', 'typeid', 'language_id'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,7 +33,7 @@ class PaymentTerm extends Model
      */
     public $timestamps = false;
 
-    // 定义PaymentTerm表与Shop表一对一关系
+    // 定义DebtorsMaster表与Shop表一对一关系
     public function belongsToShop()
     {
 
@@ -42,17 +42,11 @@ class PaymentTerm extends Model
         ]);
     }
 
-    // 定义PaymentTerm表与Suppliers表一对多关系
-    public function hasManySuppliers()
+    // 定义DebtorsMaster表与Notice表一对多关系
+    public function hasManyNotice()
     {
 
-        return $this->hasMany('App\Suppliers', 'paymentterms', 'id');
-    }
-
-    // 定义PaymentTerm表与DebtorsMaster表一对多关系
-    public function hasManyDebtorsMaster()
-    {
-
-        return $this->hasMany('App\DebtorsMaster', 'paymentterms', 'id');
+        return $this->hasMany('App\Notice', 'user_id', 'id')->withDefault(['accountname' => '',
+        ]);
     }
 }

@@ -21,7 +21,7 @@ class User extends Authenticatable
     protected $guard_name = 'api'; // 使用任何你想要的守卫
     protected $table      = 'www_users';
     protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'name', 'realname', 'password', 'customerid', 'supplierid', 'salesman', 'phone', 'email', 'defaultlocation', 'cancreatetender', 'lastvisitdate', 'branchcode', 'pagesize', 'modulesallowed', 'status', 'displayrecordsmax', 'theme', 'language', 'pdflanguage', 'department', 'created_at', 'updated_at'];
+    protected $fillable   = ['id', 'userid', 'realname', 'password', 'customerid', 'supplierid', 'salesman', 'phone', 'email', 'defaultlocation', 'cancreatetender', 'lastvisitdate', 'branchcode', 'pagesize', 'modulesallowed', 'status', 'displayrecordsmax', 'theme', 'language', 'pdflanguage', 'department', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.

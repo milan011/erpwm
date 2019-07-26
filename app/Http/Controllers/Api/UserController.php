@@ -55,18 +55,18 @@ class UserController extends Controller
         // dd($users);
         // dd($users);$user->hasRole('writer');
 
-        $usersSalers = $users->filter(function ($value, $key) {
-            //只获取销售顾问
+        /*$usersSalers = $users->filter(function ($value, $key) {
+        //只获取销售顾问
 
-            return $value->hasRole('saler');
-        });
+        return $value->hasRole('saler');
+        });*/
 
         // dd (new UserResource($usersSalers));
 
         // dd($usersSalers);
         // UserResource::withoutWrapping();
         // return new UserResource($usersSalers);
-        return $usersSalers;
+        return $users;
     }
 
     /**

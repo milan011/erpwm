@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Http\Resources\Example\ExampleResource;
-use App\Http\Resources\Example\ExampleResourceCollection;
+// use App\Http\Resources\Example\ExampleResource;
+// use App\Http\Resources\Example\ExampleResourceCollection;
 use App\Repositories\Example\ExampleRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -31,7 +31,7 @@ class ExampleController extends Controller
 
         $examples = $this->example->getList($query_list);
 
-        return new ExampleResource($examples);
+        return $examples;
     }
 
     /**
@@ -108,7 +108,7 @@ class ExampleController extends Controller
         // dd($request->all());
         $update_info = $this->example->isRepeat($request->examplename);
 
-        if ($update_info && ($update_info->taxprovinceid != $id)) {
+        if ($update_info && ($update_info->id != $id)) {
             return $this->baseFailed($message = '您修改后的信息与现有冲突');
         }
 

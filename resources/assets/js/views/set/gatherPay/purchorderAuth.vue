@@ -6,37 +6,45 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('paymentTerm.id')" align="center">
+      <el-table-column :label="$t('purchorderAuth.id')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('paymentTerm.termsindicator')" align="center">
+      <el-table-column :label="$t('purchorderAuth.userid')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.termsindicator }}</span>
+          <span>{{ scope.row.belongs_to_user.realname }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('paymentTerm.terms')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('purchorderAuth.currabrev')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.terms }}</span>
+          <span>{{ scope.row.currabrev }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('paymentTerm.paymenttype')" align="center">
+      <el-table-column :label="$t('purchorderAuth.cancreate')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
           <span>
-            <el-tag :type="scope.row.paymenttype | statusFilter">
-              {{ paymentTypeMap[scope.row.paymenttype] }}
+            <el-tag :type="scope.row.cancreate | statusFilter">
+              {{ cancreateStatus[scope.row.cancreate] }}
             </el-tag>
           </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('paymentTerm.panmentEnd')" align="center">
+      <el-table-column :label="$t('purchorderAuth.offhold')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.paymenttype == '1'">次月{{ scope.row.dayinfollowingmonth }}日前</span>
-          <span v-else>{{ scope.row.daysbeforedue }}天后</span>
+          <span>
+            <el-tag :type="scope.row.offhold | statusFilter">
+              {{ offholdStatus[scope.row.offhold] }}
+            </el-tag>
+          </span>
         </template>
-      </el-table-column>     
-      <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
+      </el-table-column>
+      <el-table-column :label="$t('purchorderAuth.authlevel')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.authlevel }}</span>
+        </template>
+      </el-table-column>    
+      <el-table-column :label="$t('table.actions')" width="180%" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
@@ -49,23 +57,46 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;">
-        <el-form-item :label="$t('paymentTerm.termsindicator')" prop="termsindicator">
-          <el-input v-model.number="temp.termsindicator" />
+        <el-form-item :label="$t('purchorderAuth.userid')" prop="userid">
+          <el-select 
+            v-model="temp.userid" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入用户搜索">
+            <el-option v-for="user in userList" :key="user.id" :label="user.realname" :value="user.id"/>
+          </el-select>
         </el-form-item>
-        <el-form-item :label="$t('paymentTerm.terms')" prop="terms">
-          <el-input v-model="temp.terms" />
+        <el-form-item :label="$t('purchorderAuth.currabrev')" prop="currabrev">
+          <el-select 
+            v-model="temp.currabrev" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入币种搜索">
+            <el-option v-for="currencies in currenciesList" :key="currencies.id" :label="currencies.currabrev" :value="currencies.currabrev"/>
+          </el-select>
         </el-form-item>
-        <el-form-item :label="$t('paymentTerm.paymenttype')">
-          <el-radio-group @change="changeType" v-model="temp.paymenttype">
-            <el-radio-button label="1">次月截止</el-radio-button>
-            <el-radio-button label="2">N天后截止</el-radio-button>
-          </el-radio-group>
+        <el-form-item :label="$t('purchorderAuth.cancreate')">
+          <el-switch
+                  v-model="temp.cancreate"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-value="1"
+                  inactive-value="0">
+                </el-switch>
         </el-form-item>
-        <el-form-item v-show="currentPaymentType == '1'" :label="$t('paymentTerm.dayinfollowingmonth')" prop="dayinfollowingmonth">
-          <el-input v-model.number="temp.dayinfollowingmonth" />
+        <el-form-item :label="$t('purchorderAuth.offhold')" prop="offhold">
+          <el-switch
+                  v-model="temp.offhold"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-value="1"
+                  inactive-value="0">
+                </el-switch>
         </el-form-item>
-        <el-form-item v-show="currentPaymentType == '2'" :label="$t('paymentTerm.daysbeforedue')" prop="daysbeforedue">
-          <el-input v-model.number="temp.daysbeforedue" />
+        <el-form-item :label="$t('purchorderAuth.authlevel')" prop="authlevel">
+          <el-input v-model.number="temp.authlevel" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -77,7 +108,9 @@
   </div>
 </template>
 <script>
-  import { getPaymentTermList, createPaymentTerm, updatePaymentTerm, deletePaymentTerm,} from '@/api/paymentTerm'
+  import { getPurchorderAuthList, createPurchorderAuth, updatePurchorderAuth, deletePurchorderAuth,} from '@/api/purchorderAuth'
+  import { userAll} from '@/api/user'
+  import { currenciesAll} from '@/api/currencies'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
@@ -95,7 +128,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'paymentTerm',
+  name: 'purchorderAuth',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -104,7 +137,7 @@ export default {
     statusFilter(status) {
       const statusMap = {
         1: 'success',
-        2: 'info',
+        0: 'danger',
       }
       return statusMap[status]
     },
@@ -121,56 +154,53 @@ export default {
       listQuery: {
         page: 1,
       },
-      tanxontaxStatus:['否', '是'],
+      cancreateStatus:['否', '是'],
+      offholdStatus:['否', '是'],
       calendarTypeOptions,
       showReviewer: false,
       temp: {
         id: undefined,
-        termsindicator: '',
-        terms: '',
-        daysbeforedue: '',
-        dayinfollowingmonth: '',
-        paymenttype: '',
+        userid: '',
+        currabrev: '',
+        offhold: '',
+        cancreate: '',
+        authlevel: '',
       },
-      currentPaymentType: '1',
       dialogFormVisible: false,
       setGroupTaxVisible: false,
       setGroupTax: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑付款条款',
-        create: '新增付款条款'
+        update: '编辑授权',
+        create: '新增授权'
       },
-      paymentTypeMap:{1: '次月截止', 2:'N天后'},
       pvData: [],
       rules: {
-        termsindicator: [        
-          {type: 'number', message: '编码为数字类型', trigger: 'blur'},
-          { required: true, message: '请输入编码', trigger: 'blur' },
+        userid: [        
+          { required: true, message: '请选择用户', trigger: 'blur' },
         ],
-        terms: [{ required: true, message: '请输入描述', trigger: 'blur' }],
-        dayinfollowingmonth: [        
-          {type: 'number',min: 1, max: 31, message: '请输入1-31数字', trigger: 'blur'},
-          { required: true, message: '请输入日期', trigger: 'blur' },
-        ],
-        daysbeforedue:[        
-          {type: 'number', min: 1, max: 300, message: '请输入1-300数字', trigger: 'blur'},
-          { required: true, message: '请输入天数', trigger: 'blur' },
+        currabrev: [{ required: true, message: '请选择币种', trigger: 'blur' }],
+        authlevel: [        
+          {type: 'number', message: '请输入的数字', trigger: 'blur'},
+          { required: true, message: '请输入授权水平', trigger: 'blur' },
         ],
       },
-      taxAuthoritiesList: []
+      userList: [],
+      currenciesList: [],
     }
   },
   created() {
     // this.getList()
     Promise.all([
       this.getList(),
+      this.getAllUserList(),
+      this.getAllCurrenciesList(),
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getPaymentTermList(this.listQuery).then(response => {
+      getPurchorderAuthList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
 
@@ -180,8 +210,15 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    changeType(val){
-      this.currentPaymentType = val
+    getAllUserList(){
+      userAll().then(response => {
+        this.userList = response.data
+      })
+    },
+    getAllCurrenciesList(){
+      currenciesAll().then(response => {
+        this.currenciesList = response.data
+      })
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -202,7 +239,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deletePaymentTerm(this.temp).then((response) => {
+        deletePurchorderAuth(this.temp).then((response) => {
           // console.log(response.data);
           if(!response.data.status){
             this.$notify({
@@ -233,11 +270,11 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        termsindicator: undefined,
-        terms: '',
-        daysbeforedue: '',
-        dayinfollowingmonth: '',
-        paymenttype: '1',
+        userid: undefined,
+        currabrev: '',
+        offhold: '1',
+        cancreate: '1',
+        authlevel: 0,
       }
     },
     handleCreate() {
@@ -251,12 +288,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createPaymentTerm(this.temp).then((response) => {
+          createPurchorderAuth(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.id = response_data.data.id
-              this.list.unshift(this.temp)
+              this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -278,12 +314,9 @@ export default {
       })
     },
     handleUpdate(row) {
-      row.daysbeforedue = parseInt(row.daysbeforedue)
-      row.dayinfollowingmonth = parseInt(row.dayinfollowingmonth)
-      row.termsindicator = parseInt(row.termsindicator)
+      row.userid = parseInt(row.userid)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
-      this.currentPaymentType = this.temp.paymenttype
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -293,14 +326,14 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updatePaymentTerm(tempData).then((response) => {
+          updatePurchorderAuth(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
                   const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, this.temp)
+                  this.list.splice(index, 1, response_data.data)
                   break
                 }
               }
