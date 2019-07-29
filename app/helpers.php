@@ -59,3 +59,12 @@ function jsonToArray($request)
     $jsonArray['withOutPage'] = !empty($request->withOutPage) ? $request->withOutPage : false;
     return $jsonArray;
 }
+
+/**
+ * NULL值转为空字符串
+ */
+
+function nullToEmptyString($data)
+{
+    return !empty($data) ? $data : '';
+}

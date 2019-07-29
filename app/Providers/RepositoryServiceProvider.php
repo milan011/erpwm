@@ -47,6 +47,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\PurchorderAuth\PurchorderAuthRepositoryInterface', 'App\Repositories\PurchorderAuth\PurchorderAuthRepository');
         $this->app->bind('App\Repositories\PaymentMethod\PaymentMethodRepositoryInterface', 'App\Repositories\PaymentMethod\PaymentMethodRepository');
         $this->app->bind('App\Repositories\SalesMan\SalesManRepositoryInterface', 'App\Repositories\SalesMan\SalesManRepository');
+        $this->app->bind('App\Repositories\Area\AreaRepositoryInterface', 'App\Repositories\Area\AreaRepository');
+        $this->app->bind('App\Repositories\Shipper\ShipperRepositoryInterface', 'App\Repositories\Shipper\ShipperRepository');
+        $this->app->bind('App\Repositories\SalesGLPosting\SalesGLPostingRepositoryInterface', 'App\Repositories\SalesGLPosting\SalesGLPostingRepository');
+        $this->app->bind('App\Repositories\StockCategory\StockCategoryRepositoryInterface', 'App\Repositories\StockCategory\StockCategoryRepository');
 
     }
 }

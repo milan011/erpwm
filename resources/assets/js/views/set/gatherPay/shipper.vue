@@ -6,50 +6,17 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('salesMan.id')" align="center">
+      <el-table-column :label="$t('shipper.shipper_id')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.shipper_id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('salesMan.salesmanname')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('shipper.shippername')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.salesmanname }}</span>
+          <span>{{ scope.row.shippername }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('salesMan.smantel')" show-overflow-tooltip align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.smantel }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('salesMan.smanfax')" show-overflow-tooltip align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.smanfax }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('salesMan.commissionrate1')" show-overflow-tooltip align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.commissionrate1 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('salesMan.breakpoint')" show-overflow-tooltip align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.breakpoint }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('salesMan.commissionrate2')" show-overflow-tooltip align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.commissionrate2 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('salesMan.current')" show-overflow-tooltip align="center">
-        <template slot-scope="scope">
-          <span>
-            <el-tag :type="scope.row.current | statusFilter">
-              {{ currentStatus[scope.row.current] }}
-            </el-tag>
-          </span>
-        </template>
-      </el-table-column> 
+      
       <el-table-column :label="$t('table.actions')" width="180%" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
@@ -63,55 +30,8 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('salesMan.salesmanname')" prop="salesmanname">
-          <el-input v-model="temp.salesmanname" />
-        </el-form-item>
-        <el-form-item :label="$t('salesMan.smantel')" prop="smantel">
-          <el-input v-model="temp.smantel" />
-        </el-form-item>
-        <el-form-item :label="$t('salesMan.smanfax')" prop="smanfax">
-          <el-input v-model="temp.smanfax" />
-        </el-form-item>
-        <el-form-item :label="$t('salesMan.commissionrate1')" prop="commissionrate1">
-          <el-input-number 
-                  v-model='temp.commissionrate1' 
-                  :min="0" 
-                  :max="100" 
-                  :precision="2"
-                  :step="1"
-                  style="width: 140px;"
-                  label="提成比率1">
-                </el-input-number>
-        </el-form-item>
-        <el-form-item :label="$t('salesMan.breakpoint')" prop="breakpoint">
-          <el-input-number 
-                  v-model='temp.breakpoint'   
-                  :min="0" 
-                  :max="100" 
-                  :precision="2"
-                  :step="1"
-                  style="width: 140px;"
-                  label="分隔点">
-          </el-input-number>
-        </el-form-item>
-        <el-form-item :label="$t('salesMan.commissionrate2')" prop="commissionrate1">
-          <el-input-number 
-                  v-model='temp.commissionrate2'  
-                  :min="0" 
-                  :max="100" 
-                  :precision="2"
-                  :step="1"
-                  style="width: 140px;"
-                  label="提成比率2">
-          </el-input-number>
-        </el-form-item>
-        <el-form-item :label="$t('salesMan.current')" prop="current">
-          <el-select 
-            v-model="temp.current" 
-            class="filter-item"  
-            placeholder="">
-            <el-option v-for="(current, index) in currentStatus" :key="index" :label="current" :value="index"/>
-          </el-select>
+        <el-form-item :label="$t('shipper.shippername')" prop="shippername">
+          <el-input v-model="temp.shippername" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -123,7 +43,7 @@
   </div>
 </template>
 <script>
-  import { getSalesManList, createSalesMan, updateSalesMan, deleteSalesMan,} from '@/api/salesMan'
+  import { getShipperList, createShipper, updateShipper, deleteShipper,} from '@/api/shipper'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isTelephone, isFax } from '@/utils/validate'
@@ -141,30 +61,9 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
   return acc
 }, {})
 
-const validateTelephone = (rule, value, callback) => {
-  if (!isTelephone(value)) {
-    callback(new Error('请输入正确格式手机号'))
-  } else {
-    callback()
-  }
-}
-const validateFax = (rule, value, callback) => {
-  // console.log(!value)
-  if(value){
-      if (!isFax(value)) {
-      callback(new Error('请输入正确格式传真号'))
-    } else {
-      callback()
-    }
-  }else{
-    callback()
-  }
-  
-}
-
 export default {
 
-  name: 'salesMan',
+  name: 'shipper',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -194,34 +93,21 @@ export default {
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        id: undefined,
-        salesmanname: '',
-        smantel: '',
-        commissionrate1: '',
-        smanfax: undefined,
-        breakpoint: '',
-        commissionrate2: '',
-        current: '',
+        shipper_id: undefined,
+        shippername: '',
       },
       dialogFormVisible: false,
       setGroupTaxVisible: false,
       setGroupTax: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑授权',
-        create: '新增授权'
+        update: '编辑区域',
+        create: '新增区域'
       },
       pvData: [],
       rules: {
-        salesmanname: [        
+        shippername: [        
           { required: true, message: '请输入名称', trigger: 'blur' },
-        ],
-        smantel: [
-          { required: true, message: '请输入有效手机号', trigger: 'blur' }, 
-          { validator: validateTelephone, trigger: 'change' }     
-        ],
-        smanfax: [ 
-          { validator: validateFax, trigger: 'blur' }     
         ],
       },
 
@@ -236,7 +122,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getSalesManList(this.listQuery).then(response => {
+      getShipperList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
 
@@ -265,7 +151,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteSalesMan(this.temp).then((response) => {
+        deleteShipper(this.temp).then((response) => {
           // console.log(response.data);
           if(!response.data.status){
             this.$notify({
@@ -295,14 +181,8 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        id: undefined,
-        salesmanname: '金牌辅助',
-        smantel: '13731080174',
-        smanfax: undefined,
-        commissionrate1: 0,
-        breakpoint: 0,
-        commissionrate2: 0,
-        current: 1,
+        shipper_id: undefined,
+        shippername: '金牌辅助',
       }
     },
     handleCreate() {
@@ -317,7 +197,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           console.log(this.temp)
-          createSalesMan(this.temp).then((response) => {
+          createShipper(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
@@ -355,12 +235,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateSalesMan(tempData).then((response) => {
+          updateShipper(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.id === this.temp.id) {
+                if (v.shipper_id === this.temp.shipper_id) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, response_data.data)
                   break

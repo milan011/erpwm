@@ -105,6 +105,24 @@ const setRouter = {
             name: 'salesMan',
             meta: { title: 'salesMan' },
           },
+          {
+            path: 'area',
+            component: resolve => void(require(['@/views/set/gatherPay/area.vue'], resolve)),
+            name: 'area',
+            meta: { title: 'area' },
+          },
+          {
+            path: 'shipper',
+            component: resolve => void(require(['@/views/set/gatherPay/shipper.vue'], resolve)),
+            name: 'shipper',
+            meta: { title: 'shipper' },
+          },
+          {
+            path: 'salesGLPosting',
+            component: resolve => void(require(['@/views/set/gatherPay/salesGLPosting.vue'], resolve)),
+            name: 'salesGLPosting',
+            meta: { title: 'salesGLPosting' },
+          },
         ]
       },
     ]

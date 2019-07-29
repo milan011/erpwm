@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\SalesMan;
+namespace App\Repositories\Shipper;
 
-interface SalesManRepositoryInterface
+interface ShipperRepositoryInterface
 {
 
     public function find($id);
@@ -14,5 +14,5 @@ interface SalesManRepositoryInterface
 
     public function destroy($id);
 
-    public function isRepeat($smantel);
+    public function isRepeat($taxcatname);
 }

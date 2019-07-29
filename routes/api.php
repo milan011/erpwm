@@ -153,6 +153,34 @@ Route::group([
     Route::post('salesMan', 'SalesManController@store');
     Route::put('salesMan/{id}', 'SalesManController@update');
     Route::delete('salesMan/{id}', 'SalesManController@destroy');
+
+    // Area
+    Route::get('areaList', 'AreaController@index');
+    Route::get('area/{id}', 'AreaController@show');
+    Route::post('area', 'AreaController@store');
+    Route::put('area/{id}', 'AreaController@update');
+    Route::delete('area/{id}', 'AreaController@destroy');
+
+    // Shipper
+    Route::get('shipperList', 'ShipperController@index');
+    Route::get('shipper/{id}', 'ShipperController@show');
+    Route::post('shipper', 'ShipperController@store');
+    Route::put('shipper/{id}', 'ShipperController@update');
+    Route::delete('shipper/{id}', 'ShipperController@destroy');
+
+    // SalesGLPosting
+    Route::get('salesGLPostingList', 'SalesGLPostingController@index');
+    Route::get('salesGLPosting/{id}', 'SalesGLPostingController@show');
+    Route::post('salesGLPosting', 'SalesGLPostingController@store');
+    Route::put('salesGLPosting/{id}', 'SalesGLPostingController@update');
+    Route::delete('salesGLPosting/{id}', 'SalesGLPostingController@destroy');
+
+    // StockCategory
+    Route::get('stockCategoryList', 'StockCategoryController@index');
+    Route::get('stockCategory/{id}', 'StockCategoryController@show');
+    Route::post('stockCategory', 'StockCategoryController@store');
+    Route::put('stockCategory/{id}', 'StockCategoryController@update');
+    Route::delete('stockCategory/{id}', 'StockCategoryController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

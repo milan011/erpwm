@@ -27,6 +27,8 @@ export default {
     saleType: '销售方式',
     paymentMethod: '付款方式',
     salesMan: '销售员',
+    area: '销售区域',
+    salesGLPosting: '销售收入科目',
     customerType: '客户类型',
     supplierType: '供应商类型',
     creditStatus: '信用等级',
@@ -37,6 +39,7 @@ export default {
     taxGroups:'税收组',
     taxAuthorities:'税收主管部门及税率',
     periodsInquiry: '会计期间',
+    shipper: '承运人',
 
   },
   navbar: {
@@ -247,5 +250,21 @@ export default {
     commissionrate2 : '提成比率2',
     current : '当前?',
     status : '状态',
+  },
+  area:{
+    id: '序号',
+    areadescription: '区域',
+  },
+  shipper: {
+    shipper_id: '序号',
+    shippername: '承运人',
+  },
+  salesGLPosting: {
+    id : '序号',
+    area : '销售区域',
+    stkcat : '库存种类',
+    discountglcode : '销售折扣科目',
+    salesglcode : '销售收入科目',
+    salestype : '销售方式 / 价格表',
   },
 }

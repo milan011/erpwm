@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\Example;
+namespace App\Repositories\StockCategory;
 
-use App\Example;
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\Example\ExampleRepositoryInterface;
+use App\Repositories\StockCategory\StockCategoryRepositoryInterface;
+use App\StockCategory;
 use Auth;
 use Datatables;
 use DB;
@@ -15,23 +15,22 @@ use PHPZen\LaravelRbac\Traits\Rbac;
 use Planbon;
 use Session;
 
-class ExampleRepository implements ExampleRepositoryInterface
+class StockCategoryRepository implements StockCategoryRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['id', 'taxcatname'];
+    protected $select_columns = ['id', 'categoryid', 'categorydescription', 'stocktype', 'stockact', 'adjglact', 'issueglact', 'purchpricevaract', 'materialuseagevarac', 'wipact', 'defaulttaxcatid'];
 
     // 根据ID获得信息
     public function find($id)
     {
-        return Example::select($this->select_columns)
+        return StockCategory::select($this->select_columns)
             ->findOrFail($id);
     }
 
     // 根据不同参数获得信息列表
     public function getList($queryList)
     {
-        $query = new Example(); // 返回的是一个Order实例,两种方法均可
-
+        $query = new StockCategory(); // 返回的是一个Order实例,两种方法均可
         if (empty($queryList['page'])) {
             //无分页,全部返还
             return $query->get();
@@ -47,7 +46,7 @@ class ExampleRepository implements ExampleRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new Example(); //税目
+            $example = new StockCategory(); //税目
 
             $input = array_replace($requestData->all());
             $example->fill($input);
@@ -68,7 +67,7 @@ class ExampleRepository implements ExampleRepositoryInterface
     public function update($requestData, $id)
     {
         // dd($requestData->all());
-        $info = Example::select($this->select_columns)->findorFail($id); //获取信息
+        $info = StockCategory::select($this->select_columns)->findorFail($id); //获取信息
 
         $info->taxcatname = $requestData->taxcatname;
 
@@ -82,7 +81,7 @@ class ExampleRepository implements ExampleRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = Example::findorFail($id);
+            $info         = StockCategory::findorFail($id);
             $info->status = '0'; //删除税目
             $info->save();
 
@@ -98,6 +97,6 @@ class ExampleRepository implements ExampleRepositoryInterface
     //名称是否重复
     public function isRepeat($taxcatname)
     {
-        return Example::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return StockCategory::where('taxcatname', $taxcatname)->where('status', '1')->first();
     }
 }

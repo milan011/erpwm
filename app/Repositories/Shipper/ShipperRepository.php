@@ -1,9 +1,10 @@
 <?php
-namespace App\Repositories\Example;
+namespace App\Repositories\Shipper;
 
-use App\Example;
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\Example\ExampleRepositoryInterface;
+use App\Repositories\Shipper\ShipperRepositoryInterface;
+use App\Shipper;
+use App\SystemParameter;
 use Auth;
 use Datatables;
 use DB;
@@ -15,22 +16,23 @@ use PHPZen\LaravelRbac\Traits\Rbac;
 use Planbon;
 use Session;
 
-class ExampleRepository implements ExampleRepositoryInterface
+class ShipperRepository implements ShipperRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['id', 'taxcatname'];
+    protected $select_columns = ['shipper_id', 'shippername', 'mincharge'];
 
     // 根据ID获得信息
     public function find($id)
     {
-        return Example::select($this->select_columns)
+        return Shipper::select($this->select_columns)
             ->findOrFail($id);
     }
 
     // 根据不同参数获得信息列表
     public function getList($queryList)
     {
-        $query = new Example(); // 返回的是一个Order实例,两种方法均可
+        $query = new Shipper(); // 返回的是一个Order实例,两种方法均可
+        $query = $query->where('status', '1')->orderBy('shipper_id', 'DESC');
 
         if (empty($queryList['page'])) {
             //无分页,全部返还
@@ -47,7 +49,7 @@ class ExampleRepository implements ExampleRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new Example(); //税目
+            $example = new Shipper(); //税目
 
             $input = array_replace($requestData->all());
             $example->fill($input);
@@ -68,9 +70,9 @@ class ExampleRepository implements ExampleRepositoryInterface
     public function update($requestData, $id)
     {
         // dd($requestData->all());
-        $info = Example::select($this->select_columns)->findorFail($id); //获取信息
+        $info = Shipper::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->shippername = $requestData->shippername;
 
         $info->save();
 
@@ -82,7 +84,19 @@ class ExampleRepository implements ExampleRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = Example::findorFail($id);
+            $info    = Shipper::findorFail($id);
+            $num_cus = $info->hasManySalesOrders->count();
+            $num_ana = $info->hasManySalesDebtorTrans;
+            // $num_ana = $info->hasManySalesDebtorTrans->count();
+            // dd(lastSql());
+            $default_shipper = SystemParameter::where('confname', 'DefaultSupplierType')->first();
+            // dd($default_shipper);
+            /*p($num_cus);
+            p($num_user);*/
+            // dd($num_cus);
+            if ($num_cus > 0 || $num_ana > 0 || $default_shipper->confvalue == $id) {
+                return false;
+            }
             $info->status = '0'; //删除税目
             $info->save();
 
@@ -96,8 +110,8 @@ class ExampleRepository implements ExampleRepositoryInterface
     }
 
     //名称是否重复
-    public function isRepeat($taxcatname)
+    public function isRepeat($shippername)
     {
-        return Example::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return Shipper::where('shippername', $shippername)->where('status', '1')->first();
     }
 }

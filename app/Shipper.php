@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Area extends Model
+class Shipper extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,9 +13,9 @@ class Area extends Model
      * @var array
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
-    protected $table      = 'areas';
-    protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'areadescription'];
+    protected $table      = 'shippers';
+    protected $primaryKey = 'shipper_id';
+    protected $fillable   = ['shipper_id', 'shippername', 'mincharge'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,19 +33,20 @@ class Area extends Model
      */
     public $timestamps = false;
 
-    // 定义SalesMan表与Custbranch表一对一关系
-    public function hasManyCustbranch()
+    // 定义Shipper表与SalesOrders表一对一关系
+    public function hasManySalesOrders()
     {
 
         // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->hasMany('App\Custbranch', 'area', 'id');
+        return $this->hasMany('App\SalesOrders', 'shipvia', 'shipper_id');
     }
 
-    // 定义SalesMan表与SalesAnalysis表一对一关系
-    public function hasManySalesAnalysis()
+    // 定义Shipper表与DebtorTrans表一对一关系
+    public function hasManySalesDebtorTrans()
     {
 
         // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->hasMany('App\SalesAnalysis', 'area', 'id');
+        return $this->hasMany('App\DebtorTrans', 'shipvia', 'shipper_id');
     }
+
 }

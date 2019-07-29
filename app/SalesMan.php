@@ -33,13 +33,28 @@ class SalesMan extends Model
      */
     public $timestamps = false;
 
-    // 定义Example表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义SalesMan表与User表一对一关系
+    public function hasManyUser()
     {
 
         // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
-        ]);
+        return $this->hasMany('App\User', 'salesman', 'id');
+    }
+
+    // 定义SalesMan表与Custbranch表一对一关系
+    public function hasManyCustbranch()
+    {
+
+        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
+        return $this->hasMany('App\Custbranch', 'salesman', 'id');
+    }
+
+    // 定义SalesMan表与SalesAnalysis表一对一关系
+    public function hasManySalesAnalysis()
+    {
+
+        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
+        return $this->hasMany('App\SalesAnalysis', 'salesperson', 'id');
     }
 
     // 定义Example表与Notice表一对多关系

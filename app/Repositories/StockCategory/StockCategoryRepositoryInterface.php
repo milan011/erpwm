@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\SalesMan;
+namespace App\Repositories\StockCategory;
 
-interface SalesManRepositoryInterface
+interface StockCategoryRepositoryInterface
 {
 
     public function find($id);
@@ -14,5 +14,5 @@ interface SalesManRepositoryInterface
 
     public function destroy($id);
 
-    public function isRepeat($smantel);
+    public function isRepeat($taxcatname);
 }

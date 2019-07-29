@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\SalesMan\SalesManResource;
-// use App\Http\Resources\SalesMan\SalesManResourceCollection;
-use App\Repositories\SalesMan\SalesManRepositoryInterface;
+// use App\Http\Resources\Area\AreaResource;
+// use App\Http\Resources\Area\AreaResourceCollection;
+use App\Repositories\Area\AreaRepositoryInterface;
 use Illuminate\Http\Request;
 
-class SalesManController extends Controller
+class AreaController extends Controller
 {
-    protected $salesMan;
+    protected $area;
 
     public function __construct(
 
-        SalesManRepositoryInterface $salesMan
+        AreaRepositoryInterface $area
     ) {
-        $this->salesMan = $salesMan;
+        $this->area = $area;
     }
 
     /**
@@ -29,9 +29,9 @@ class SalesManController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $salesMans = $this->salesMan->getList($query_list);
+        $areas = $this->area->getList($query_list);
 
-        return $salesMans;
+        return $areas;
     }
 
     /**
@@ -54,11 +54,13 @@ class SalesManController extends Controller
 
         // dd($request->all());
 
-        if ($this->salesMan->isRepeat($request->smantel)) {
-            return $this->baseFailed($message = '电话号码重复');
+        if ($this->area->isRepeat($request->areadescription)) {
+            return $this->baseFailed($message = '数据重复');
         }
 
-        $info = $this->salesMan->create($request);
+        $info = $this->area->create($request);
+        $info->hasOnePackage;
+        $info->belongsToCreater;
 
         if ($info) {
             //添加成功
@@ -77,10 +79,10 @@ class SalesManController extends Controller
      */
     public function show($id)
     {
-        $info = $this->salesMan->find($id);
+        $info = $this->area->find($id);
         $info->belongsToCreater;
 
-        return new SalesManResource($info);
+        return new AreaResource($info);
     }
 
     /**
@@ -104,13 +106,13 @@ class SalesManController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->salesMan->isRepeat($request->smantel);
+        $update_info = $this->area->isRepeat($request->areadescription);
 
         if ($update_info && ($update_info->id != $id)) {
-            return $this->baseFailed($message = '电话号码重复');
+            return $this->baseFailed($message = '您修改后的信息与现有冲突');
         }
 
-        $info = $this->salesMan->update($request, $id);
+        $info = $this->area->update($request, $id);
         $info->hasOnePackage;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
@@ -125,13 +127,12 @@ class SalesManController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $info = $this->salesMan->destroy($id);
+        $info = $this->area->destroy($id);
 
         if ($info) {
             return $this->baseSucceed($message = '修改成功');
         } else {
-            return $this->baseFailed($message = '该销售员已被使用');
+            return $this->baseFailed($message = '该区域已被使用');
         }
-
     }
 }
