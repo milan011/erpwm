@@ -59,7 +59,7 @@
       <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @current-change="handleCurrentChange" />
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="margin: 0px 80px;width:auto;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
         <el-form-item :label="$t('taxAuthorities.description')" prop="description">
           <el-input v-model="temp.description" />
         </el-form-item>
@@ -391,7 +391,7 @@ export default {
             const response_data = response.data
             if(response_data.status){
               this.temp.taxgroupid = response_data.data.taxgroupid
-              this.list.unshift(this.temp)
+              this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -467,7 +467,7 @@ export default {
      padding-top: 10px; 
   }
   .el-form-item{
-    margin-bottom: 1px;
+    margin-bottom: 15px;
   }
   .el-row {
     margin-bottom: 5px;

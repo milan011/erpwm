@@ -48,7 +48,7 @@
       <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @current-change="handleCurrentChange" />
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="margin: 0px 80px;width:auto;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
         <el-form-item :label="$t('salesGLPosting.area')" prop="area">
           <el-select 
             v-model="temp.area" 
@@ -324,7 +324,7 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        area: '一个会计科目',
+        area: undefined,
         stkcat : null,
         discountglcode : null,
         salesglcode : null,
@@ -345,8 +345,8 @@ export default {
           createSalesGLPosting(this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
-              this.temp.taxgroupid = response_data.data.taxgroupid
-              this.list.unshift(this.temp)
+              this.temp.id = response_data.data.id
+              this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -425,7 +425,7 @@ export default {
      padding-top: 10px; 
   }
   .el-form-item{
-    margin-bottom: 1px;
+    margin-bottom: 15px;
   }
   .el-row {
     margin-bottom: 5px;

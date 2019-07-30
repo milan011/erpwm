@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\SalesGLPosting;
+namespace App\Repositories\Locations;
 
-interface SalesGLPostingRepositoryInterface
+interface LocationsRepositoryInterface
 {
 
     public function find($id);
@@ -14,5 +14,5 @@ interface SalesGLPostingRepositoryInterface
 
     public function destroy($id);
 
-    public function isRepeat($area, $stkcat, $salestype);
+    public function isRepeat($taxcatname);
 }

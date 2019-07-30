@@ -6,17 +6,32 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('saleType.id')" align="center">
+      <el-table-column :label="$t('cOGSGLPosting.id')" width="60%" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('saleType.sales_type')" align="center">
+      <el-table-column :label="$t('cOGSGLPosting.area')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.sales_type }}</span>
+          <span>{{ scope.row.belongs_to_area.areadescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
+      <el-table-column :label="$t('cOGSGLPosting.stkcat')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_stock_category.categorydescription }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('cOGSGLPosting.salestype')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_sale_type.sales_type }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('cOGSGLPosting.glcode')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_chart_master.accountname }}</span>
+        </template>
+      </el-table-column>  
+      <el-table-column :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
@@ -28,10 +43,47 @@
       <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @current-change="handleCurrentChange" />
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('saleType.sales_type')" prop="sales_type">
-          <el-input v-model="temp.sales_type" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
+        <el-form-item :label="$t('cOGSGLPosting.area')" prop="area">
+          <el-select 
+            v-model="temp.area" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入区域搜索">
+            <el-option v-for="area in areaList" :key="area.id" :label="area.areadescription" :value="area.id"/>
+          </el-select>
         </el-form-item>
+        <el-form-item :label="$t('cOGSGLPosting.stkcat')" prop="stkcat">
+          <el-select 
+            v-model="temp.stkcat" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入库存种类搜索">
+            <el-option v-for="stock in stockCategoryList" :key="stock.id" :label="stock.categorydescription" :value="stock.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('cOGSGLPosting.salestype')" prop="salestype">
+          <el-select 
+            v-model="temp.salestype" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入销售方式搜索">
+            <el-option v-for="sale in saleTypeList" :key="sale.id" :label="sale.sales_type" :value="sale.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('cOGSGLPosting.glcode')" prop="glcode">
+          <el-select 
+            v-model="temp.glcode" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入会计科目搜索">
+            <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.accountname" :value="chart.id"/>
+          </el-select>
+        </el-form-item>   
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -42,7 +94,11 @@
   </div>
 </template>
 <script>
-  import { getSaleTypeList, createSaleType, updateSaleType, deleteSaleType,} from '@/api/saleType'
+  import { getCOGSGLPostingList,  createCOGSGLPosting, updateCOGSGLPosting, deleteCOGSGLPosting} from '@/api/cOGSGLPosting'
+  import { chartMasterAll } from '@/api/chartMaster'
+  import { areaAll } from '@/api/area'
+  import { saleTypeAll } from '@/api/saleType'
+  import { stockCategoryAll } from '@/api/stockCategory'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
@@ -60,7 +116,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'saleType',
+  name: 'cOGSGLPosting',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -96,33 +152,48 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        sales_type: '',
+        area: null,
+        stkcat : null,
+        glcode : null,
+        salestype : null,
       },
       dialogFormVisible: false,
-      setGroupTaxVisible: false,
-      setGroupTax: '',
+      setRateVisible: false,
+      cOGSGLPostingName: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑销售方式',
-        create: '新增销售方式'
+        update: '编辑销售成本科目',
+        create: '新增销售成本科目'
       },
       pvData: [],
       rules: {
-        sales_type: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        area: [{ required: true, message: '请选择区域', trigger: 'blur' }],
+        stkcat: [{ required: true, message: '请选择库存种类', trigger: 'change' }],
+        glcode: [{ required: true, message: '请选择会计科目', trigger: 'change' }],
+        salestype: [{ required: true, message: '请选择销售方式', trigger: 'change' }],
       },
-      taxAuthoritiesList: []
+      cOGSGLPostingList: [],
+      chartMasterList: [],
+      areaList: [],
+      saleTypeList: [],
+      stockCategoryList: [],
     }
   },
   created() {
     // this.getList()
     Promise.all([
       this.getList(),
+      this.getAllChartMasters(),
+      this.getAllArea(),
+      this.getAllSaleType(),
+      this.getAllStockCategory(),
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getSaleTypeList(this.listQuery).then(response => {
+      getCOGSGLPostingList(this.listQuery).then(response => {
+        // console.log(response.data)
         this.list = response.data.data
         this.total = response.data.total
 
@@ -130,6 +201,60 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+      })
+    },
+    getAllChartMasters(){
+      chartMasterAll().then(response => {
+        this.chartMasterList = response.data
+      })
+    },
+    getAllArea(){
+      areaAll().then(response => {
+        this.areaList = response.data
+      })
+    },
+    getAllSaleType(){
+      saleTypeAll().then(response => {
+        this.saleTypeList = response.data
+      })
+    },
+    getAllStockCategory(){
+      stockCategoryAll().then(response => {
+        this.stockCategoryList = response.data
+      })
+    },
+    handleSetRate(row){
+      getTaxRates(row).then(response => {
+        console.log(response.data)
+        // return false
+        this.cOGSGLPostingList = response.data
+        this.cOGSGLPostingName = row.area
+        setTimeout(() => {
+          this.setRateVisible = true
+        }, 0.5 * 1000)
+      })
+      
+    },
+    setTaxRateDel(){
+      console.log(this.cOGSGLPostingList)
+      // return false
+      setTaxRates(this.cOGSGLPostingList).then(response => {
+        if(!response.data.status){
+          this.$notify({
+            title: '失败',
+            message: response.data.message,
+            type: 'warning',
+            duration: 2000
+          })
+        }else{
+          this.$notify({
+            title: '成功',
+            message: response.data.message,
+            type: 'success',
+            duration: 2000
+          })
+        }
+        this.setRateVisible = false
       })
     },
     handleFilter() {
@@ -151,7 +276,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteSaleType(this.temp).then((response) => {
+        deleteCOGSGLPosting(this.temp).then((response) => {
           // console.log(response.data);
           if(!response.data.status){
             this.$notify({
@@ -182,7 +307,10 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        sales_type: '',
+        area: undefined,
+        stkcat : null,
+        glcode : null,
+        salestype : null,
       }
     },
     handleCreate() {
@@ -196,8 +324,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createSaleType(this.temp).then((response) => {
-            console.log(response.data);
+          createCOGSGLPosting(this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
               this.temp.id = response_data.data.id
@@ -223,6 +350,10 @@ export default {
       })
     },
     handleUpdate(row) {
+      row.area = parseInt(row.area)
+      row.stkcat = parseInt(row.stkcat)
+      row.glcode = parseInt(row.glcode)
+      row.salestype = parseInt(row.salestype)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -234,8 +365,9 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateSaleType(tempData).then((response) => {
+          updateCOGSGLPosting(tempData).then((response) => {
             console.log(response.data)
+            // return false
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
@@ -253,7 +385,6 @@ export default {
                 duration: 2000
               })
             }else{
-              // this.dialogFormVisible = false
               this.$notify.error({
                 title: '失败',
                 message: response_data.message,
@@ -264,23 +395,48 @@ export default {
         }
       })
     },
-    handleDelete(row) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
-      })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
-    },
   }
 }
 </script>
-<style type="sass" scop>
-  /* .fixed-width .el-button--mini {
-    padding: 10px 3px;
-    width: 70px;
-    margin-left: 0px;
-  } */
+<style lang="scss" scoped>
+  .el-dialog__body {
+    padding: 15px 15px;
+  }
+  .el-dialog__header {
+     padding-top: 10px; 
+  }
+  .el-form-item{
+    margin-bottom: 15px;
+  }
+  .el-row {
+    margin-bottom: 5px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }white
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 16px;
+  }
+  .row-bg {
+    padding: 5px 0;
+    background-color: #f9fafc;
+  }
+  .self-style{
+    text-align: -webkit-center;
+    font-size: 14px;
+    padding: 5px 0px;
+  }
 </style>

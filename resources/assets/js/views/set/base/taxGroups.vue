@@ -325,7 +325,7 @@ export default {
             const response_data = response.data
             if(response_data.status){
               this.temp.taxgroupid = response_data.data.taxgroupid
-              this.list.unshift(this.temp)
+              this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',

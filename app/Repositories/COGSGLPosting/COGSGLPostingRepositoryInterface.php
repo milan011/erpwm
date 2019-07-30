@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\SalesGLPosting;
+namespace App\Repositories\COGSGLPosting;
 
-interface SalesGLPostingRepositoryInterface
+interface COGSGLPostingRepositoryInterface
 {
 
     public function find($id);

@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\SalesGLPosting\SalesGLPostingResource;
-// use App\Http\Resources\SalesGLPosting\SalesGLPostingResourceCollection;
-use App\Repositories\SalesGLPosting\SalesGLPostingRepositoryInterface;
+// use App\Http\Resources\Locations\LocationsResource;
+// use App\Http\Resources\Locations\LocationsResourceCollection;
+use App\Repositories\Locations\LocationsRepositoryInterface;
 use Illuminate\Http\Request;
 
-class SalesGLPostingController extends Controller
+class LocationsController extends Controller
 {
-    protected $salesGLPosting;
+    protected $locations;
 
     public function __construct(
 
-        SalesGLPostingRepositoryInterface $salesGLPosting
+        LocationsRepositoryInterface $locations
     ) {
-        $this->salesGLPosting = $salesGLPosting;
+        $this->locations = $locations;
     }
 
     /**
@@ -29,9 +29,9 @@ class SalesGLPostingController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $salesGLPostings = $this->salesGLPosting->getList($query_list);
+        $locationss = $this->locations->getList($query_list);
 
-        return $salesGLPostings;
+        return $locationss;
     }
 
     /**
@@ -54,16 +54,13 @@ class SalesGLPostingController extends Controller
 
         // dd($request->all());
 
-        if ($this->salesGLPosting->isRepeat($request->area, $request->stkcat, $request->salestype)) {
+        if ($this->locations->isRepeat($request->locationname)) {
             return $this->baseFailed($message = '数据重复');
         }
 
-        $info = $this->salesGLPosting->create($request);
-        $info->belongsToArea;
-        $info->belongsToStockCategory;
-        $info->belongsToChartMasterWithSalesglCode;
-        $info->belongsToChartMasterWithDiscountglCode;
-        $info->belongsToSaleType;
+        $info = $this->locations->create($request);
+        $info->hasOnePackage;
+        $info->belongsToCreater;
 
         if ($info) {
             //添加成功
@@ -82,10 +79,10 @@ class SalesGLPostingController extends Controller
      */
     public function show($id)
     {
-        $info = $this->salesGLPosting->find($id);
+        $info = $this->locations->find($id);
         $info->belongsToCreater;
 
-        return new SalesGLPostingResource($info);
+        return new LocationsResource($info);
     }
 
     /**
@@ -109,18 +106,14 @@ class SalesGLPostingController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->salesGLPosting->isRepeat($request->area, $request->stkcat, $request->salestype);
+        $update_info = $this->locations->isRepeat($request->locationname);
 
         if ($update_info && ($update_info->id != $id)) {
             return $this->baseFailed($message = '您修改后的信息与现有冲突');
         }
 
-        $info = $this->salesGLPosting->update($request, $id);
-        $info->belongsToArea;
-        $info->belongsToStockCategory;
-        $info->belongsToChartMasterWithSalesglCode;
-        $info->belongsToChartMasterWithDiscountglCode;
-        $info->belongsToSaleType;
+        $info = $this->locations->update($request, $id);
+        $info->hasOnePackage;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -134,7 +127,7 @@ class SalesGLPostingController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->salesGLPosting->destroy($id);
+        $this->locations->destroy($id);
         return $this->baseSucceed($message = '修改成功');
     }
 }

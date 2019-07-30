@@ -56,13 +56,7 @@ const setRouter = {
         component: resolve => void(require(['@/views/set/gatherPay/index'], resolve)),
         name: 'setGatherPay',
         meta: { title: 'setGatherPay' },
-        children: [
-          {
-            path: 'saleType',
-            component: resolve => void(require(['@/views/set/gatherPay/saleType.vue'], resolve)),
-            name: 'saleType',
-            meta: { title: 'saleType' },
-          },
+        children: [    
           {
             path: 'customerType',
             component: resolve => void(require(['@/views/set/gatherPay/customerType.vue'], resolve)),
@@ -98,6 +92,38 @@ const setRouter = {
             component: resolve => void(require(['@/views/set/gatherPay/paymentMethod.vue'], resolve)),
             name: 'paymentMethod',
             meta: { title: 'paymentMethod' },
+          },        
+          {
+            path: 'shipper',
+            component: resolve => void(require(['@/views/set/gatherPay/shipper.vue'], resolve)),
+            name: 'shipper',
+            meta: { title: 'shipper' },
+          },        
+          {
+            path: 'freightCost',
+            component: resolve => void(require(['@/views/set/gatherPay/freightCost.vue'], resolve)),
+            name: 'freightCost',
+            meta: { title: 'freightCost' },
+          },
+          {
+            path: 'discountMatrix',
+            component: resolve => void(require(['@/views/set/gatherPay/discountMatrix.vue'], resolve)),
+            name: 'discountMatrix',
+            meta: { title: 'discountMatrix' },
+          },
+        ]
+      },
+      {
+        path: 'setSale',
+        component: resolve => void(require(['@/views/set/gatherPay/index'], resolve)),
+        name: 'setSale',
+        meta: { title: 'setSale' },
+        children: [
+          {
+            path: 'saleType',
+            component: resolve => void(require(['@/views/set/gatherPay/saleType.vue'], resolve)),
+            name: 'saleType',
+            meta: { title: 'saleType' },
           },
           {
             path: 'salesMan',
@@ -112,16 +138,16 @@ const setRouter = {
             meta: { title: 'area' },
           },
           {
-            path: 'shipper',
-            component: resolve => void(require(['@/views/set/gatherPay/shipper.vue'], resolve)),
-            name: 'shipper',
-            meta: { title: 'shipper' },
-          },
-          {
             path: 'salesGLPosting',
             component: resolve => void(require(['@/views/set/gatherPay/salesGLPosting.vue'], resolve)),
             name: 'salesGLPosting',
             meta: { title: 'salesGLPosting' },
+          },
+          {
+            path: 'cOGSGLPosting',
+            component: resolve => void(require(['@/views/set/gatherPay/cOGSGLPosting.vue'], resolve)),
+            name: 'cOGSGLPosting',
+            meta: { title: 'cOGSGLPosting' },
           },
         ]
       },

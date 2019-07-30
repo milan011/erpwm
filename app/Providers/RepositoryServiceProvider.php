@@ -51,6 +51,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\Shipper\ShipperRepositoryInterface', 'App\Repositories\Shipper\ShipperRepository');
         $this->app->bind('App\Repositories\SalesGLPosting\SalesGLPostingRepositoryInterface', 'App\Repositories\SalesGLPosting\SalesGLPostingRepository');
         $this->app->bind('App\Repositories\StockCategory\StockCategoryRepositoryInterface', 'App\Repositories\StockCategory\StockCategoryRepository');
+        $this->app->bind('App\Repositories\COGSGLPosting\COGSGLPostingRepositoryInterface', 'App\Repositories\COGSGLPosting\COGSGLPostingRepository');
+        $this->app->bind('App\Repositories\FreightCost\FreightCostRepositoryInterface', 'App\Repositories\FreightCost\FreightCostRepository');
+        $this->app->bind('App\Repositories\Locations\LocationsRepositoryInterface', 'App\Repositories\Locations\LocationsRepository');
+        $this->app->bind('App\Repositories\DiscountMatrix\DiscountMatrixRepositoryInterface', 'App\Repositories\DiscountMatrix\DiscountMatrixRepository');
 
     }
 }

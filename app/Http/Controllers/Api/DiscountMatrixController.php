@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\SalesGLPosting\SalesGLPostingResource;
-// use App\Http\Resources\SalesGLPosting\SalesGLPostingResourceCollection;
-use App\Repositories\SalesGLPosting\SalesGLPostingRepositoryInterface;
+// use App\Http\Resources\DiscountMatrix\DiscountMatrixResource;
+// use App\Http\Resources\DiscountMatrix\DiscountMatrixResourceCollection;
+use App\Repositories\DiscountMatrix\DiscountMatrixRepositoryInterface;
 use Illuminate\Http\Request;
 
-class SalesGLPostingController extends Controller
+class DiscountMatrixController extends Controller
 {
-    protected $salesGLPosting;
+    protected $discountMatrix;
 
     public function __construct(
 
-        SalesGLPostingRepositoryInterface $salesGLPosting
+        DiscountMatrixRepositoryInterface $discountMatrix
     ) {
-        $this->salesGLPosting = $salesGLPosting;
+        $this->discountMatrix = $discountMatrix;
     }
 
     /**
@@ -29,9 +29,9 @@ class SalesGLPostingController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $salesGLPostings = $this->salesGLPosting->getList($query_list);
+        $discountMatrixs = $this->discountMatrix->getList($query_list);
 
-        return $salesGLPostings;
+        return $discountMatrixs;
     }
 
     /**
@@ -54,15 +54,7 @@ class SalesGLPostingController extends Controller
 
         // dd($request->all());
 
-        if ($this->salesGLPosting->isRepeat($request->area, $request->stkcat, $request->salestype)) {
-            return $this->baseFailed($message = '数据重复');
-        }
-
-        $info = $this->salesGLPosting->create($request);
-        $info->belongsToArea;
-        $info->belongsToStockCategory;
-        $info->belongsToChartMasterWithSalesglCode;
-        $info->belongsToChartMasterWithDiscountglCode;
+        $info = $this->discountMatrix->create($request);
         $info->belongsToSaleType;
 
         if ($info) {
@@ -82,10 +74,10 @@ class SalesGLPostingController extends Controller
      */
     public function show($id)
     {
-        $info = $this->salesGLPosting->find($id);
+        $info = $this->discountMatrix->find($id);
         $info->belongsToCreater;
 
-        return new SalesGLPostingResource($info);
+        return new DiscountMatrixResource($info);
     }
 
     /**
@@ -109,17 +101,8 @@ class SalesGLPostingController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->salesGLPosting->isRepeat($request->area, $request->stkcat, $request->salestype);
 
-        if ($update_info && ($update_info->id != $id)) {
-            return $this->baseFailed($message = '您修改后的信息与现有冲突');
-        }
-
-        $info = $this->salesGLPosting->update($request, $id);
-        $info->belongsToArea;
-        $info->belongsToStockCategory;
-        $info->belongsToChartMasterWithSalesglCode;
-        $info->belongsToChartMasterWithDiscountglCode;
+        $info = $this->discountMatrix->update($request, $id);
         $info->belongsToSaleType;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
@@ -134,7 +117,7 @@ class SalesGLPostingController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->salesGLPosting->destroy($id);
+        $this->discountMatrix->destroy($id);
         return $this->baseSucceed($message = '修改成功');
     }
 }

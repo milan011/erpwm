@@ -5,18 +5,33 @@
         {{ $t('table.add') }}
       </el-button>
     </div>
-    <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('saleType.id')" align="center">
+    <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-maxkgs-row style="width: 100%;">
+      <el-table-column :label="$t('discountMatrix.id')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('saleType.sales_type')" align="center">
+      <el-table-column :label="$t('discountMatrix.salestype')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.sales_type }}</span>
+          <span>{{ scope.row.belongs_to_sale_type.sales_type }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
+      <el-table-column :label="$t('discountMatrix.discountcategory')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ discountcategoryStatus[scope.row.discountcategory] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('discountMatrix.quantitybreak')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.quantitybreak }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('discountMatrix.discountrate')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.discountrate }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.actions')" width="180%" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
@@ -25,12 +40,46 @@
       </el-table-column>
     </el-table>
     <div class="pagination-container">
-      <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @current-change="handleCurrentChange" />
+      <el-pagination v-show="total>0" :maxkgs-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @maxkgs-change="handleCurrentChange" />
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('saleType.sales_type')" prop="sales_type">
-          <el-input v-model="temp.sales_type" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
+        <el-form-item :label="$t('discountMatrix.salestype')" prop="salestype">
+          <el-select 
+            v-model="temp.salestype" 
+            class="filter-item" 
+            filterable 
+            clearable 
+             placeholder="输入销售方式搜索">
+            <el-option v-for="saleType in saleTypeList" :key="saleType.id" :label="saleType.sales_type" :value="saleType.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('discountMatrix.discountcategory')" prop="discountcategory">
+          <el-select 
+            v-model="temp.discountcategory" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入类别搜索">
+            <el-option v-for="(value, key, index) in discountcategoryStatus" :key="index" :label="value" :value="key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('discountMatrix.quantitybreak')" prop="quantitybreak">
+          <el-input-number 
+            v-model='temp.quantitybreak' 
+            :min="0" 
+            label="数量分割">
+          </el-input-number>
+        </el-form-item>
+        <el-form-item :label="$t('discountMatrix.discountrate')" prop="discountrate">
+          <el-input-number 
+            v-model='temp.discountrate'   
+            :min="0" 
+            :max="1" 
+            :precision="2"
+            :step="0.1"
+            label="折扣率">
+          </el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,9 +91,11 @@
   </div>
 </template>
 <script>
-  import { getSaleTypeList, createSaleType, updateSaleType, deleteSaleType,} from '@/api/saleType'
+  import { getDiscountMatrixList, createDiscountMatrix, updateDiscountMatrix, deleteDiscountMatrix,} from '@/api/discountMatrix'
+  import { saleTypeAll } from '@/api/saleType'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
+  import { isTelephone, isFax } from '@/utils/validate'
   import { isEmpty } from '@/common.js'
   // import SwitchRoles from './components/RolePermission'
 
@@ -60,7 +111,8 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'saleType',
+
+  name: 'discountMatrix',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -68,9 +120,8 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        1: 'success',
+        0: 'danger',
       }
       return statusMap[status]
     },
@@ -87,42 +138,53 @@ export default {
       listQuery: {
         page: 1,
       },
-      tanxontaxStatus:['否', '是'],
-      taxGroupTemp: {
-          id: null,
-          permissions:[],
-      },
+      discountcategoryStatus:{'1': '一个库存物料', '2': '一个完整的存货种类'},
       calendarTypeOptions,
       showReviewer: false,
       temp: {
         id: undefined,
-        sales_type: '',
+        discountcategory: '',
+        salestype: '',
+        quantitybreak: undefined,
+        discountrate: 0,
       },
       dialogFormVisible: false,
       setGroupTaxVisible: false,
       setGroupTax: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑销售方式',
-        create: '新增销售方式'
+        update: '编辑折扣',
+        create: '新增折扣'
       },
       pvData: [],
       rules: {
-        sales_type: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        discountcategory: [        
+          { required: true, message: '请选择销售方式', trigger: 'change' },
+        ],
+        salestype: [        
+          { required: true, message: '请选择折扣类别', trigger: 'change' },
+        ],
+        quantitybreak: [
+          { required: true, message: '数量分割', trigger: 'change' },    
+        ],
+        quantitybreak: [ 
+          { required: true, message: '折扣率', trigger: 'change'}, 
+        ],
       },
-      taxAuthoritiesList: []
+      saleTypeList: [],
     }
   },
   created() {
     // this.getList()
     Promise.all([
       this.getList(),
+      this.getAllSaleType(),
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getSaleTypeList(this.listQuery).then(response => {
+      getDiscountMatrixList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
 
@@ -130,6 +192,11 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+      })
+    },
+    getAllSaleType(){
+      saleTypeAll().then(response => {
+        this.saleTypeList = response.data
       })
     },
     handleFilter() {
@@ -151,7 +218,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteSaleType(this.temp).then((response) => {
+        deleteDiscountMatrix(this.temp).then((response) => {
           // console.log(response.data);
           if(!response.data.status){
             this.$notify({
@@ -182,7 +249,10 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        sales_type: '',
+        discountcategory: null,
+        quantitybreak: 0,
+        salestype: null,
+        discountrate: 0,
       }
     },
     handleCreate() {
@@ -196,11 +266,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createSaleType(this.temp).then((response) => {
+          console.log(this.temp)
+          createDiscountMatrix(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.id = response_data.data.id
               this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
@@ -223,6 +293,7 @@ export default {
       })
     },
     handleUpdate(row) {
+      row.salestype = parseInt(row.salestype)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -234,7 +305,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateSaleType(tempData).then((response) => {
+          updateDiscountMatrix(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){

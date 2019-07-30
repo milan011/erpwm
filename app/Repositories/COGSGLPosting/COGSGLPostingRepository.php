@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\SalesGLPosting;
+namespace App\Repositories\COGSGLPosting;
 
+use App\COGSGLPosting;
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\SalesGLPosting\SalesGLPostingRepositoryInterface;
-use App\SalesGLPosting;
+use App\Repositories\COGSGLPosting\COGSGLPostingRepositoryInterface;
 use Auth;
 use Datatables;
 use DB;
@@ -15,23 +15,23 @@ use PHPZen\LaravelRbac\Traits\Rbac;
 use Planbon;
 use Session;
 
-class SalesGLPostingRepository implements SalesGLPostingRepositoryInterface
+class COGSGLPostingRepository implements COGSGLPostingRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['id', 'area', 'stkcat', 'discountglcode', 'salesglcode', 'salestype', 'status'];
+    protected $select_columns = ['id', 'area', 'stkcat', 'glcode', 'salestype', 'status'];
 
     // 根据ID获得信息
     public function find($id)
     {
-        return SalesGLPosting::select($this->select_columns)
+        return COGSGLPosting::select($this->select_columns)
             ->findOrFail($id);
     }
 
     // 根据不同参数获得信息列表
     public function getList($queryList)
     {
-        $query = new SalesGLPosting(); // 返回的是一个Order实例,两种方法均可
-        $query = $query->with('belongsToArea', 'belongsToStockCategory', 'belongsToChartMasterWithSalesglCode', 'belongsToChartMasterWithDiscountglCode', 'belongsToSaleType');
+        $query = new COGSGLPosting(); // 返回的是一个Order实例,两种方法均可
+        $query = $query->with('belongsToArea', 'belongsToStockCategory', 'belongsToChartMaster', 'belongsToSaleType');
         $query = $query->where('status', '1')->orderBy('id', 'DESC');
 
         if (empty($queryList['page'])) {
@@ -49,7 +49,7 @@ class SalesGLPostingRepository implements SalesGLPostingRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new SalesGLPosting(); //税目
+            $example = new COGSGLPosting(); //税目
 
             $input = array_replace($requestData->all());
             $example->fill($input);
@@ -70,13 +70,12 @@ class SalesGLPostingRepository implements SalesGLPostingRepositoryInterface
     public function update($requestData, $id)
     {
         // dd($requestData->all());
-        $info = SalesGLPosting::select($this->select_columns)->findorFail($id); //获取信息
+        $info = COGSGLPosting::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->area           = $requestData->area;
-        $info->stkcat         = $requestData->stkcat;
-        $info->discountglcode = $requestData->discountglcode;
-        $info->salesglcode    = $requestData->salesglcode;
-        $info->salestype      = $requestData->salestype;
+        $info->area      = $requestData->area;
+        $info->stkcat    = $requestData->stkcat;
+        $info->glcode    = $requestData->glcode;
+        $info->salestype = $requestData->salestype;
 
         $info->save();
 
@@ -88,7 +87,7 @@ class SalesGLPostingRepository implements SalesGLPostingRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = SalesGLPosting::findorFail($id);
+            $info         = COGSGLPosting::findorFail($id);
             $info->status = '0'; //删除税目
             $info->save();
 
@@ -104,7 +103,7 @@ class SalesGLPostingRepository implements SalesGLPostingRepositoryInterface
     //名称是否重复
     public function isRepeat($area, $stkcat, $salestype)
     {
-        return SalesGLPosting::where('area', $area)
+        return COGSGLPosting::where('area', $area)
             ->where('stkcat', $stkcat)
             ->where('salestype', $salestype)
             ->where('status', '1')

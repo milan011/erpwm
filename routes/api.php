@@ -181,6 +181,34 @@ Route::group([
     Route::post('stockCategory', 'StockCategoryController@store');
     Route::put('stockCategory/{id}', 'StockCategoryController@update');
     Route::delete('stockCategory/{id}', 'StockCategoryController@destroy');
+
+    // COGSGLPosting
+    Route::get('cOGSGLPostingList', 'COGSGLPostingController@index');
+    Route::get('cOGSGLPosting/{id}', 'COGSGLPostingController@show');
+    Route::post('cOGSGLPosting', 'COGSGLPostingController@store');
+    Route::put('cOGSGLPosting/{id}', 'COGSGLPostingController@update');
+    Route::delete('cOGSGLPosting/{id}', 'COGSGLPostingController@destroy');
+
+    // FreightCost
+    Route::get('freightCostList', 'FreightCostController@index');
+    Route::get('freightCost/{id}', 'FreightCostController@show');
+    Route::post('freightCost', 'FreightCostController@store');
+    Route::put('freightCost/{id}', 'FreightCostController@update');
+    Route::delete('freightCost/{id}', 'FreightCostController@destroy');
+
+    // Locations
+    Route::get('locationsList', 'LocationsController@index');
+    Route::get('locations/{id}', 'LocationsController@show');
+    Route::post('locations', 'LocationsController@store');
+    Route::put('locations/{id}', 'LocationsController@update');
+    Route::delete('locations/{id}', 'LocationsController@destroy');
+
+    // DiscountMatrix
+    Route::get('discountMatrixList', 'DiscountMatrixController@index');
+    Route::get('discountMatrix/{id}', 'DiscountMatrixController@show');
+    Route::post('discountMatrix', 'DiscountMatrixController@store');
+    Route::put('discountMatrix/{id}', 'DiscountMatrixController@update');
+    Route::delete('discountMatrix/{id}', 'DiscountMatrixController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

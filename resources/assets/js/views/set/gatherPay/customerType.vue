@@ -197,7 +197,7 @@ export default {
             const response_data = response.data
             if(response_data.status){
               this.temp.typeid = response_data.data.typeid
-              this.list.unshift(this.temp)
+              this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -237,7 +237,7 @@ export default {
               for (const v of this.list) {
                 if (v.typeid === this.temp.typeid) {
                   const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, this.temp)
+                  this.list.splice(index, 1, response_data.data)
                   break
                 }
               }
