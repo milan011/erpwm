@@ -10,7 +10,6 @@ import Layout from '@/views/layout/Layout'
 import userRouter from './modules/user'
 import setRouter from './modules/set'
 import roleRouter from './modules/role'
-import shopRouter from './modules/shop'
 
 
 /** note: Submenu only appear when children.length>=1
@@ -76,7 +75,6 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  shopRouter,
   setRouter,
   userRouter,
   

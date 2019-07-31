@@ -33,20 +33,57 @@ class StockCategory extends Model
      */
     public $timestamps = false;
 
-    // 定义Example表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义StockCategory表与TaxCategories表一对一关系
+    public function belongsToTaxCategories()
     {
-
-        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
+        return $this->belongsTo('App\TaxCategories', 'defaulttaxcatid', 'taxcatid')->withDefault(['taxcatname' => '',
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义StockCategory表与ChartMaster表一对一关系
+    public function belongsToChartMasterWithStockact()
     {
-
-        return $this->hasMany('App\Notice', 'user_id', 'id')->withDefault(['accountname' => '',
+        return $this->belongsTo('App\ChartMaster', 'stockact', 'id')->withDefault(['accountname' => '',
         ]);
+    }
+    // 定义StockCategory表与ChartMaster表一对一关系
+    public function belongsToChartMasterWithWipact()
+    {
+        return $this->belongsTo('App\ChartMaster', 'wipact', 'id')->withDefault(['accountname' => '',
+        ]);
+    }
+
+    // 定义StockCategory表与ChartMaster表一对一关系
+    public function belongsToChartMasterWithAdjglact()
+    {
+        return $this->belongsTo('App\ChartMaster', 'adjglact', 'id')->withDefault(['accountname' => '',
+        ]);
+    }
+
+    // 定义StockCategory表与ChartMaster表一对一关系
+    public function belongsToChartMasterWithIssueglact()
+    {
+        return $this->belongsTo('App\ChartMaster', 'issueglact', 'id')->withDefault(['accountname' => '',
+        ]);
+    }
+
+    // 定义StockCategory表与ChartMaster表一对一关系
+    public function belongsToChartMasterWithPurchpricevaract()
+    {
+        return $this->belongsTo('App\ChartMaster', 'purchpricevaract', 'id')->withDefault(['accountname' => '',
+        ]);
+    }
+
+    // 定义StockCategory表与ChartMaster表一对一关系
+    public function belongsToChartMasterWithMaterialuseagevarac()
+    {
+        return $this->belongsTo('App\ChartMaster', 'materialuseagevarac', 'id')->withDefault(['accountname' => '',
+        ]);
+    }
+
+    // 定义StockCategory表与StockMaster表一对多关系
+    public function hasManyStockMaster()
+    {
+        return $this->hasMany('App\StockMaster', 'categoryid', 'id');
     }
 }

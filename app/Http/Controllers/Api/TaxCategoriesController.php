@@ -29,7 +29,8 @@ class TaxCategoriesController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $TaxCategoriess = TaxCategories::where('status', '1')->orderBy('taxcatid', 'DESC')->paginate(10);
+        // $TaxCategoriess = TaxCategories::where('status', '1')->orderBy('taxcatid', 'DESC')->paginate(10);
+        $TaxCategoriess = $this->TaxCategories->getList($query_list);
 
         // dd($TaxCategoriess);
 

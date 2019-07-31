@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		26: 0
+/******/ 		29: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -105375,18 +105375,7 @@ module.exports = Component.exports
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ROAST_CONFIG; });
-/* unused harmony export infoSelfStatus */
-/* unused harmony export jituanStatus */
-/* unused harmony export package_year */
-/* unused harmony export package_month */
-/* unused harmony export collections_type */
-/* unused harmony export oldBindStatus */
-/* unused harmony export infoDianxinStatus */
-/* unused harmony export foodStatus */
-/* unused harmony export serviceReturnType */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return shopStatus; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return shopType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return cityHasTcl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return stockType; });
 /**
  * Defines the API route we are using.
  */
@@ -105412,100 +105401,13 @@ var ROAST_CONFIG = {
     // GAODE_MAPS_JS_API_KEY: gaode_maps_js_api_key
 };
 
-//信息状态
-var infoSelfStatus = {
-    1: '未返还',
-    2: '返还中',
-    3: '已返还'
+//存货类型
+var stockType = {
+    F: '产成品',
+    M: '原材料',
+    D: '虚拟物料(无库存)',
+    L: '人工'
 };
-//电信信息状态
-var infoDianxinStatus = {
-    1: '未匹对',
-    2: '已匹对'
-};
-//集团状态
-var jituanStatus = {
-    0: '否',
-    1: '是'
-};
-
-//绑老卡状态
-var oldBindStatus = {
-    0: '否',
-    1: '是'
-};
-
-//是否食品
-var foodStatus = {
-    0: '否',
-    1: '是'
-};
-
-//serviceReturnType
-var serviceReturnType = {
-    1: '按比例',
-    2: '按金额'
-};
-
-//入网年
-var package_year = [{ 'key': '1', 'year': '2018' }, { 'key': '2', 'year': '2019' }, { 'key': '3', 'year': '2020' }, { 'key': '4', 'year': '2021' }, { 'key': '5', 'year': '2022' }, { 'key': '6', 'year': '2023' }, { 'key': '7', 'year': '2024' }, { 'key': '8', 'year': '2025' }, { 'key': '9', 'year': '2026' }];
-
-//入网月
-var package_month = [{ 'key': '1', 'month': '01' }, { 'key': '2', 'month': '02' }, { 'key': '3', 'month': '03' }, { 'key': '4', 'month': '04' }, { 'key': '5', 'month': '05' }, { 'key': '6', 'month': '06' }, { 'key': '7', 'month': '07' }, { 'key': '8', 'month': '08' }, { 'key': '9', 'month': '09' }, { 'key': '10', 'month': '10' }, { 'key': '11', 'month': '11' }, { 'key': '12', 'month': '12' }];
-//支付方式
-var collections_type = ['微信', '支付宝', '刷卡', '现金', '其他'];
-
-//门店状态
-var shopStatus = {
-    0: '停用',
-    1: '启用'
-};
-
-//门店类型
-var shopType = {
-    1: '门店',
-    2: '加盟店'
-};
-
-//开通城市
-var cityHasTcl = [{
-    value: '10',
-    label: '河北',
-    children: [{
-        value: '138',
-        label: '石家庄'
-    }, {
-        value: '139',
-        label: '保定'
-    }, {
-        value: '140',
-        label: '沧州'
-    }, {
-        value: '141',
-        label: '承德'
-    }, {
-        value: '142',
-        label: '邯郸'
-    }, {
-        value: '143',
-        label: '衡水'
-    }, {
-        value: '144',
-        label: '廊坊'
-    }, {
-        value: '145',
-        label: '秦皇岛'
-    }, {
-        value: '146',
-        label: '唐山'
-    }, {
-        value: '147',
-        label: '邢台'
-    }, {
-        value: '148',
-        label: '张家口'
-    }]
-}];
 
 
 
@@ -105918,12 +105820,15 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     setGatherPay: '应收应付',
     setSale: '销售相关',
     saleType: '销售方式',
+
     paymentMethod: '付款方式',
     salesMan: '销售员',
     area: '销售区域',
     salesGLPosting: '销售收入科目',
     cOGSGLPosting: '销售成本科目',
     discountMatrix: '折扣',
+    setLocation: '库存设置',
+    stockCategory: '物料组',
     customerType: '客户类型',
     supplierType: '供应商类型',
     creditStatus: '信用等级',
@@ -106189,6 +106094,18 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     discountcategory: '折扣类别',
     quantitybreak: '数量分隔',
     discountrate: '折扣率 %'
+  },
+  stockCategory: {
+    id: '序号',
+    categorydescription: '物料描述',
+    stocktype: '凭证类型',
+    stockact: '存货科目',
+    adjglact: '盘点差异',
+    issueglact: '易耗品',
+    purchpricevaract: '价格差',
+    materialuseagevarac: '数量差',
+    wipact: '在制品',
+    defaulttaxcatid: '默认税目'
   }
 });
 
@@ -106297,7 +106214,6 @@ __WEBPACK_IMPORTED_MODULE_1__router__["c" /* default */].afterEach(function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_user__ = __webpack_require__("./resources/assets/js/router/modules/user.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_set__ = __webpack_require__("./resources/assets/js/router/modules/set.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_role__ = __webpack_require__("./resources/assets/js/router/modules/role.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_shop__ = __webpack_require__("./resources/assets/js/router/modules/shop.js");
 
 
 
@@ -106307,7 +106223,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 
 /* Router Modules */
-
 
 
 
@@ -106334,14 +106249,14 @@ var constantRouterMap = [{
   name: 'login',
   path: '/login',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(21).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/login/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(25).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/login/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   }
   // hidden: true,
 }, {
   name: 'chormeDownLoad',
   path: '/chormeDownLoad',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(22).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/chormeDownLoad/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(26).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/chormeDownLoad/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   }
   // hidden: true,
 }, {
@@ -106351,7 +106266,7 @@ var constantRouterMap = [{
   children: [{
     path: 'dashboard',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/dashboard/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/dashboard/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'Dashboard',
     meta: { title: 'dashboard', icon: 'dashboard', affix: true, noCache: true }
@@ -106360,7 +106275,7 @@ var constantRouterMap = [{
   hidden: true,
   path: '/user/passwordReset',
   component: function component(resolve) {
-    return void __webpack_require__.e/* require */(23).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/passwordReset.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    return void __webpack_require__.e/* require */(27).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/passwordReset.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
   },
   name: 'userAdd',
   meta: { title: 'passwordReset' }
@@ -106374,7 +106289,7 @@ var constantRouterMap = [{
   routes: constantRouterMap
 }));
 
-var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_6__modules_shop__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_set__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
+var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_4__modules_set__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
 
 /***/ }),
 
@@ -106441,42 +106356,42 @@ var setRouter = {
   children: [{
     path: 'base',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(50).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(52).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'setBase',
     meta: { title: 'setBase' },
     children: [{
       path: 'taxProvinces',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(13).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxProvinces.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(41).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxProvinces.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'taxProvinces',
       meta: { title: 'taxProvinces' }
     }, {
       path: 'taxCategories',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(14).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(42).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'taxCategories',
       meta: { title: 'taxCategories' }
     }, {
       path: 'taxGroups',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(10).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxGroups.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(39).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxGroups.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'taxGroups',
       meta: { title: 'taxGroups' }
     }, {
       path: 'taxAuthorities',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(12).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxAuthorities.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(40).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxAuthorities.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'taxAuthorities',
       meta: { title: 'taxAuthorities' }
     }, {
       path: 'periodsInquiry',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(19).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/periodsInquiry.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(46).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/periodsInquiry.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'periodsInquiry',
       meta: { title: 'periodsInquiry' }
@@ -106484,70 +106399,70 @@ var setRouter = {
   }, {
     path: 'gatherPay',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(4/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(34/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'setGatherPay',
     meta: { title: 'setGatherPay' },
     children: [{
       path: 'customerType',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(25).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/customerType.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(49).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/customerType.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'customerType',
       meta: { title: 'customerType' }
     }, {
       path: 'supplierType',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(15).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/supplierType.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(43).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/supplierType.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'supplierType',
       meta: { title: 'supplierType' }
     }, {
       path: 'creditStatus',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(46).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/creditStatus.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(50).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/creditStatus.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'creditStatus',
       meta: { title: 'creditStatus' }
     }, {
       path: 'paymentTerm',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(20).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/paymentTerm.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(47).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/paymentTerm.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'paymentTerm',
       meta: { title: 'paymentTerm' }
     }, {
       path: 'purchorderAuth',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(9).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/purchorderAuth.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(38).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/purchorderAuth.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'purchorderAuth',
       meta: { title: 'purchorderAuth' }
     }, {
       path: 'paymentMethod',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(24).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/paymentMethod.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(48).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/paymentMethod.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'paymentMethod',
       meta: { title: 'paymentMethod' }
     }, {
       path: 'shipper',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(16).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/shipper.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(44).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/shipper.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'shipper',
       meta: { title: 'shipper' }
     }, {
       path: 'freightCost',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/freightCost.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(37).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/freightCost.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'freightCost',
       meta: { title: 'freightCost' }
     }, {
       path: 'discountMatrix',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(8).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/discountMatrix.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(36).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/discountMatrix.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'discountMatrix',
       meta: { title: 'discountMatrix' }
@@ -106555,42 +106470,85 @@ var setRouter = {
   }, {
     path: 'setSale',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(4/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(34/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'setSale',
     meta: { title: 'setSale' },
     children: [{
       path: 'saleType',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(18).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/saleType.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(45).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/saleType.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'saleType',
       meta: { title: 'saleType' }
     }, {
       path: 'salesMan',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(17).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/salesMan.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(32/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/salesMan.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'salesMan',
       meta: { title: 'salesMan' }
     }, {
       path: 'area',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(47).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/area.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(33/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/area.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'area',
       meta: { title: 'area' }
     }, {
       path: 'salesGLPosting',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/salesGLPosting.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(30/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/salesGLPosting.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'salesGLPosting',
       meta: { title: 'salesGLPosting' }
     }, {
       path: 'cOGSGLPosting',
       component: function component(resolve) {
-        return void __webpack_require__.e/* require */(6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/cOGSGLPosting.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        return void __webpack_require__.e/* require */(31/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/cOGSGLPosting.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'cOGSGLPosting',
+      meta: { title: 'cOGSGLPosting' }
+    }]
+  }, {
+    path: 'setLocation',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(51).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/location/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'setLocation',
+    meta: { title: 'setLocation' },
+    children: [{
+      path: 'stockCategory',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(35).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/location/stockCategory.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'stockCategory',
+      meta: { title: 'stockCategory' }
+    }, {
+      path: 'salesMan',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(32/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/salesMan.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'salesMan',
+      meta: { title: 'salesMan' }
+    }, {
+      path: 'area',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(33/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/area.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'area',
+      meta: { title: 'area' }
+    }, {
+      path: 'salesGLPosting',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(30/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/salesGLPosting.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'salesGLPosting',
+      meta: { title: 'salesGLPosting' }
+    }, {
+      path: 'cOGSGLPosting',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(31/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/gatherPay/cOGSGLPosting.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
       },
       name: 'cOGSGLPosting',
       meta: { title: 'cOGSGLPosting' }
@@ -106598,39 +106556,6 @@ var setRouter = {
   }]
 };
 /* harmony default export */ __webpack_exports__["a"] = (setRouter);
-
-/***/ }),
-
-/***/ "./resources/assets/js/router/modules/shop.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
-
-//权限管理路由组
-
-
-var shopRouter = {
-  path: '/shop',
-  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
-  redirect: '/shop/index',
-  name: 'shop',
-  meta: {
-    title: '',
-    icon: 'theme',
-    roles: ['admin', 'manager']
-  },
-  children: [{
-    path: 'index',
-    component: function component(resolve) {
-      return void __webpack_require__.e/* require */(11).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/shop/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-    },
-    name: 'shopList',
-    meta: { title: 'shop' }
-  }]
-};
-/* harmony default export */ __webpack_exports__["a"] = (shopRouter);
 
 /***/ }),
 
@@ -106657,7 +106582,7 @@ var userRouter = {
   children: [{
     path: 'index',
     component: function component(resolve) {
-      return void __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      return void __webpack_require__.e/* require */(4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/user/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
     },
     name: 'userList',
     meta: { title: 'userList' }

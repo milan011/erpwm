@@ -151,6 +151,44 @@ const setRouter = {
           },
         ]
       },
+      {
+        path: 'setLocation',
+        component: resolve => void(require(['@/views/set/location/index'], resolve)),
+        name: 'setLocation',
+        meta: { title: 'setLocation' },
+        children: [
+          {
+            path: 'stockCategory',
+            component: resolve => void(require(['@/views/set/location/stockCategory.vue'], resolve)),
+            name: 'stockCategory',
+            meta: { title: 'stockCategory' },
+          },
+          {
+            path: 'salesMan',
+            component: resolve => void(require(['@/views/set/gatherPay/salesMan.vue'], resolve)),
+            name: 'salesMan',
+            meta: { title: 'salesMan' },
+          },
+          {
+            path: 'area',
+            component: resolve => void(require(['@/views/set/gatherPay/area.vue'], resolve)),
+            name: 'area',
+            meta: { title: 'area' },
+          },
+          {
+            path: 'salesGLPosting',
+            component: resolve => void(require(['@/views/set/gatherPay/salesGLPosting.vue'], resolve)),
+            name: 'salesGLPosting',
+            meta: { title: 'salesGLPosting' },
+          },
+          {
+            path: 'cOGSGLPosting',
+            component: resolve => void(require(['@/views/set/gatherPay/cOGSGLPosting.vue'], resolve)),
+            name: 'cOGSGLPosting',
+            meta: { title: 'cOGSGLPosting' },
+          },
+        ]
+      },
     ]
 }
 export default setRouter

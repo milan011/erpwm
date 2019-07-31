@@ -81,7 +81,7 @@
             filterable 
             clearable 
             placeholder="输入会计科目搜索">
-            <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.accountname" :value="chart.id"/>
+            <el-option v-for="chart in chartMasterList" v-if="chart.belongs_to_account_group.pandl == 1" :key="chart.id" :label="chart.accountname" :value="chart.id"/>
           </el-select>
         </el-form-item>   
       </el-form>

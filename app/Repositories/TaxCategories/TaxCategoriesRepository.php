@@ -34,8 +34,8 @@ class TaxCategoriesRepository implements TaxCategoriesRepositoryInterface
     public function getList($queryList)
     {
         $query = new TaxCategories(); // 返回的是一个Order实例,两种方法均可
-
-        if (empty($queryList)) {
+        $query = $query->where('status', '1')->orderBy('taxcatid', 'DESC');
+        if (empty($queryList['page'])) {
             //无分页,全部返还
             return $query->get();
         } else {

@@ -31,6 +31,9 @@ class StockCategoryRepository implements StockCategoryRepositoryInterface
     public function getList($queryList)
     {
         $query = new StockCategory(); // 返回的是一个Order实例,两种方法均可
+        $query = $query->with('belongsToTaxCategories', 'belongsToChartMasterWithStockact', 'belongsToChartMasterWithWipact', 'belongsToChartMasterWithAdjglact', 'belongsToChartMasterWithIssueglact', 'belongsToChartMasterWithPurchpricevaract', 'belongsToChartMasterWithMaterialuseagevarac')
+            ->where('status', '1')
+            ->orderBy('id', 'DESC');
         if (empty($queryList['page'])) {
             //无分页,全部返还
             return $query->get();
