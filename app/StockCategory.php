@@ -86,4 +86,10 @@ class StockCategory extends Model
     {
         return $this->hasMany('App\StockMaster', 'categoryid', 'id');
     }
+
+    // 定义StockCategory表与StockCatProperties表一对多关系
+    public function hasManyStockCatProperties()
+    {
+        return $this->hasMany('App\StockCatProperties', 'categoryid', 'id');
+    }
 }

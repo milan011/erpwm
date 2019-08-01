@@ -59,7 +59,7 @@
       <el-table-column :label="$t('table.actions')" width="240%" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('附加信息') }}</el-button>
+          <el-button type="success" size="mini" @click="setOrherCat(scope.row)">{{ $t('stockCategory.setOrther') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
         </template>
@@ -174,6 +174,55 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+    <el-dialog width="70%" title="附加信息" :visible.sync="setCatFormVisible">
+      <el-row>
+        <el-col :span="24">
+          <div class="el-table-add-row" style="width:100%;margin-bottom:5px;" @click="add()">
+            <span>+ 添加</span>
+          </div>
+        </el-col>
+      <el-col :span="24">
+       <!-- <el-table size="mini" :key="catTableKey" :data="master_user.data" border style="width: 100%" highlight-current-row> -->
+       <el-table size="mini" :key="catTableKey" :data="ortherInfo" border style="width: 100%" highlight-current-row>
+          <el-table-column :label="$t('stockCategory.label')" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isSet">
+               <el-input size="mini" placeholder="请输入内容" v-model="scope.row.label">
+               </el-input>
+             </span>
+             <span v-else>{{scope.row.label}}</span>
+            </template>
+          </el-table-column>
+         <!-- <el-table-column v-for="(item,index) in master_user.columns" :key="index" :label="item.label" :prop="item.prop" :width="item.width">
+           <template slot-scope="scope">
+             <span v-if="scope.row.isSet">
+               <el-input size="mini" placeholder="请输入内容" v-model="master_user.sel[item.prop]">
+               </el-input>
+             </span>
+             <span v-else>{{scope.row[item.prop]}}</span>
+           </template>
+         </el-table-column> -->
+         <el-table-column label="操作" width="">
+           <template slot-scope="scope">
+             <span class="el-tag el-tag--success el-tag--mini" style="cursor: pointer;" @click.stop="saveRow(scope.row,scope.$index)">
+               保存
+             </span>
+             <span class="el-tag el-tag--primary el-tag--mini" style="cursor: pointer;" @click="scope.row.isSet = true">
+               编辑
+             </span>
+             <span class="el-tag el-tag--danger el-tag--mini" style="cursor: pointer;" @click="deleteRow(scope.$index,master_user.data)">
+               删除
+             </span>
+           </template>
+         </el-table-column>
+       </el-table>
+     </el-col>  
+   </el-row>
+   <span>{{master_user.data}}</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="setCatFormVisible = false">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -217,6 +266,7 @@ export default {
   data() {
     return {
       tableKey: 0,
+      catTableKey: 1,
       list: null,
       total: null,
       listLoading: true,
@@ -233,7 +283,7 @@ export default {
         discountrate: 0,
       },
       dialogFormVisible: false,
-      setGroupTaxVisible: false,
+      setCatFormVisible: false,
       setGroupTax: '',
       dialogStatus: '',
       textMap: {
@@ -258,6 +308,36 @@ export default {
       stockTypeList: stockType,
       chartMasterList: [],
       taxCategoriesList: [],
+      ortherInfo: null,
+      master_user: {
+         sel: null, //选中行   
+         columns: [{
+             prop: "type",
+             label: "远程类型",
+             width: 120
+           },
+           {
+             prop: "addport",
+             label: "连接地址",
+             width: 150
+           },
+           {
+             prop: "user",
+             label: "登录用户",
+             width: 120
+           },
+           {
+             prop: "pwd",
+             label: "登录密码",
+             width: 220
+           },
+           {
+             prop: "info",
+             label: "其他信息"
+           }
+         ],
+         data: [],
+       },
     }
   },
   created() {
@@ -307,6 +387,42 @@ export default {
       this.listQuery.page = val
       this.getList()
     },
+    setOrherCat(row){
+      this.ortherInfo = row.has_many_stock_cat_properties
+      this.setCatFormVisible = true
+    },
+    add() {
+       for (let i of this.master_user.data) {
+         if (i.isSet) return this.$message.warning("请先保存当前编辑项");
+       }
+       let j = {
+         "type": "",
+         "addport": "",
+         "user": "",
+         "pwd": "",
+         "info": "",
+         "isSet": true,
+       };
+       this.master_user.data.push(j);
+       this.master_user.sel = JSON.parse(JSON.stringify(j));
+     },
+     saveRow(row, index) { //保存
+       let data = JSON.parse(JSON.stringify(this.master_user.sel));
+       for (let k in data) {
+         row[k] = data[k] //将sel里面的value赋值给这一行。ps(for....in..)的妙用，细心的同学发现这里我并没有循环对象row
+       }
+       row.isSet = false;
+     },
+     editRow(row) { //编辑
+       for (let i of this.master_user.data) {
+         if (i.isSet) return this.$message.warning("请先保存当前编辑11项");
+       }
+       this.master_user.sel = row
+       row.isSet = true
+     },
+     deleteRow(index, rows) { //删除
+       rows.splice(index, 1)
+     },
     handleModifyStatus(row, status) {
       this.$confirm('确定要删除?', '提示', {
         confirmButtonText: '确定',
@@ -456,4 +572,15 @@ export default {
     width: 70px;
     margin-left: 0px;
   } */
+  .el-table-add-row {
+   margin-top: 10px;
+   width: 100%;
+   height: 34px;
+   border: 1px dashed #c1c1cd;
+   border-radius: 3px;
+   cursor: pointer;
+   justify-content: center;
+   display: flex;
+   line-height: 34px;
+ }
 </style>

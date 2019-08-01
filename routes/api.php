@@ -209,6 +209,13 @@ Route::group([
     Route::post('discountMatrix', 'DiscountMatrixController@store');
     Route::put('discountMatrix/{id}', 'DiscountMatrixController@update');
     Route::delete('discountMatrix/{id}', 'DiscountMatrixController@destroy');
+
+    // StockCatProperties
+    Route::get('stockCatPropertiesList', 'StockCatPropertiesController@index');
+    Route::get('stockCatProperties/{id}', 'StockCatPropertiesController@show');
+    Route::post('stockCatProperties', 'StockCatPropertiesController@store');
+    Route::put('stockCatProperties/{id}', 'StockCatPropertiesController@update');
+    Route::delete('stockCatProperties/{id}', 'StockCatPropertiesController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

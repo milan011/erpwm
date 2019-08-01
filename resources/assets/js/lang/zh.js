@@ -312,5 +312,13 @@ export default {
     materialuseagevarac: '数量差',
     wipact: '在制品',
     defaulttaxcatid: '默认税目',
+    setOrther: '附加信息',
+    label: '标签',
+    controltype: '控制类型',
+    defaultvalue: '默认值',
+    maximumvalue: '最大值',
+    reqatsalesorder: '销售订单需求',
+    minimumvalue: '最小值',
+    numericvalue: '数字值',
   },
 }

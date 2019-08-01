@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\StockCategory;
+namespace App\Repositories\StockCatProperties;
 
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\StockCategory\StockCategoryRepositoryInterface;
-use App\StockCategory;
+use App\Repositories\StockCatProperties\StockCatPropertiesRepositoryInterface;
+use App\StockCatProperties;
 use Auth;
 use Datatables;
 use DB;
@@ -15,25 +15,23 @@ use PHPZen\LaravelRbac\Traits\Rbac;
 use Planbon;
 use Session;
 
-class StockCategoryRepository implements StockCategoryRepositoryInterface
+class StockCatPropertiesRepository implements StockCatPropertiesRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['id', 'categoryid', 'categorydescription', 'stocktype', 'stockact', 'adjglact', 'issueglact', 'purchpricevaract', 'materialuseagevarac', 'wipact', 'defaulttaxcatid'];
+    protected $select_columns = ['stkcatpropid', 'categoryid', 'label', 'controltype', 'defaultvalue', 'maximumvalue', 'reqatsalesorder', 'minimumvalue', 'numericvalue'];
 
     // 根据ID获得信息
     public function find($id)
     {
-        return StockCategory::select($this->select_columns)
+        return StockCatProperties::select($this->select_columns)
             ->findOrFail($id);
     }
 
     // 根据不同参数获得信息列表
     public function getList($queryList)
     {
-        $query = new StockCategory(); // 返回的是一个Order实例,两种方法均可
-        $query = $query->with('belongsToTaxCategories', 'belongsToChartMasterWithStockact', 'belongsToChartMasterWithWipact', 'belongsToChartMasterWithAdjglact', 'belongsToChartMasterWithIssueglact', 'belongsToChartMasterWithPurchpricevaract', 'belongsToChartMasterWithMaterialuseagevarac', 'hasManyStockCatProperties', 'hasManyStockMaster')
-            ->where('status', '1')
-            ->orderBy('id', 'DESC');
+        $query = new StockCatProperties(); // 返回的是一个Order实例,两种方法均可
+
         if (empty($queryList['page'])) {
             //无分页,全部返还
             return $query->get();
@@ -49,7 +47,7 @@ class StockCategoryRepository implements StockCategoryRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new StockCategory(); //税目
+            $example = new StockCatProperties(); //税目
 
             $input = array_replace($requestData->all());
             $example->fill($input);
@@ -70,7 +68,7 @@ class StockCategoryRepository implements StockCategoryRepositoryInterface
     public function update($requestData, $id)
     {
         // dd($requestData->all());
-        $info = StockCategory::select($this->select_columns)->findorFail($id); //获取信息
+        $info = StockCatProperties::select($this->select_columns)->findorFail($id); //获取信息
 
         $info->taxcatname = $requestData->taxcatname;
 
@@ -84,7 +82,7 @@ class StockCategoryRepository implements StockCategoryRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = StockCategory::findorFail($id);
+            $info         = StockCatProperties::findorFail($id);
             $info->status = '0'; //删除税目
             $info->save();
 
@@ -100,6 +98,6 @@ class StockCategoryRepository implements StockCategoryRepositoryInterface
     //名称是否重复
     public function isRepeat($taxcatname)
     {
-        return StockCategory::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return StockCatProperties::where('taxcatname', $taxcatname)->where('status', '1')->first();
     }
 }

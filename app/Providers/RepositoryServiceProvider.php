@@ -55,6 +55,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\FreightCost\FreightCostRepositoryInterface', 'App\Repositories\FreightCost\FreightCostRepository');
         $this->app->bind('App\Repositories\Locations\LocationsRepositoryInterface', 'App\Repositories\Locations\LocationsRepository');
         $this->app->bind('App\Repositories\DiscountMatrix\DiscountMatrixRepositoryInterface', 'App\Repositories\DiscountMatrix\DiscountMatrixRepository');
-
+        $this->app->bind('App\Repositories\StockCatProperties\StockCatPropertiesRepositoryInterface', 'App\Repositories\StockCatProperties\StockCatPropertiesRepository');
     }
 }
