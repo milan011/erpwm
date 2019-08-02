@@ -87,6 +87,18 @@ class StockCategory extends Model
         return $this->hasMany('App\StockMaster', 'categoryid', 'id');
     }
 
+    // 定义StockCategory表与SalesGLPosting表一对多关系
+    public function hasManySalesGLPosting()
+    {
+        return $this->hasMany('App\SalesGLPosting', 'stkcat', 'id');
+    }
+
+    // 定义StockCategory表与COGSGLPosting表一对多关系
+    public function hasManyCOGSGLPosting()
+    {
+        return $this->hasMany('App\COGSGLPosting', 'stkcat', 'id');
+    }
+
     // 定义StockCategory表与StockCatProperties表一对多关系
     public function hasManyStockCatProperties()
     {

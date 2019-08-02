@@ -389,12 +389,12 @@ export default {
                 messageShow += '</ul>'
 
                 this.$message({
-                    showClose: true,
-                    message: messageShow,
-                    type: 'error',
-                    dangerouslyUseHTMLString: true,
-                    duration: 0
-                  });
+                  showClose: true,
+                  message: messageShow,
+                  type: 'error',
+                  dangerouslyUseHTMLString: true,
+                  duration: 0
+                });
                   /*this.$notify.erro({
                     title: '请注意',
                     message: '创建失败',

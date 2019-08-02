@@ -54,13 +54,20 @@ class StockCategoryController extends Controller
 
         // dd($request->all());
 
-        if ($this->stockCategory->isRepeat($request->name)) {
-            return $this->baseFailed($message = '数据重复');
+        if ($this->stockCategory->isRepeat($request->categorydescription)) {
+            return $this->baseFailed($message = '已存在该科目');
         }
 
         $info = $this->stockCategory->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info->belongsToTaxCategories;
+        $info->belongsToChartMasterWithStockact;
+        $info->belongsToChartMasterWithWipact;
+        $info->belongsToChartMasterWithAdjglact;
+        $info->belongsToChartMasterWithIssueglact;
+        $info->belongsToChartMasterWithPurchpricevaract;
+        $info->belongsToChartMasterWithMaterialuseagevarac;
+        $info->hasManyStockMaster;
+        $info->hasManyStockCatProperties;
 
         if ($info) {
             //添加成功
@@ -106,14 +113,22 @@ class StockCategoryController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->stockCategory->isRepeat($request->name);
+        $update_info = $this->stockCategory->isRepeat($request->categorydescription);
 
         if ($update_info && ($update_info->id != $id)) {
-            return $this->baseFailed($message = '您修改后的信息与现有冲突');
+            return $this->baseFailed($message = '已存在该科目');
         }
 
         $info = $this->stockCategory->update($request, $id);
-        $info->hasOnePackage;
+        $info->belongsToTaxCategories;
+        $info->belongsToChartMasterWithStockact;
+        $info->belongsToChartMasterWithWipact;
+        $info->belongsToChartMasterWithAdjglact;
+        $info->belongsToChartMasterWithIssueglact;
+        $info->belongsToChartMasterWithPurchpricevaract;
+        $info->belongsToChartMasterWithMaterialuseagevarac;
+        $info->hasManyStockMaster;
+        $info->hasManyStockCatProperties;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -127,7 +142,12 @@ class StockCategoryController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->stockCategory->destroy($id);
-        return $this->baseSucceed($message = '修改成功');
+        $info = $this->stockCategory->destroy($id);
+        if ($info) {
+            return $this->baseSucceed($message = '修改成功');
+        } else {
+            return $this->baseFailed($message = '该物料组正在被使用,无法删除');
+        }
+
     }
 }

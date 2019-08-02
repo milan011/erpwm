@@ -72,7 +72,15 @@ class StockCategoryRepository implements StockCategoryRepositoryInterface
         // dd($requestData->all());
         $info = StockCategory::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->categorydescription = $requestData->categorydescription;
+        $info->stocktype           = $requestData->stocktype;
+        $info->stockact            = $requestData->stockact;
+        $info->adjglact            = $requestData->adjglact;
+        $info->issueglact          = $requestData->issueglact;
+        $info->purchpricevaract    = $requestData->purchpricevaract;
+        $info->materialuseagevarac = $requestData->materialuseagevarac;
+        $info->wipact              = $requestData->wipact;
+        $info->defaulttaxcatid     = $requestData->defaulttaxcatid;
 
         $info->save();
 
@@ -88,6 +96,19 @@ class StockCategoryRepository implements StockCategoryRepositoryInterface
             $info->status = '0'; //删除税目
             $info->save();
 
+            $num_stock = $info->hasManyStockMaster->count();
+            $num_sale  = $info->hasManySalesGLPosting->count();
+            $num_co    = $info->hasManyCOGSGLPosting->count();
+
+            /*p($num_stock);
+            p($num_sale);
+            dd($num_co);*/
+            if ($num_stock > 0 || $num_sale > 0 || $num_co > 0) {
+                return false;
+            }
+
+            $info->hasManyStockCatProperties()->delete();
+
             DB::commit();
             return $info;
 
@@ -98,8 +119,8 @@ class StockCategoryRepository implements StockCategoryRepositoryInterface
     }
 
     //名称是否重复
-    public function isRepeat($taxcatname)
+    public function isRepeat($categorydescription)
     {
-        return StockCategory::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return StockCategory::where('categorydescription', $categorydescription)->where('status', '1')->first();
     }
 }

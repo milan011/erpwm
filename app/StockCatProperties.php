@@ -33,7 +33,7 @@ class StockCatProperties extends Model
      */
     public $timestamps = false;
 
-    protected $appends = ['is_set'];
+    protected $appends = ['isSet'];
 
     // 定义Example表与Shop表一对一关系
     public function belongsToShop()

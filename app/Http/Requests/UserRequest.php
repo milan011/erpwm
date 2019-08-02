@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CommentRequest;
 
-class UserRequest extends FormRequest
+// use Illuminate\Foundation\Http\FormRequest;
+
+class UserRequest extends CommentRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +25,29 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name'                  => 'required|unique:www_user',
-            'nick_name'             => 'required|unique:www_user',
-            'password'              => 'required|min:6|confirmed',
-            'password_confirmation' => 'required|min:6',
-            'telephone'             => 'required|phone_number',
-            // 'role_id' => 'required|numeric|min:1',
-        ];
+        $id = $this->route('id');
+        if (!empty($id)) {
+            // 新增
+            return [
+                'name'                  => 'required|unique:www_user,name,' . $id,
+                'nick_name'             => 'required|unique:www_user,nick_name,' . $id,
+                'password'              => 'required|min:6|confirmed',
+                'password_confirmation' => 'required|min:6',
+                'telephone'             => 'required|phone_number',
+                // 'role_id' => 'required|numeric|min:1',
+            ];
+        } else {
+            //更新
+            return [
+                'name'                  => 'required|unique:www_user',
+                'nick_name'             => 'required|unique:www_user',
+                'password'              => 'required|min:6|confirmed',
+                'password_confirmation' => 'required|min:6',
+                'telephone'             => 'required|phone_number',
+                // 'role_id' => 'required|numeric|min:1',
+            ];
+        }
+
     }
 
     /**

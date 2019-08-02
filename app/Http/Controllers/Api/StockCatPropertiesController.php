@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Http\Requests\StockCatPropertiesRequest;
 // use App\Http\Resources\StockCatProperties\StockCatPropertiesResource;
 // use App\Http\Resources\StockCatProperties\StockCatPropertiesResourceCollection;
 use App\Repositories\StockCatProperties\StockCatPropertiesRepositoryInterface;
@@ -49,18 +50,16 @@ class StockCatPropertiesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StockCatPropertiesRequest $request)
     {
 
         // dd($request->all());
 
-        if ($this->stockCatProperties->isRepeat($request->name)) {
-            return $this->baseFailed($message = '数据重复');
+        if ($this->stockCatProperties->isRepeat($request->label)) {
+            return $this->baseFailed($message = '标签名已经被使用');
         }
 
         $info = $this->stockCatProperties->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
 
         if ($info) {
             //添加成功
@@ -103,17 +102,17 @@ class StockCatPropertiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StockCatPropertiesRequest $request, $id)
     {
-        // dd($request->all());
-        $update_info = $this->stockCatProperties->isRepeat($request->name);
 
-        if ($update_info && ($update_info->id != $id)) {
-            return $this->baseFailed($message = '您修改后的信息与现有冲突');
+        // dd($request->all());
+        $update_info = $this->stockCatProperties->isRepeat($request->label);
+
+        if ($update_info && ($update_info->stkcatpropid != $id)) {
+            return $this->baseFailed($message = '标签名已经被使用');
         }
 
         $info = $this->stockCatProperties->update($request, $id);
-        $info->hasOnePackage;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -128,6 +127,6 @@ class StockCatPropertiesController extends Controller
     {
         // dd($id);
         $this->stockCatProperties->destroy($id);
-        return $this->baseSucceed($message = '修改成功');
+        return $this->baseSucceed($message = '删除成功');
     }
 }

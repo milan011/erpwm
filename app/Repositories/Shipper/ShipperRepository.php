@@ -86,7 +86,7 @@ class ShipperRepository implements ShipperRepositoryInterface
         try {
             $info    = Shipper::findorFail($id);
             $num_cus = $info->hasManySalesOrders->count();
-            $num_ana = $info->hasManySalesDebtorTrans;
+            $num_ana = $info->hasManySalesDebtorTrans->count();
             // $num_ana = $info->hasManySalesDebtorTrans->count();
             // dd(lastSql());
             $default_shipper = SystemParameter::where('confname', 'DefaultSupplierType')->first();

@@ -70,7 +70,13 @@ class StockCatPropertiesRepository implements StockCatPropertiesRepositoryInterf
         // dd($requestData->all());
         $info = StockCatProperties::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->label           = $requestData->label;
+        $info->controltype     = $requestData->controltype;
+        $info->defaultvalue    = $requestData->defaultvalue;
+        $info->maximumvalue    = $requestData->maximumvalue;
+        $info->reqatsalesorder = $requestData->reqatsalesorder;
+        $info->minimumvalue    = $requestData->minimumvalue;
+        $info->numericvalue    = $requestData->numericvalue;
 
         $info->save();
 
@@ -82,9 +88,8 @@ class StockCatPropertiesRepository implements StockCatPropertiesRepositoryInterf
     {
         DB::beginTransaction();
         try {
-            $info         = StockCatProperties::findorFail($id);
-            $info->status = '0'; //删除税目
-            $info->save();
+            $info = StockCatProperties::findorFail($id);
+            $info->delete();
 
             DB::commit();
             return $info;
@@ -96,8 +101,8 @@ class StockCatPropertiesRepository implements StockCatPropertiesRepositoryInterf
     }
 
     //名称是否重复
-    public function isRepeat($taxcatname)
+    public function isRepeat($label)
     {
-        return StockCatProperties::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return StockCatProperties::where('label', $label)->first();
     }
 }

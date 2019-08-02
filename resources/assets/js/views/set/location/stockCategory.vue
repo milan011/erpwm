@@ -11,7 +11,7 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('stockCategory.categorydescription')" align="center">
+      <el-table-column :label="$t('stockCategory.categorydescription')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.categorydescription }}</span>
         </template>
@@ -70,6 +70,9 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
+        <el-form-item :label="$t('stockCategory.categorydescription')" prop="categorydescription">
+          <el-input v-model.number="temp.categorydescription" />
+        </el-form-item>
         <el-form-item :label="$t('stockCategory.defaulttaxcatid')" prop="defaulttaxcatid">
           <el-select 
             v-model="temp.defaulttaxcatid" 
@@ -182,15 +185,84 @@
           </div>
         </el-col>
       <el-col :span="24">
-       <!-- <el-table size="mini" :key="catTableKey" :data="master_user.data" border style="width: 100%" highlight-current-row> -->
+       <!-- <el-table size="mini" :key="catTableKey" :data="ortherInfo" border style="width: 100%" highlight-current-row> -->
        <el-table size="mini" :key="catTableKey" :data="ortherInfo" border style="width: 100%" highlight-current-row>
           <el-table-column :label="$t('stockCategory.label')" align="center">
             <template slot-scope="scope">
               <span v-if="scope.row.isSet">
-               <el-input size="mini" placeholder="请输入内容" v-model="scope.row.label">
+                <el-input :disabled="true" v-show="false" size="mini" placeholder="标签名称" v-model="scope.row.stkcatpropid">
+                </el-input>
+                <el-input size="mini" placeholder="标签名称" v-model="scope.row.label">
                </el-input>
              </span>
              <span v-else>{{scope.row.label}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  width="120%" :label="$t('stockCategory.controltype')" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isSet">
+                <!-- <el-input size="mini" placeholder="请输入内容" v-model="scope.row.controltype">
+                </el-input> -->
+                <el-select 
+                  v-model="scope.row.controltype" 
+                  class="filter-item" >
+                  <el-option v-for="(control, index) in controltypeStatus" :key="index" :label="control" :value="index"/>
+                </el-select>
+             </span>
+             <span v-else>{{controltypeStatus[scope.row.controltype]}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('stockCategory.defaultvalue')" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isSet">
+               <el-input size="mini" placeholder="请输入内容" v-model="scope.row.defaultvalue">
+               </el-input>
+             </span>
+             <span v-else>{{scope.row.defaultvalue}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('stockCategory.maximumvalue')" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isSet">
+               <el-input size="mini" placeholder="请输入内容" v-model="scope.row.maximumvalue">
+               </el-input>
+             </span>
+             <span v-else>{{scope.row.maximumvalue}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('stockCategory.reqatsalesorder')" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isSet">
+               <!-- <el-input size="mini" placeholder="请输入内容" v-model="scope.row.reqatsalesorder">
+               </el-input> -->
+               <el-select 
+                  v-model="scope.row.reqatsalesorder" 
+                  class="filter-item" >
+                  <el-option v-for="(reqat, index) in reqatsalesorderStatus" :key="index" :label="reqat" :value="index"/>
+                </el-select>
+             </span>
+             <span v-else>{{reqatsalesorderStatus[scope.row.reqatsalesorder]}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('stockCategory.minimumvalue')" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isSet">
+               <el-input size="mini" placeholder="请输入内容" v-model="scope.row.minimumvalue">
+               </el-input>
+             </span>
+             <span v-else>{{scope.row.minimumvalue}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('stockCategory.numericvalue')" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isSet">
+                <el-select 
+                  v-model="scope.row.numericvalue" 
+                  class="filter-item" >
+                  <el-option v-for="(numer, index) in numericvalueStatus" :key="index" :label="numer" :value="index"/>
+                </el-select>
+             </span>
+             <span v-else>{{numericvalueStatus[scope.row.numericvalue]}}</span>
             </template>
           </el-table-column>
          <!-- <el-table-column v-for="(item,index) in master_user.columns" :key="index" :label="item.label" :prop="item.prop" :width="item.width">
@@ -202,15 +274,15 @@
              <span v-else>{{scope.row[item.prop]}}</span>
            </template>
          </el-table-column> -->
-         <el-table-column label="操作" width="">
+         <el-table-column label="操作">
            <template slot-scope="scope">
-             <span class="el-tag el-tag--success el-tag--mini" style="cursor: pointer;" @click.stop="saveRow(scope.row,scope.$index)">
+             <span v-show="scope.row.isSet" class="el-tag el-tag--success el-tag--mini" style="cursor: pointer;" @click.stop="saveRow(scope.row)">
                保存
              </span>
-             <span class="el-tag el-tag--primary el-tag--mini" style="cursor: pointer;" @click="scope.row.isSet = true">
+             <span v-show="!scope.row.isSet" class="el-tag el-tag--primary el-tag--mini" style="cursor: pointer;" @click="editRow(scope.row)">
                编辑
              </span>
-             <span class="el-tag el-tag--danger el-tag--mini" style="cursor: pointer;" @click="deleteRow(scope.$index,master_user.data)">
+             <span class="el-tag el-tag--danger el-tag--mini" style="cursor: pointer;" @click="deleteRow(scope.row)">
                删除
              </span>
            </template>
@@ -218,15 +290,15 @@
        </el-table>
      </el-col>  
    </el-row>
-   <span>{{master_user.data}}</span>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="setCatFormVisible = false">{{ $t('table.confirm') }}</el-button>
+        <el-button type="primary" @click="setDel()">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
   import { getStockCategoryList, createStockCategory, updateStockCategory, deleteStockCategory,} from '@/api/stockCategory'
+  import { getStockCatPropertiesList, createStockCatProperties, updateStockCatProperties, deleteStockCatProperties,} from '@/api/stockCatProperties'
   import { saleTypeAll } from '@/api/saleType'
   import { chartMasterAll } from '@/api/chartMaster'
   import { taxCategoriesAll } from '@/api/taxCategories'
@@ -273,6 +345,9 @@ export default {
       listQuery: {
         page: 1,
       },
+      controltypeStatus:['文字框', '选择框', '复选框', '日期框'],
+      reqatsalesorderStatus:['否', '是'],
+      numericvalueStatus:['否', '是'],
       calendarTypeOptions,
       showReviewer: false,
       temp: {
@@ -292,52 +367,42 @@ export default {
       },
       pvData: [],
       rules: {
-        stocktype: [        
-          { required: true, message: '请选择销售方式', trigger: 'change' },
+        categorydescription:[
+          { required: true, message: '请填写物料组描述', trigger: 'change' }
         ],
         defaulttaxcatid: [        
-          { required: true, message: '请选择折扣类别', trigger: 'change' },
+          { required: true, message: '请选择默认税目', trigger: 'change' },
         ],
-        quantitybreak: [
-          { required: true, message: '数量分割', trigger: 'change' },    
+        stocktype: [        
+          { required: true, message: '请选择凭证类型', trigger: 'change' },
         ],
-        quantitybreak: [ 
-          { required: true, message: '折扣率', trigger: 'change'}, 
+        stockact: [
+          { required: true, message: '请选择存货科目', trigger: 'change' },    
         ],
+        adjglact: [ 
+          { required: true, message: '请选择盘点差异科目', trigger: 'change'}, 
+        ],
+        purchpricevaract: [ 
+          { required: true, message: '请选择价格差科目', trigger: 'change'}, 
+        ],
+        materialuseagevarac: [ 
+          { required: true, message: '请选择数量差科目', trigger: 'change'}, 
+        ],
+        wipact: [ 
+          { required: true, message: '请选择在制品科目', trigger: 'change'}, 
+        ],
+        issueglact: [
+          { required: true, message: '请选择易耗品科目', trigger: 'change'}, 
+        ],
+      },
+      rules2:{
+        label:[{required: true, message: '请填写标签', trigger: 'change'}],
       },
       stockTypeList: stockType,
       chartMasterList: [],
       taxCategoriesList: [],
       ortherInfo: null,
-      master_user: {
-         sel: null, //选中行   
-         columns: [{
-             prop: "type",
-             label: "远程类型",
-             width: 120
-           },
-           {
-             prop: "addport",
-             label: "连接地址",
-             width: 150
-           },
-           {
-             prop: "user",
-             label: "登录用户",
-             width: 120
-           },
-           {
-             prop: "pwd",
-             label: "登录密码",
-             width: 220
-           },
-           {
-             prop: "info",
-             label: "其他信息"
-           }
-         ],
-         data: [],
-       },
+      catId: null,
     }
   },
   created() {
@@ -389,39 +454,194 @@ export default {
     },
     setOrherCat(row){
       this.ortherInfo = row.has_many_stock_cat_properties
+      this.catId = row.id
       this.setCatFormVisible = true
     },
     add() {
-       for (let i of this.master_user.data) {
+       for (let i of this.ortherInfo) {
          if (i.isSet) return this.$message.warning("请先保存当前编辑项");
        }
        let j = {
-         "type": "",
-         "addport": "",
-         "user": "",
-         "pwd": "",
-         "info": "",
-         "isSet": true,
+          'stkcatpropid': undefined,
+          'categoryid': this.catId,
+          'label': '',
+          'controltype': 0,
+          'defaultvalue': 0,
+          'maximumvalue': 0,
+          'reqatsalesorder': 0,
+          'minimumvalue': 0,
+          'numericvalue': 0,
+          "isSet": true,
        };
-       this.master_user.data.push(j);
-       this.master_user.sel = JSON.parse(JSON.stringify(j));
+       this.ortherInfo.push(j);
+       // this.master_user.sel = JSON.parse(JSON.stringify(j));
      },
-     saveRow(row, index) { //保存
-       let data = JSON.parse(JSON.stringify(this.master_user.sel));
+     saveRow(row) { //保存
+
+      // console.log(row)    
+      if(row.stkcatpropid){
+        //修改
+        updateStockCatProperties(row).then((response) => {
+          console.log(response.data);
+          // console.log('呵呵')
+          const response_data = response.data
+          if(response_data.status){
+            for (const v of this.ortherInfo) {
+              if (v.stkcatpropid === row.stkcatpropid) {
+                const index = this.ortherInfo.indexOf(v)
+                this.ortherInfo.splice(index, 1, response_data.data)
+                break
+              }
+            }
+            this.$notify({
+              title: '成功',
+              message: response_data.message,
+              type: 'success',
+              duration: 2000
+            })
+          }else{
+            // this.dialogFormVisible = false
+            if(response_data.code == 422){
+              //验证失败
+              /*this.$notify.error({
+                title: '验证失败啦',
+                message: response_data.message,
+                duration: 2000
+              })*/
+              let errMessage = response_data.msg
+              let messageShow = '<ul style="list-style-type:none;">'
+              for (const prop in errMessage) {
+                //console.log(prop)
+                // console.log(`errMessage.${prop} = ${errMessage[prop]}`)
+                //console.log(errMessage[prop])
+                messageShow += '<li style="margin-bottom:5px;">'
+                messageShow += `${errMessage[prop]}`
+                messageShow += '</li>'
+              }
+              messageShow += '</ul>'
+              this.$message({
+                showClose: true,
+                message: messageShow,
+                type: 'error',
+                dangerouslyUseHTMLString: true,
+                duration: 0
+              });
+            }else{
+              this.$notify.error({
+                title: '失败',
+                message: response_data.message,
+                duration: 2000
+              })
+            }       
+          }   
+        })
+      }else{
+        //新增    
+        createStockCatProperties(row).then((response) => {
+          console.log(response.data);
+          const response_data = response.data
+          if(response_data.status){
+            for (const v of this.ortherInfo) {
+              if (v.stkcatpropid === row.stkcatpropid) {
+                const index = this.ortherInfo.indexOf(v)
+                this.ortherInfo.splice(index, 1, response_data.data)
+                break
+              }
+            }
+            this.$notify({
+              title: '成功',
+              message: response_data.message,
+              type: 'success',
+              duration: 2000
+            })
+          }else{
+            // this.dialogFormVisible = false
+            if(response_data.code == 422){
+              //验证失败
+              /*this.$notify.error({
+                title: '验证失败啦',
+                message: response_data.message,
+                duration: 2000
+              })*/
+              let errMessage = response_data.msg
+              let messageShow = '<ul style="list-style-type:none;">'
+              for (const prop in errMessage) {
+                //console.log(prop)
+                // console.log(`errMessage.${prop} = ${errMessage[prop]}`)
+                //console.log(errMessage[prop])
+                messageShow += '<li style="margin-bottom:5px;">'
+                messageShow += `${errMessage[prop]}`
+                messageShow += '</li>'
+              }
+              messageShow += '</ul>'
+              this.$message({
+                showClose: true,
+                message: messageShow,
+                type: 'error',
+                dangerouslyUseHTMLString: true,
+                duration: 0
+              });
+            }else{
+              this.$notify.error({
+                title: '失败',
+                message: response_data.message,
+                duration: 2000
+              })
+            }        
+          }    
+        })
+      }
+      
+      /* let data = JSON.parse(JSON.stringify(this.master_user.sel));
        for (let k in data) {
          row[k] = data[k] //将sel里面的value赋值给这一行。ps(for....in..)的妙用，细心的同学发现这里我并没有循环对象row
        }
-       row.isSet = false;
+       row.isSet = false;*/
      },
      editRow(row) { //编辑
-       for (let i of this.master_user.data) {
+       for (let i of this.ortherInfo) {
          if (i.isSet) return this.$message.warning("请先保存当前编辑11项");
        }
-       this.master_user.sel = row
        row.isSet = true
      },
-     deleteRow(index, rows) { //删除
-       rows.splice(index, 1)
+     setDel(){
+        for (let i of this.ortherInfo) {
+           if (i.isSet) return this.$message.warning("请先保存当前编辑11项");
+        }
+        this.setCatFormVisible = false
+     },
+     deleteRow(row) { //删除
+       this.$confirm('确定要删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteStockCatProperties(row).then((response) => {
+          // console.log(response.data);
+          if(!response.data.status){
+            this.$notify({
+              title: '失败',
+              message: response.data.message,
+              type: 'warning',
+              duration: 2000
+            })
+          }else{
+            const index = this.ortherInfo.indexOf(row)
+            this.ortherInfo.splice(index, 1)
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success',
+              duration: 2000
+            })
+          }   
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
      },
     handleModifyStatus(row, status) {
       this.$confirm('确定要删除?', '提示', {
