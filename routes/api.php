@@ -216,6 +216,27 @@ Route::group([
     Route::post('stockCatProperties', 'StockCatPropertiesController@store');
     Route::put('stockCatProperties/{id}', 'StockCatPropertiesController@update');
     Route::delete('stockCatProperties/{id}', 'StockCatPropertiesController@destroy');
+
+    // DebtorsMaster
+    Route::get('debtorsMasterList', 'DebtorsMasterController@index');
+    Route::get('debtorsMaster/{id}', 'DebtorsMasterController@show');
+    Route::post('debtorsMaster', 'DebtorsMasterController@store');
+    Route::put('debtorsMaster/{id}', 'DebtorsMasterController@update');
+    Route::delete('debtorsMaster/{id}', 'DebtorsMasterController@destroy');
+
+    // Custbranch
+    Route::get('custbranchList', 'CustbranchController@index');
+    Route::get('custbranch/{id}', 'CustbranchController@show');
+    Route::post('custbranch', 'CustbranchController@store');
+    Route::put('custbranch/{id}', 'CustbranchController@update');
+    Route::delete('custbranch/{id}', 'CustbranchController@destroy');
+
+    // UnitsOfMeasure
+    Route::get('unitsOfMeasureList', 'UnitsOfMeasureController@index');
+    Route::get('unitsOfMeasure/{id}', 'UnitsOfMeasureController@show');
+    Route::post('unitsOfMeasure', 'UnitsOfMeasureController@store');
+    Route::put('unitsOfMeasure/{id}', 'UnitsOfMeasureController@update');
+    Route::delete('unitsOfMeasure/{id}', 'UnitsOfMeasureController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Example extends Model
+class PurchOrders extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,9 +13,9 @@ class Example extends Model
      * @var array
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
-    protected $table      = 'example';
-    protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'examplename'];
+    protected $table      = 'purchorders';
+    protected $primaryKey = 'orderno';
+    protected $fillable   = ['orderno', 'supplierno', 'comments', 'orddate', 'rate', 'dateprinted', 'allowprint', 'initiator', 'requisitionno', 'intostocklocation', 'deladd1', 'deladd2', 'deladd3', 'deladd4', 'deladd5', 'deladd6', 'tel', 'suppdeladdress1', 'suppdeladdress2', 'suppdeladdress3', 'suppdeladdress4', 'suppdeladdress5', 'suppdeladdress6', 'suppliercontact', 'supptel', 'contact', 'version', 'revised', 'realorderno', 'deliveryby', 'deliverydate', 'status', 'stat_comment', 'paymentterms', 'port'];
 
     /**
      * The attributes that should be hidden for arrays.

@@ -33,20 +33,95 @@ class Locations extends Model
      */
     public $timestamps = false;
 
-    // 定义Example表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义Locations表与Taxprovinces表一对一关系
+    public function belongsToTaxprovinces()
     {
-
-        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
+        return $this->belongsTo('App\Taxprovinces', 'taxprovinceid', 'taxprovinceid')->withDefault(['taxprovincename' => '',
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义Locations表与DebtorsMaster表一对一关系
+    public function belongsToDebtorsMaster()
     {
-
-        return $this->hasMany('App\Notice', 'user_id', 'id')->withDefault(['accountname' => '',
+        return $this->belongsTo('App\DebtorsMaster', 'cashsalecustomer', 'id')->withDefault(['name' => '',
         ]);
     }
+
+    // 定义Locations表与Custbranch表一对一关系
+    public function belongsToCustbranch()
+    {
+        return $this->belongsTo('App\Custbranch', 'cashsalebranch', 'id')->withDefault(['brname' => '',
+        ]);
+    }
+
+    // 定义Locations表与Locstock表一对多关系
+    public function hasManyLocstock()
+    {
+
+        return $this->hasMany('App\Locstock', 'loccode', 'id');
+    }
+
+    // 定义Locations表与SalesOrders表一对多关系
+    public function hasManySalesOrders()
+    {
+
+        return $this->hasMany('App\SalesOrders', 'fromstkloc', 'id');
+    }
+
+    // 定义Locations表与StockMoves表一对多关系
+    public function hasManyStockMoves()
+    {
+
+        return $this->hasMany('App\StockMoves', 'loccode', 'id');
+    }
+
+    // 定义Locations表与Locstock表一对多关系
+    public function hasManyLocstockHasQuantity()
+    {
+
+        return $this->hasMany('App\Locstock', 'loccode', 'id')->where('quantity', '!=', '0');
+    }
+
+    // 定义Locations表与User表一对多关系
+    public function hasManyUser()
+    {
+
+        return $this->hasMany('App\User', 'defaultlocation', 'id');
+    }
+
+    // 定义Locations表与Bom表一对多关系
+    public function hasManyBom()
+    {
+
+        return $this->hasMany('App\Bom', 'loccode', 'id');
+    }
+
+    // 定义Locations表与WorkCentres表一对多关系
+    public function hasManyWorkCentres()
+    {
+
+        return $this->hasMany('App\WorkCentres', 'location', 'id');
+    }
+
+    // 定义Locations表与WorkOrders表一对多关系
+    public function hasManyWorkOrders()
+    {
+
+        return $this->hasMany('App\WorkOrders', 'loccode', 'id');
+    }
+
+    // 定义Locations表与Custbranch表一对多关系
+    public function hasManyCustbranch()
+    {
+
+        return $this->hasMany('App\Custbranch', 'defaultlocation', 'id');
+    }
+
+    // 定义Locations表与PurchOrders表一对多关系
+    public function hasManyPurchOrders()
+    {
+
+        return $this->hasMany('App\PurchOrders', 'intostocklocation', 'id');
+    }
+
 }

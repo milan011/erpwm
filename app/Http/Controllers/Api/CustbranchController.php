@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\Locations\LocationsResource;
-// use App\Http\Resources\Locations\LocationsResourceCollection;
-use App\Repositories\Locations\LocationsRepositoryInterface;
+// use App\Http\Resources\Custbranch\CustbranchResource;
+// use App\Http\Resources\Custbranch\CustbranchResourceCollection;
+use App\Repositories\Custbranch\CustbranchRepositoryInterface;
 use Illuminate\Http\Request;
 
-class LocationsController extends Controller
+class CustbranchController extends Controller
 {
-    protected $locations;
+    protected $custbranch;
 
     public function __construct(
 
-        LocationsRepositoryInterface $locations
+        CustbranchRepositoryInterface $custbranch
     ) {
-        $this->locations = $locations;
+        $this->custbranch = $custbranch;
     }
 
     /**
@@ -28,10 +28,10 @@ class LocationsController extends Controller
     public function index(Request $request)
     {
         $query_list = jsonToArray($request); //获取搜索信息
+        // dd($query_list);
+        $custbranchs = $this->custbranch->getList($query_list);
 
-        $locationss = $this->locations->getList($query_list);
-
-        return $locationss;
+        return $custbranchs;
     }
 
     /**
@@ -54,14 +54,13 @@ class LocationsController extends Controller
 
         // dd($request->all());
 
-        if ($this->locations->isRepeat($request->locationname)) {
-            return $this->baseFailed($message = '仓库名称重复');
+        if ($this->custbranch->isRepeat($request->name)) {
+            return $this->baseFailed($message = '数据重复');
         }
 
-        $info = $this->locations->create($request);
-        $info->belongsToTaxprovinces;
-        $info->belongsToDebtorsMaster;
-        $info->belongsToCustbranch;
+        $info = $this->custbranch->create($request);
+        $info->hasOnePackage;
+        $info->belongsToCreater;
 
         if ($info) {
             //添加成功
@@ -80,10 +79,10 @@ class LocationsController extends Controller
      */
     public function show($id)
     {
-        $info = $this->locations->find($id);
+        $info = $this->custbranch->find($id);
         $info->belongsToCreater;
 
-        return new LocationsResource($info);
+        return new CustbranchResource($info);
     }
 
     /**
@@ -107,16 +106,14 @@ class LocationsController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->locations->isRepeat($request->locationname);
+        $update_info = $this->custbranch->isRepeat($request->name);
 
         if ($update_info && ($update_info->id != $id)) {
-            return $this->baseFailed($message = '您修改后的仓库名称与现有冲突');
+            return $this->baseFailed($message = '您修改后的信息与现有冲突');
         }
 
-        $info = $this->locations->update($request, $id);
-        $info->belongsToTaxprovinces;
-        $info->belongsToDebtorsMaster;
-        $info->belongsToCustbranch;
+        $info = $this->custbranch->update($request, $id);
+        $info->hasOnePackage;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -130,14 +127,7 @@ class LocationsController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $info = $this->locations->destroy($id);
-        if ($info) {
-            //删除成功
-            return $this->baseSucceed($message = '修改成功');
-        } else {
-            //添加失败
-            return $this->baseFailed($message = '该仓库可能被使用于销售订单,仓库调拨单,仓库仍有物料存在,已分配给用户,BOM使用,工作中心或工作单,分公司默认仓库');
-        }
-
+        $this->custbranch->destroy($id);
+        return $this->baseSucceed($message = '修改成功');
     }
 }

@@ -85,4 +85,7 @@ export default {
   .el-form-item {
      margin-bottom: 15px; 
   }
+  .el-table--medium td, .el-table--medium th {
+    padding: 5px 0;
+  }
 </style>

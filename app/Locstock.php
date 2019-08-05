@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Example extends Model
+class Locstock extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,9 +13,9 @@ class Example extends Model
      * @var array
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
-    protected $table      = 'example';
+    protected $table      = 'locstock';
     protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'examplename'];
+    protected $fillable   = ['id', 'loccode', 'stockid', 'quantity', 'reorderlevel', 'bin'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,14 +33,14 @@ class Example extends Model
      */
     public $timestamps = false;
 
-    // 定义Example表与Shop表一对一关系
+    // 定义Locstock表与Shop表一对一关系
     public function belongsToShop()
     {
         return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
+    // 定义Locstock表与Notice表一对多关系
     public function hasManyNotice()
     {
 

@@ -56,5 +56,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\Locations\LocationsRepositoryInterface', 'App\Repositories\Locations\LocationsRepository');
         $this->app->bind('App\Repositories\DiscountMatrix\DiscountMatrixRepositoryInterface', 'App\Repositories\DiscountMatrix\DiscountMatrixRepository');
         $this->app->bind('App\Repositories\StockCatProperties\StockCatPropertiesRepositoryInterface', 'App\Repositories\StockCatProperties\StockCatPropertiesRepository');
+        $this->app->bind('App\Repositories\DebtorsMaster\DebtorsMasterRepositoryInterface', 'App\Repositories\DebtorsMaster\DebtorsMasterRepository');
+        $this->app->bind('App\Repositories\Custbranch\CustbranchRepositoryInterface', 'App\Repositories\Custbranch\CustbranchRepository');
+        $this->app->bind('App\Repositories\UnitsOfMeasure\UnitsOfMeasureRepositoryInterface', 'App\Repositories\UnitsOfMeasure\UnitsOfMeasureRepository');
     }
 }

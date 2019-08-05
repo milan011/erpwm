@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Example extends Model
+class UnitsOfMeasure extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,9 +13,9 @@ class Example extends Model
      * @var array
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
-    protected $table      = 'example';
-    protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'examplename'];
+    protected $table      = 'unitsofmeasure';
+    protected $primaryKey = 'unitid';
+    protected $fillable   = ['unitid', 'unitname'];
 
     /**
      * The attributes that should be hidden for arrays.
