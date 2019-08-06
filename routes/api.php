@@ -237,6 +237,20 @@ Route::group([
     Route::post('unitsOfMeasure', 'UnitsOfMeasureController@store');
     Route::put('unitsOfMeasure/{id}', 'UnitsOfMeasureController@update');
     Route::delete('unitsOfMeasure/{id}', 'UnitsOfMeasureController@destroy');
+
+    // MRPCalendar
+    Route::get('mRPCalendarList', 'MRPCalendarController@index');
+    Route::get('mRPCalendar/{id}', 'MRPCalendarController@show');
+    Route::post('mRPCalendar', 'MRPCalendarController@store');
+    Route::put('mRPCalendar/{id}', 'MRPCalendarController@update');
+    Route::delete('mRPCalendar/{id}', 'MRPCalendarController@destroy');
+
+    // MRPDemandType
+    Route::get('mRPDemandTypeList', 'MRPDemandTypeController@index');
+    Route::get('mRPDemandType/{id}', 'MRPDemandTypeController@show');
+    Route::post('mRPDemandType', 'MRPDemandTypeController@store');
+    Route::put('mRPDemandType/{id}', 'MRPDemandTypeController@update');
+    Route::delete('mRPDemandType/{id}', 'MRPDemandTypeController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

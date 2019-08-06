@@ -31,9 +31,21 @@ const stockType = {
   L: '人工',
 };
 
+//星期
+const weekDay = [
+  {'key': '1', 'day': '星期一'},
+  {'key': '2', 'day': '星期二'},
+  {'key': '3', 'day': '星期三'},
+  {'key': '4', 'day': '星期四'},
+  {'key': '5', 'day': '星期五'},
+  {'key': '6', 'day': '星期六'},
+  {'key': '0', 'day': '星期天'},
+]
+
 export { 
     ROAST_CONFIG, 
     stockType,
+    weekDay,
 }
 
 /*export const zrConfig = {

@@ -6,14 +6,14 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('unitsOfMeasure.unitid')" align="center">
+      <el-table-column :label="$t('mRPDemandType.id')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.unitid }}</span>
+          <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('unitsOfMeasure.unitname')" align="center">
+      <el-table-column :label="$t('mRPDemandType.description')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.unitname }}</span>
+          <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
@@ -29,8 +29,8 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('unitsOfMeasure.unitname')" prop="unitname">
-          <el-input v-model="temp.unitname" />
+        <el-form-item :label="$t('mRPDemandType.description')" prop="description">
+          <el-input v-model="temp.description" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,7 +42,7 @@
   </div>
 </template>
 <script>
-  import { getUnitsOfMeasureList, createUnitsOfMeasure, updateUnitsOfMeasure, deleteUnitsOfMeasure} from '@/api/unitsOfMeasure'
+  import { getMRPDemandTypeList, createMRPDemandType, updateMRPDemandType, deleteMRPDemandType} from '@/api/mRPDemandType'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 // import SwitchRoles from './components/Permission'
@@ -90,8 +90,8 @@ export default {
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        unitid: undefined,
-        unitname: '',
+        id: undefined,
+        description: '',
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -101,7 +101,7 @@ export default {
       },
       pvData: [],
       rules: {
-        unitname: [
+        description: [
           { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 1, max: 6, message: '长度在1到6个字符', trigger: 'blur' }
         ],
@@ -118,7 +118,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getUnitsOfMeasureList(this.listQuery).then(response => {
+      getMRPDemandTypeList(this.listQuery).then(response => {
         // console.log(response.data)
         this.list = response.data.data
         this.total = response.data.total
@@ -148,7 +148,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteUnitsOfMeasure(this.temp).then((response) => {
+        deleteMRPDemandType(this.temp).then((response) => {
           // console.log(response.data);
           if(response.data.status === 0){
             this.$notify({
@@ -178,8 +178,8 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        unitid: undefined,
-        unitname: '',
+        id: undefined,
+        description: '',
       }
     },
     handleCreate() {
@@ -193,11 +193,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createUnitsOfMeasure(this.temp).then((response) => {
+          createMRPDemandType(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.unitid = response_data.data.unitid
+              this.temp.id = response_data.data.id
               this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
@@ -231,12 +231,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateUnitsOfMeasure(tempData).then((response) => {
+          updateMRPDemandType(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.unitid === this.temp.unitid) {
+                if (v.id === this.temp.id) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, response_data.data)
                   break

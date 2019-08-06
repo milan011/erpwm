@@ -35,6 +35,8 @@ export default {
     setLocation: '库存设置',
     locations: '仓库管理',
     unitsOfMeasure: '计量单位',
+    mRPCalendar: 'MRP 日历',
+    mRPDemandType: '需求种类',
     stockCategory: '物料组',
     customerType: '客户类型',
     supplierType: '供应商类型',
@@ -346,4 +348,14 @@ export default {
     unitid: '序号',
     unitname: '单位',
   },
+  mRPCalendar:{
+    id: '序号',
+    calendardate: '日期',
+    daynumber: '累计生产日',
+    manufacturingflag: '是否工作日',
+  },
+  mRPDemandType:{
+    id: '序号',
+    description: '需求种类',
+  }
 }

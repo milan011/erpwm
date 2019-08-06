@@ -6,31 +6,67 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('unitsOfMeasure.unitid')" align="center">
+      <!-- <el-table-column :label="$t('mRPCalendar.id')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.unitid }}</span>
+          <span>{{ scope.row.id }}</span>
+        </template>
+      </el-table-column> -->
+      <el-table-column :label="$t('mRPCalendar.calendardate')" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.calendardate }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('unitsOfMeasure.unitname')" align="center">
+      <el-table-column :label="$t('mRPCalendar.daynumber')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.unitname }}</span>
+          <span>{{ scope.row.daynumber }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
+      <el-table-column :label="$t('mRPCalendar.manufacturingflag')" align="center">
+        <template slot-scope="scope">
+          <span>
+            <el-tag :type="scope.row.manufacturingflag | statusFilter">
+            {{ manufacturingflagStatus[scope.row.manufacturingflag] }}
+            </el-tag>
+          </span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <div class="pagination-container">
-      <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @current-change="handleCurrentChange" />
+      <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" :page-size="10" @current-change="handleCurrentChange" />
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('unitsOfMeasure.unitname')" prop="unitname">
-          <el-input v-model="temp.unitname" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;">
+        <el-form-item label="开始日期" prop="startDate">
+          <el-date-picker
+              v-model="temp.startDate"
+              type="date"
+              value-format="yyyy-MM-dd"
+              placeholder="开始日期"
+              :picker-options="pickerOptionsStart">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="结束日期" prop="endDate">
+          <el-date-picker
+              v-model="temp.endDate"
+              type="date"
+              value-format="yyyy-MM-dd"
+              placeholder="结束日期"
+              :picker-options="pickerOptionsEnd">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="不包含">
+          <el-checkbox-group v-model="temp.checkList">
+            <el-checkbox border size="medium" v-for="week in weekList" :label="week.key" :key="week.key" :value="week.key">
+              {{week.day}}
+            </el-checkbox>
+          </el-checkbox-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,10 +78,10 @@
   </div>
 </template>
 <script>
-  import { getUnitsOfMeasureList, createUnitsOfMeasure, updateUnitsOfMeasure, deleteUnitsOfMeasure} from '@/api/unitsOfMeasure'
+  import { mRPCalendarAll, createMRPCalendar} from '@/api/mRPCalendar'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
-// import SwitchRoles from './components/Permission'
+import { weekDay }  from '@/config'
 // import SwitchRoles from './components/RolePermission'
 
 const calendarTypeOptions = [
@@ -60,7 +96,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'provincesTax',
+  name: 'mRPCalendar',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -68,9 +104,8 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        1: 'success',
+        0: 'danger'
       }
       return statusMap[status]
     },
@@ -90,21 +125,58 @@ export default {
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        unitid: undefined,
-        unitname: '',
+        startDate: '',
+        endDate: '',
+        checkList: [],
       },
+      manufacturingflagStatus: ['否', '是'],
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑计量单位',
-        create: '新增计量单位'
+        update: '编辑MRC日历',
+        create: '新增MRC日历'
+      },
+      weekList: weekDay,
+      checkList: [],
+      pickerOptionsStart: {
+        disabledDate: time => {
+          // 可通过箭头函数的方式访问到this
+          /*let curDate = new Date(new Date().toLocaleDateString()).getTime();
+          let three = 90 * 24 * 3600 * 1000;
+          let threeMonths = curDate + three;
+          return time.getTime() < Date.now() - 8.64e7 || time.getTime() > threeMonths;*/
+          let curDate = new Date(Date.now()) 
+          let threeMonths = curDate.setDate(curDate.getDate() + 90)
+          // return time.getTime() < Date.now() - 8.64e7;
+          //不能选择当天之前和之后90天的日期
+          return time.getTime() < Date.now() ||  time.getTime() > threeMonths  
+        }
+      },
+      pickerOptionsEnd: {
+        disabledDate: time => {
+          /*let curDate = new Date(new Date().toLocaleDateString()).getTime();
+          let three = 90 * 24 * 3600 * 1000;
+          let threeMonths = curDate + three;
+          return time.getTime() < Date.now() - 8.64e7 || time.getTime() < this.startDate || time.getTime() > threeMonths*/
+          // return time.getTime() < Date.now() - 8.64e7 || time.getTime() < new Date(this.startDate).getTime()- 8.64e7;
+          let startDate = new Date(this.temp.startDate).getTime()    //获取开始时间的时间戳       
+          let day = new Date(startDate)     
+          let currDay = day.setDate(day.getDate() - 1)    //获取开始时间的前一天
+          let curDate = new Date(Date.now()) 
+          let threeMonths = curDate.setDate(curDate.getDate() + 90)
+          if (startDate) {         
+            //不能选择开始时间之前的日期及当天之后的日期
+            return (time.getTime() < currDay || time.getTime() > threeMonths)          
+          } else {        
+            //不能选择当天之后的日期
+            return time.getTime() < Date.now() || time.getTime() > threeMonths            
+          }
+        }
       },
       pvData: [],
       rules: {
-        unitname: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 1, max: 6, message: '长度在1到6个字符', trigger: 'blur' }
-        ],
+        startDate: [{ required: true, message: '请选择日期', trigger: 'blur' }],
+        endDate: [{ required: true, message: '请选择日期', trigger: 'blur' }],
       },
     }
   },
@@ -112,17 +184,27 @@ export default {
     // this.getList()
     Promise.all([
       this.getList(),
-      // this.getPermissionList()
     ])
   },
   methods: {
-    getList() {
+    /*getList() {
       this.listLoading = true
-      getUnitsOfMeasureList(this.listQuery).then(response => {
+      getMRPCalendarList(this.listQuery).then(response => {
         // console.log(response.data)
         this.list = response.data.data
         this.total = response.data.total
 
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+    },*/
+    getList() {
+      this.listLoading = true
+      mRPCalendarAll().then(response => {
+        // console.log(response.data)
+        this.list = response.data
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -148,7 +230,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteUnitsOfMeasure(this.temp).then((response) => {
+        deleteMRPCalendar(this.temp).then((response) => {
           // console.log(response.data);
           if(response.data.status === 0){
             this.$notify({
@@ -178,8 +260,9 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        unitid: undefined,
-        unitname: '',
+        startDate: '',
+        endDate: '',
+        checkList: [],
       }
     },
     handleCreate() {
@@ -193,12 +276,12 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createUnitsOfMeasure(this.temp).then((response) => {
+          createMRPCalendar(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
-              this.temp.unitid = response_data.data.unitid
-              this.list.unshift(response_data.data)
+              // this.list.unshift(response_data.data)
+              this.getList()
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -231,14 +314,14 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateUnitsOfMeasure(tempData).then((response) => {
+          updateMRPCalendar(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.unitid === this.temp.unitid) {
+                if (v.taxprovinceid === this.temp.taxprovinceid) {
                   const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, response_data.data)
+                  this.list.splice(index, 1, this.temp)
                   break
                 }
               }
@@ -280,4 +363,7 @@ export default {
     width: 70px;
     margin-left: 0px;
   } */
+  .el-checkbox {
+    margin-left: 10px;
+  }
 </style>

@@ -175,6 +175,18 @@ const setRouter = {
             name: 'unitsOfMeasure',
             meta: { title: 'unitsOfMeasure' },
           },
+          {
+            path: 'mRPCalendar',
+            component: resolve => void(require(['@/views/set/location/mRPCalendar.vue'], resolve)),
+            name: 'mRPCalendar',
+            meta: { title: 'mRPCalendar' },
+          },
+          {
+            path: 'mRPDemandType',
+            component: resolve => void(require(['@/views/set/location/mRPDemandType.vue'], resolve)),
+            name: 'mRPDemandType',
+            meta: { title: 'mRPDemandType' },
+          },
         ]
       },
     ]

@@ -59,5 +59,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\DebtorsMaster\DebtorsMasterRepositoryInterface', 'App\Repositories\DebtorsMaster\DebtorsMasterRepository');
         $this->app->bind('App\Repositories\Custbranch\CustbranchRepositoryInterface', 'App\Repositories\Custbranch\CustbranchRepository');
         $this->app->bind('App\Repositories\UnitsOfMeasure\UnitsOfMeasureRepositoryInterface', 'App\Repositories\UnitsOfMeasure\UnitsOfMeasureRepository');
+        $this->app->bind('App\Repositories\MRPCalendar\MRPCalendarRepositoryInterface', 'App\Repositories\MRPCalendar\MRPCalendarRepository');
+        $this->app->bind('App\Repositories\MRPDemandType\MRPDemandTypeRepositoryInterface', 'App\Repositories\MRPDemandType\MRPDemandTypeRepository');
     }
 }
