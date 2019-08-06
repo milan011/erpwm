@@ -37,6 +37,7 @@ export default {
     unitsOfMeasure: '计量单位',
     mRPCalendar: 'MRP 日历',
     mRPDemandType: '需求种类',
+    department: '部门维护',
     stockCategory: '物料组',
     customerType: '客户类型',
     supplierType: '供应商类型',
@@ -357,5 +358,10 @@ export default {
   mRPDemandType:{
     id: '序号',
     description: '需求种类',
-  }
+  },
+  department: {
+    departmentid: '序号',
+    description: '部门名称',
+    authoriser: '授权人',
+  },
 }

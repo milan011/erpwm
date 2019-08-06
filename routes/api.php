@@ -251,6 +251,13 @@ Route::group([
     Route::post('mRPDemandType', 'MRPDemandTypeController@store');
     Route::put('mRPDemandType/{id}', 'MRPDemandTypeController@update');
     Route::delete('mRPDemandType/{id}', 'MRPDemandTypeController@destroy');
+
+    // Department
+    Route::get('departmentList', 'DepartmentController@index');
+    Route::get('department/{id}', 'DepartmentController@show');
+    Route::post('department', 'DepartmentController@store');
+    Route::put('department/{id}', 'DepartmentController@update');
+    Route::delete('department/{id}', 'DepartmentController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

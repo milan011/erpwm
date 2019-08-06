@@ -187,6 +187,12 @@ const setRouter = {
             name: 'mRPDemandType',
             meta: { title: 'mRPDemandType' },
           },
+          {
+            path: 'department',
+            component: resolve => void(require(['@/views/set/location/department.vue'], resolve)),
+            name: 'department',
+            meta: { title: 'department' },
+          },
         ]
       },
     ]

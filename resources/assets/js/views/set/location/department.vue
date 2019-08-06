@@ -6,12 +6,12 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('mRPDemandType.id')" align="center">
+      <el-table-column :label="$t('department.departmentid')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.departmentid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('mRPDemandType.description')" align="center">
+      <el-table-column :label="$t('department.description')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.description }}</span>
         </template>
@@ -29,10 +29,20 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('mRPDemandType.description')" prop="description">
+        <el-form-item :label="$t('department.description')" prop="description">
           <el-input v-model="temp.description" />
         </el-form-item>
-      </el-form>
+        <el-form-item :label="$t('department.authoriser')" prop="authoriser">
+          <el-select 
+            v-model="temp.authoriser" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入用户搜索">
+            <el-option v-for="user in userList" :key="user.id" :label="user.realname" :value="user.id"/>
+          </el-select>
+        </el-form-item>
+      </el-form>  
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('table.confirm') }}</el-button>
@@ -42,7 +52,8 @@
   </div>
 </template>
 <script>
-  import { getMRPDemandTypeList, createMRPDemandType, updateMRPDemandType, deleteMRPDemandType} from '@/api/mRPDemandType'
+  import { getDepartmentList, createDepartment, updateDepartment, deleteDepartment} from '@/api/department'
+  import { userAll } from '@/api/user'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 // import SwitchRoles from './components/Permission'
@@ -90,20 +101,24 @@ export default {
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        id: undefined,
+        departmentid: undefined,
         description: '',
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑需求种类',
-        create: '新增需求种类'
+        update: '编辑内部部门',
+        create: '新增内部部门'
       },
+      userList: [],
       pvData: [],
       rules: {
+        userid: [        
+          { required: true, message: '请选择授权用户', trigger: 'blur' },
+        ],
         description: [
           { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 1, max: 6, message: '长度在1到6个字符', trigger: 'blur' }
+          { min: 1, max: 6, message: '长度在1到20个字符', trigger: 'blur' }
         ],
       },
     }
@@ -112,13 +127,13 @@ export default {
     // this.getList()
     Promise.all([
       this.getList(),
-      // this.getPermissionList()
+      this.getAllUserList(),
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getMRPDemandTypeList(this.listQuery).then(response => {
+      getDepartmentList(this.listQuery).then(response => {
         // console.log(response.data)
         this.list = response.data.data
         this.total = response.data.total
@@ -127,6 +142,11 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+      })
+    },
+    getAllUserList(){
+      userAll().then(response => {
+        this.userList = response.data
       })
     },
     handleFilter() {
@@ -148,7 +168,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteMRPDemandType(this.temp).then((response) => {
+        deleteDepartment(this.temp).then((response) => {
           // console.log(response.data);
           if(response.data.status === 0){
             this.$notify({
@@ -178,7 +198,7 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        id: undefined,
+        departmentid: undefined,
         description: '',
       }
     },
@@ -193,7 +213,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createMRPDemandType(this.temp).then((response) => {
+          createDepartment(this.temp).then((response) => {
             console.log(response.data);
             const response_data = response.data
             if(response_data.status){
@@ -231,12 +251,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateMRPDemandType(tempData).then((response) => {
+          updateDepartment(tempData).then((response) => {
             console.log(response.data)
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.id === this.temp.id) {
+                if (v.departmentid === this.temp.departmentid) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, response_data.data)
                   break
