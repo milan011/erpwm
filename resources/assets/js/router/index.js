@@ -9,6 +9,7 @@ import Layout from '@/views/layout/Layout'
 /* Router Modules */
 import userRouter from './modules/user'
 import setRouter from './modules/set'
+import pettyCashRouter from './modules/pettyCash'
 import roleRouter from './modules/role'
 
 
@@ -75,8 +76,10 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+  pettyCashRouter,
   setRouter,
   userRouter,
+
   
   { path: '*', redirect: '/404', hidden: true }
 ]

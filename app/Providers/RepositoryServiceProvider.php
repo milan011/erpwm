@@ -62,5 +62,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\MRPCalendar\MRPCalendarRepositoryInterface', 'App\Repositories\MRPCalendar\MRPCalendarRepository');
         $this->app->bind('App\Repositories\MRPDemandType\MRPDemandTypeRepositoryInterface', 'App\Repositories\MRPDemandType\MRPDemandTypeRepository');
         $this->app->bind('App\Repositories\Department\DepartmentRepositoryInterface', 'App\Repositories\Department\DepartmentRepository');
+        $this->app->bind('App\Repositories\PcTypeTab\PcTypeTabRepositoryInterface', 'App\Repositories\PcTypeTab\PcTypeTabRepository');
+        $this->app->bind('App\Repositories\PcTab\PcTabRepositoryInterface', 'App\Repositories\PcTab\PcTabRepository');
     }
 }

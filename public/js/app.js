@@ -105820,6 +105820,12 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     roleDelete: '删除角色',
     shop: '门店管理',
     set: '设置',
+    pettyCash: '小额现金',
+    pettyCashManage: '管理功能',
+    pettyCashSelect: '查询及报告',
+    pettyCashSet: '维护',
+    pcTypeTab: '标签类别',
+    pcTab: '标签维护',
     setBase: '基础信息',
     setGatherPay: '应收应付',
     setSale: '销售相关',
@@ -106162,6 +106168,22 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     departmentid: '序号',
     description: '部门名称',
     authoriser: '授权人'
+  },
+  pcTypeTab: {
+    id: '序号',
+    typetabdescription: '标签描述'
+  },
+  pcTab: {
+    id: '序号',
+    tabcode: '标签代码',
+    usercode: '用户名称',
+    typetabcode: '标签类别',
+    currency: '币种',
+    tablimit: '限额',
+    assigner: '分配人',
+    authorizer: '授权人',
+    glaccountassignment: '现金预支总账账户',
+    glaccountpcash: '所属总账账户'
   }
 });
 
@@ -106269,7 +106291,8 @@ __WEBPACK_IMPORTED_MODULE_1__router__["c" /* default */].afterEach(function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__views_layout_Layout__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_user__ = __webpack_require__("./resources/assets/js/router/modules/user.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_set__ = __webpack_require__("./resources/assets/js/router/modules/set.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_role__ = __webpack_require__("./resources/assets/js/router/modules/role.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_pettyCash__ = __webpack_require__("./resources/assets/js/router/modules/pettyCash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_role__ = __webpack_require__("./resources/assets/js/router/modules/role.js");
 
 
 
@@ -106279,6 +106302,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 
 /* Router Modules */
+
 
 
 
@@ -106345,7 +106369,99 @@ var constantRouterMap = [{
   routes: constantRouterMap
 }));
 
-var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_4__modules_set__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
+var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_5__modules_pettyCash__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_set__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
+
+/***/ }),
+
+/***/ "./resources/assets/js/router/modules/pettyCash.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
+
+//后台用户管理路由组
+
+
+var pettyCashRouter = {
+  path: '/pettyCash',
+  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
+  redirect: '/pettyCash/manage/taxCategories',
+  name: 'pettyCash',
+  meta: {
+    title: 'pettyCash',
+    icon: 'user',
+    roles: ['admin', 'manager']
+  },
+  children: [{
+    path: 'manage',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(41).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/pettyCash/manage/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'pettyCashManage',
+    meta: { title: 'pettyCashManage' },
+    children: [{
+      path: 'taxProvinces',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(16/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxProvinces.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'taxProvinces',
+      meta: { title: 'taxProvinces' }
+    }, {
+      path: 'taxCategories',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(17/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'taxCategories',
+      meta: { title: 'taxCategories' }
+    }]
+  }, {
+    path: 'select',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(40).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/pettyCash/select/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'pettyCashSelect',
+    meta: { title: 'pettyCashSelect' },
+    children: [{
+      path: 'taxProvinces',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(16/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxProvinces.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'taxProvinces',
+      meta: { title: 'taxProvinces' }
+    }, {
+      path: 'taxCategories',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(17/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/set/base/taxCategories.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'taxCategories',
+      meta: { title: 'taxCategories' }
+    }]
+  }, {
+    path: 'pettyCashSet',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(39).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/pettyCash/set/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'pettyCashSet',
+    meta: { title: 'pettyCashSet' },
+    children: [{
+      path: 'pcTypeTab',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(36).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/pettyCash/set/pcTypeTab.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'pcTypeTab',
+      meta: { title: 'pcTypeTab' }
+    }, {
+      path: 'pcTab',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(37).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/pettyCash/set/pcTab.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'pcTab',
+      meta: { title: 'pcTab' }
+    }]
+  }]
+};
+/* harmony default export */ __webpack_exports__["a"] = (pettyCashRouter);
 
 /***/ }),
 

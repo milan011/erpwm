@@ -260,6 +260,20 @@ Route::group([
     Route::post('department', 'DepartmentController@store');
     Route::put('department/{id}', 'DepartmentController@update');
     Route::delete('department/{id}', 'DepartmentController@destroy');
+
+    // PcTypeTab
+    Route::get('pcTypeTabList', 'PcTypeTabController@index');
+    Route::get('pcTypeTab/{id}', 'PcTypeTabController@show');
+    Route::post('pcTypeTab', 'PcTypeTabController@store');
+    Route::put('pcTypeTab/{id}', 'PcTypeTabController@update');
+    Route::delete('pcTypeTab/{id}', 'PcTypeTabController@destroy');
+
+    // PcTab
+    Route::get('pcTabList', 'PcTabController@index');
+    Route::get('pcTab/{id}', 'PcTabController@show');
+    Route::post('pcTab', 'PcTabController@store');
+    Route::put('pcTab/{id}', 'PcTabController@update');
+    Route::delete('pcTab/{id}', 'PcTabController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

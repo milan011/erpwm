@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\Example;
+namespace App\Repositories\PcTypeTab;
 
-use App\Example;
+use App\PcTypeTab;
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\Example\ExampleRepositoryInterface;
+use App\Repositories\PcTypeTab\PcTypeTabRepositoryInterface;
 use Auth;
 use Datatables;
 use DB;
@@ -15,24 +15,23 @@ use PHPZen\LaravelRbac\Traits\Rbac;
 use Planbon;
 use Session;
 
-class ExampleRepository implements ExampleRepositoryInterface
+class PcTypeTabRepository implements PcTypeTabRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['id', 'taxcatname'];
+    protected $select_columns = ['id', 'typetabdescription'];
 
     // 根据ID获得信息
     public function find($id)
     {
-        return Example::select($this->select_columns)
+        return PcTypeTab::select($this->select_columns)
             ->findOrFail($id);
     }
 
     // 根据不同参数获得信息列表
     public function getList($queryList)
     {
-        $query = new Example(); // 返回的是一个Order实例,两种方法均可
+        $query = new PcTypeTab(); // 返回的是一个Order实例,两种方法均可
         $query = $query->where('status', '1')->orderBy('id', 'DESC');
-        // $query = $query->with('');
         if (empty($queryList['page'])) {
             //无分页,全部返还
             return $query->get();
@@ -48,7 +47,7 @@ class ExampleRepository implements ExampleRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new Example(); //税目
+            $example = new PcTypeTab(); //税目
 
             $input = array_replace($requestData->all());
             $example->fill($input);
@@ -69,9 +68,9 @@ class ExampleRepository implements ExampleRepositoryInterface
     public function update($requestData, $id)
     {
         // dd($requestData->all());
-        $info = Example::select($this->select_columns)->findorFail($id); //获取信息
+        $info = PcTypeTab::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->typetabdescription = $requestData->typetabdescription;
 
         $info->save();
 
@@ -83,7 +82,7 @@ class ExampleRepository implements ExampleRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = Example::findorFail($id);
+            $info         = PcTypeTab::findorFail($id);
             $info->status = '0'; //删除税目
             $info->save();
 
@@ -97,8 +96,8 @@ class ExampleRepository implements ExampleRepositoryInterface
     }
 
     //名称是否重复
-    public function isRepeat($taxcatname)
+    public function isRepeat($typetabdescription)
     {
-        return Example::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return PcTypeTab::where('typetabdescription', $typetabdescription)->where('status', '1')->first();
     }
 }
