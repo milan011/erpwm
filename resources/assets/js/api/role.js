@@ -65,3 +65,21 @@ export function getPermissions(token = getToken()) {
     params: {token}
   }) 
 }
+
+export function getRoleStockCategory(data, token = getToken()) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/role/' + data.id + '/stockCategory',
+    method: 'get',
+    params: {token},
+    data
+  }) 
+}
+
+export function giveRoleStockCategory(data, token = getToken()) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/giveRole/' + data.id + '/stockCategory',
+    method: 'post',
+    params: {token},
+    data
+  }) 
+}

@@ -53,7 +53,6 @@
           this.permissionTemp.id = row.id
           this.permissionDialogFormVisible = true
         })
-
         // this.permissionDialogFormVisible = true
         /*this.$nextTick(() => {
           this.$refs['permissionDForm'].clearValidate()

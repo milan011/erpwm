@@ -19,7 +19,7 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('role.name')" align="center">
+      <!-- <el-table-column :label="$t('role.name')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -28,7 +28,7 @@
         <template slot-scope="scope">
           <span>{{ scope.row.guard_name }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('role.description')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.description }}</span>
@@ -38,6 +38,7 @@
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <el-button type="success" size="mini" @click="handleSetPermission(scope.row)">{{ $t('table.editPermissions') }}</el-button>
+          <el-button type="success" size="mini" @click="handleSetStockCategory(scope.row)">{{ $t('role.editStockCategory') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
         </template>
@@ -69,6 +70,7 @@
       </div>
     </el-dialog>
     <switch-roles ref="roleChild"></switch-roles> <!-- 权限管理组件 -->
+    <stock-category ref="stockChild"></stock-category> <!-- 物料组管理组件 -->
   </div>
 </template>
 
@@ -78,6 +80,7 @@ import { fetchList, createRole, updateRole, deleteRole, getRolePermissions, getP
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import SwitchRoles from './components/Permission'
+import StockCategory from './components/StockCategory'
 // import SwitchRoles from './components/RolePermission'
 
 const calendarTypeOptions = [
@@ -93,7 +96,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 
 export default {
   name: 'roleList',
-  components: { SwitchRoles },
+  components: { SwitchRoles, StockCategory },
   directives: {
     waves
   },
@@ -294,6 +297,9 @@ export default {
     },
     handleSetPermission(row) {  
       this.$refs.roleChild.handlePermission(row) 
+    },
+    handleSetStockCategory(row){
+      this.$refs.stockChild.handleStockCategory(row) 
     },
     giveRolePermissions() {
       this.$refs.roleChild.givePermissions()

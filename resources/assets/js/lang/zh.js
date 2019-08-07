@@ -168,6 +168,7 @@ export default {
     guard_name: '标识',
     add: '添加',
     description: '角色描述',
+    editStockCategory: '易耗品维护',
   },
   taxCategories: {
     taxcatid: '序号',

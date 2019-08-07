@@ -48,7 +48,8 @@ class MRPCalendarRepository implements MRPCalendarRepositoryInterface
         try {
 
             $mrp = new MRPCalendar(); //税目
-            DB::delete('delete from mrpcalendar');
+            // DB::delete('delete from mrpcalendar');
+            DB::table('mrpcalendar')->truncate();
             foreach ($requestData as $key => $value) {
                 # code...
                 // dd($value);

@@ -48,6 +48,8 @@ Route::group([
     Route::delete('role/{id}', 'RoleController@destroy');
     Route::get('role/{role}/permissions', 'RoleController@getRolePermissions');
     Route::post('giveRole/{role}/permissions', 'RoleController@giveRolePermissions');
+    Route::get('role/{role}/stockCategory', 'RoleController@getRoleStockCategory');
+    Route::post('giveRole/{role}/stockCategory', 'RoleController@giveRoleStockCategory');
 
     //TaxCategories
     Route::get('taxCategoriesList', 'TaxCategoriesController@index');

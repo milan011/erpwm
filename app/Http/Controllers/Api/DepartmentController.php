@@ -55,12 +55,11 @@ class DepartmentController extends Controller
         // dd($request->all());
 
         if ($this->department->isRepeat($request->description)) {
-            return $this->baseFailed($message = '数据重复');
+            return $this->baseFailed($message = '部门已经存在');
         }
 
         $info = $this->department->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info->belongsToUser;
 
         if ($info) {
             //添加成功
@@ -109,11 +108,11 @@ class DepartmentController extends Controller
         $update_info = $this->department->isRepeat($request->description);
 
         if ($update_info && ($update_info->departmentid != $id)) {
-            return $this->baseFailed($message = '您修改后的信息与现有冲突');
+            return $this->baseFailed($message = '部门已经存在');
         }
 
         $info = $this->department->update($request, $id);
-        $info->hasOnePackage;
+        $info->belongsToUser;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }

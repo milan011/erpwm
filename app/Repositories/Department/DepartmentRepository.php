@@ -70,7 +70,8 @@ class DepartmentRepository implements DepartmentRepositoryInterface
         // dd($requestData->all());
         $info = Department::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->description = $requestData->description;
+        $info->authoriser  = $requestData->authoriser;
 
         $info->save();
 

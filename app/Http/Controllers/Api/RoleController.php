@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use Auth;
-use App\User;
-
 use App\Http\Controllers\Controller;
+use App\InternalStockCategoriesByRole;
+use App\User;
+use Auth;
+use DB;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    public function __construct(){
-    
+    public function __construct()
+    {
+
     }
 
     /**
@@ -24,8 +26,8 @@ class RoleController extends Controller
     {
         // p($request->input('query'));
         $role = Role::where('status', '1')
-                                 ->orderBy('created_at', 'DESC')
-                                 ->paginate(10);
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
 
         // return new UserResource($users);
 
@@ -42,7 +44,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        
+
         $data = $request->except(['token']);
 
         return Role::create($data);
@@ -64,8 +66,8 @@ class RoleController extends Controller
         $role = Role::findOrFail($id)->update($data);
 
         return response([
-                'status' => 'success'
-            ]);
+            'status' => 'success',
+        ]);
 
         // return $role;
     }
@@ -80,21 +82,21 @@ class RoleController extends Controller
     public function destroy($id)
     {
 
-        // throw new \App\ApiExceptions\ApiException('添加失败'); 
-        $role = Role::findOrFail($id);
+        // throw new \App\ApiExceptions\ApiException('添加失败');
+        $role         = Role::findOrFail($id);
         $role->status = '0';
         $role->save();
 
         return response([
-            'status' => 'success'
-        ]);        
+            'status' => 'success',
+        ]);
     }
 
     // 获取角色权限列表
     public function getRolePermissions($id)
-    {   
+    {
 
-        $role = Role::findOrFail($id);
+        $role        = Role::findOrFail($id);
         $permissions = $role->permissions()->get();
 
         $list = [];
@@ -102,23 +104,84 @@ class RoleController extends Controller
             $list[] = $value->name;
         }
         // dd($list);
-        
+
         return $list;
     }
 
     // 编辑角色权限列表
     public function giveRolePermissions($id, Request $request)
     {
-        
-        $role = Role::findOrFail($id);
+
+        $role        = Role::findOrFail($id);
         $permissions = $request->post('permissions');
         /*p($role);
         dd($permissions);*/
         $role->syncPermissions($permissions);
 
-
         return response([
-            'status' => 'success'
-        ]); 
+            'status' => 'success',
+        ]);
+    }
+
+    //获取角色物料组
+    public function getRoleStockCategory($id)
+    {
+        // dd($id);
+        $roleStock = InternalStockCategoriesByRole::where('secroleid', $id)->get();
+        // dd($roleStock);
+
+        $stock_list = [];
+
+        if (!empty($roleStock)) {
+            foreach ($roleStock as $key => $value) {
+                $stock_list[] = $value->categoryid;
+            }
+        }
+
+        // dd($stock_list);
+        return response([
+            'data' => $stock_list,
+        ]);
+
+    }
+
+    //分配角色物料组
+    public function giveRoleStockCategory($id, Request $request)
+    {
+        // p($id);
+        // dd($request->all());
+        if (!empty($request->list)) {
+            //有物料组
+            $data_list = [];
+            foreach ($request->list as $key => $value) {
+                $data_list[$key]['categoryid'] = $value;
+                $data_list[$key]['secroleid']  = $id;
+            }
+            DB::beginTransaction();
+            try {
+
+                //删除现在关联
+                DB::table('internalstockcatrole')->where('secroleid', $id)->delete();
+
+                $stock = new InternalStockCategoriesByRole();
+
+                foreach ($data_list as $key => $value) {
+                    $input = array_replace($value);
+                    $stock->fill($input);
+                    $stock = $stock->create($input);
+                }
+
+                DB::commit();
+                return $stock;
+
+            } catch (\Exception $e) {
+                throw $e;
+                DB::rollBack();
+                return false;
+            }
+        } else {
+            //没有选择物料组
+            DB::table('internalstockcatrole')->where('secroleid', $id)->delete();
+        }
     }
 }

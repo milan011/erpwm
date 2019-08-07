@@ -16,6 +16,11 @@
           <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('department.authoriser')" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_user.realname }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
@@ -113,12 +118,12 @@ export default {
       userList: [],
       pvData: [],
       rules: {
-        userid: [        
-          { required: true, message: '请选择授权用户', trigger: 'blur' },
+        authoriser: [        
+          { required: true, message: '请选择授权用户', trigger: 'change' },
         ],
         description: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 1, max: 6, message: '长度在1到20个字符', trigger: 'blur' }
+          { required: true, message: '请输入名称', trigger: 'change' },
+          { min: 1, max: 6, message: '长度在1到20个字符', trigger: 'change' }
         ],
       },
     }
@@ -240,6 +245,7 @@ export default {
       })
     },
     handleUpdate(row) {
+      row.authoriser = parseInt(row.authoriser)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
