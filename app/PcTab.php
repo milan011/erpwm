@@ -46,20 +46,20 @@ class PcTab extends Model
         return $this->belongsTo('App\User', 'assigner', 'id')->withDefault(['realname' => '',
         ]);
     }
-    /*
+
     // 定义PcTab表与User表一对一关系
     public function belongsToUserWithUscode()
     {
-    return $this->belongsTo('App\User', 'usercode', 'id')->withDefault(['realname' => '',
-    ]);
+        return $this->belongsTo('App\User', 'usercode', 'id')->withDefault(['realname' => '',
+        ]);
     }
 
     // 定义PcTab表与User表一对一关系
     public function belongsUserWithAuthorizer()
     {
-    return $this->belongsTo('App\User', 'authorizer', 'id')->withDefault(['realname' => '',
-    ]);
-    }*/
+        return $this->belongsTo('App\User', 'authorizer', 'id')->withDefault(['realname' => '',
+        ]);
+    }
 
     // 定义PcTab表与ChartMaster表一对一关系
     public function belongsToChartMasterWithAssignment()

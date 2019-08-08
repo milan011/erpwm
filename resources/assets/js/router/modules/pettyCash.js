@@ -70,7 +70,13 @@ const pettyCashRouter = {
             component: resolve => void(require(['@/views/pettyCash/set/pcTab.vue'], resolve)),
             name: 'pcTab',
             meta: { title: 'pcTab' },
-          }
+          },
+          {
+            path: 'pcExpenses',
+            component: resolve => void(require(['@/views/pettyCash/set/pcExpenses.vue'], resolve)),
+            name: 'pcExpenses',
+            meta: { title: 'pcExpenses' },
+          },
         ]
       },
     ]

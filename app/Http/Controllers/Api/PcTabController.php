@@ -30,9 +30,7 @@ class PcTabController extends Controller
         $query_list = jsonToArray($request); //获取搜索信息
 
         $pcTabs = $this->pcTab->getList($query_list);
-        /*$pcTabs[0]->belongsToPcTypeTab;
-        dd(lastSql());
-        dd($pcTabs[0]->belongsToUserWithUscode);*/
+
         return $pcTabs;
     }
 
@@ -56,13 +54,17 @@ class PcTabController extends Controller
 
         // dd($request->all());
 
-        if ($this->pcTab->isRepeat($request->name)) {
+        if ($this->pcTab->isRepeat($request->tabcode)) {
             return $this->baseFailed($message = '数据重复');
         }
 
         $info = $this->pcTab->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info->belongsToPcTypeTab;
+        $info->belongsToUserWithAssign;
+        $info->belongsToUserWithUscode;
+        $info->belongsUserWithAuthorizer;
+        $info->belongsToChartMasterWithAssignment;
+        $info->belongsToChartMasterWithCash;
 
         if ($info) {
             //添加成功
@@ -108,14 +110,20 @@ class PcTabController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->pcTab->isRepeat($request->name);
+        $update_info = $this->pcTab->isRepeat($request->tabcode);
 
         if ($update_info && ($update_info->id != $id)) {
             return $this->baseFailed($message = '您修改后的信息与现有冲突');
         }
 
         $info = $this->pcTab->update($request, $id);
-        $info->hasOnePackage;
+        $info->belongsToPcTypeTab;
+        $info->belongsToUserWithAssign;
+        $info->belongsToUserWithUscode;
+        $info->belongsUserWithAuthorizer;
+        $info->belongsToChartMasterWithAssignment;
+        $info->belongsToChartMasterWithAssignment;
+        $info->belongsToChartMasterWithCash;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }

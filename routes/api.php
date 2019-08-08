@@ -267,6 +267,8 @@ Route::group([
     Route::post('pcTypeTab', 'PcTypeTabController@store');
     Route::put('pcTypeTab/{id}', 'PcTypeTabController@update');
     Route::delete('pcTypeTab/{id}', 'PcTypeTabController@destroy');
+    Route::get('type/{type}/pcExpenses', 'PcTypeTabController@getTypePcExpenses');
+    Route::post('giveType/{type}/pcExpenses', 'PcTypeTabController@giveTypePcExpenses');
 
     // PcTab
     Route::get('pcTabList', 'PcTabController@index');
@@ -274,6 +276,20 @@ Route::group([
     Route::post('pcTab', 'PcTabController@store');
     Route::put('pcTab/{id}', 'PcTabController@update');
     Route::delete('pcTab/{id}', 'PcTabController@destroy');
+
+    // PcExpenses
+    Route::get('pcExpensesList', 'PcExpensesController@index');
+    Route::get('pcExpenses/{id}', 'PcExpensesController@show');
+    Route::post('pcExpenses', 'PcExpensesController@store');
+    Route::put('pcExpenses/{id}', 'PcExpensesController@update');
+    Route::delete('pcExpenses/{id}', 'PcExpensesController@destroy');
+
+    // Tags
+    Route::get('tagsList', 'TagsController@index');
+    Route::get('tags/{id}', 'TagsController@show');
+    Route::post('tags', 'TagsController@store');
+    Route::put('tags/{id}', 'TagsController@update');
+    Route::delete('tags/{id}', 'TagsController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

@@ -48,3 +48,21 @@ export function deletePcTypeTab(data) {
     data
   }) 
 }
+
+export function getTypePcExpenses(data, token = getToken()) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/type/' + data.id + '/pcExpenses',
+    method: 'get',
+    params: {token},
+    data
+  }) 
+}
+
+export function giveTypePcExpenses(data, token = getToken()) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/giveType/' + data.id + '/pcExpenses',
+    method: 'post',
+    params: {token},
+    data
+  }) 
+}

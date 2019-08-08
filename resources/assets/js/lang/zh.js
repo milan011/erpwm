@@ -28,6 +28,7 @@ export default {
     pettyCashSet: '维护',
     pcTypeTab: '标签类别',
     pcTab: '标签维护',
+    pcExpenses: '费用种类',
     setBase:'基础信息',
     setGatherPay: '应收应付',
     setSale: '销售相关',
@@ -374,11 +375,12 @@ export default {
   pcTypeTab: {
     id: '序号',
     typetabdescription: '标签描述',
+    editPcExpenses: '费用种类对应',
   },
   pcTab: {
     id: '序号',
-    tabcode: '标签代码',
-    usercode: '用户名称',
+    tabcode: '标签名称',
+    usercode: '用户',
     typetabcode: '标签类别',
     currency: '币种',
     tablimit: '限额',
@@ -386,5 +388,11 @@ export default {
     authorizer: '授权人',
     glaccountassignment: '现金预支总账账户',
     glaccountpcash: '所属总账账户',
+  },
+  pcExpenses:{
+    id: '序号',
+    description: '费用名称',
+    glaccount: '科目编号',
+    tag: '标签',
   },
 }

@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\Example\ExampleResource;
-// use App\Http\Resources\Example\ExampleResourceCollection;
-use App\Repositories\Example\ExampleRepositoryInterface;
+// use App\Http\Resources\PcExpenses\PcExpensesResource;
+// use App\Http\Resources\PcExpenses\PcExpensesResourceCollection;
+use App\Repositories\PcExpenses\PcExpensesRepositoryInterface;
 use Illuminate\Http\Request;
 
-class ExampleController extends Controller
+class PcExpensesController extends Controller
 {
-    protected $example;
+    protected $pcExpenses;
 
     public function __construct(
 
-        ExampleRepositoryInterface $example
+        PcExpensesRepositoryInterface $pcExpenses
     ) {
-        $this->example = $example;
+        $this->pcExpenses = $pcExpenses;
     }
 
     /**
@@ -29,9 +29,9 @@ class ExampleController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $examples = $this->example->getList($query_list);
+        $pcExpensess = $this->pcExpenses->getList($query_list);
 
-        return $examples;
+        return $pcExpensess;
     }
 
     /**
@@ -54,13 +54,13 @@ class ExampleController extends Controller
 
         // dd($request->all());
 
-        if ($this->example->isRepeat($request->name)) {
-            return $this->baseFailed($message = '数据已存在');
+        if ($this->pcExpenses->isRepeat($request->description)) {
+            return $this->baseFailed($message = '费用种类已存在');
         }
 
-        $info = $this->example->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info = $this->pcExpenses->create($request);
+        $info->belongsToTags;
+        $info->belongsToChartMaster;
 
         if ($info) {
             //添加成功
@@ -79,10 +79,10 @@ class ExampleController extends Controller
      */
     public function show($id)
     {
-        $info = $this->example->find($id);
+        $info = $this->pcExpenses->find($id);
         $info->belongsToCreater;
 
-        return new ExampleResource($info);
+        return new PcExpensesResource($info);
     }
 
     /**
@@ -106,14 +106,15 @@ class ExampleController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->example->isRepeat($request->name);
+        $update_info = $this->pcExpenses->isRepeat($request->description);
 
         if ($update_info && ($update_info->id != $id)) {
-            return $this->baseFailed($message = '数据已存在');
+            return $this->baseFailed($message = '费用种类已存在');
         }
 
-        $info = $this->example->update($request, $id);
-        $info->hasOnePackage;
+        $info = $this->pcExpenses->update($request, $id);
+        $info->belongsToTags;
+        $info->belongsToChartMaster;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -127,7 +128,7 @@ class ExampleController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->example->destroy($id);
+        $this->pcExpenses->destroy($id);
         return $this->baseSucceed($message = '修改成功');
     }
 }

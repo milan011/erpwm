@@ -11,31 +11,46 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcTab.area')" align="center">
+      <el-table-column :label="$t('pcTab.tabcode')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_area.areadescription }}</span>
+          <span>{{ scope.row.tabcode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcTab.stkcat')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('pcTab.usercode')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_stock_category.categorydescription }}</span>
+          <span>{{ scope.row.belongs_to_user_with_uscode.realname }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcTab.salestype')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('pcTab.typetabcode')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_sale_type.sales_type }}</span>
+          <span>{{ scope.row.belongs_to_pc_type_tab.typetabdescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcTab.salesglcode')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('pcTab.tablimit')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_chart_master_with_salesgl_code.accountname }}</span>
+          <span>{{ scope.row.tablimit }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcTab.discountglcode')" width="120%" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('pcTab.assigner')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_chart_master_with_discountgl_code.accountname }}</span>
+          <span>{{ scope.row.belongs_to_user_with_assign.realname }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('pcTab.authorizer')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_user_with_authorizer.realname }}</span>
         </template>
       </el-table-column>  
+      <el-table-column :label="$t('pcTab.glaccountassignment')" width="150%" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_chart_master_with_assignment.accountname }}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column :label="$t('pcTab.glaccountpcash')" width="120%" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_chart_master_with_cash.accountname }}</span>
+        </template>
+      </el-table-column> 
       <el-table-column :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
@@ -49,56 +64,77 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('pcTab.area')" prop="area">
+        <el-form-item :label="$t('pcTab.tabcode')" prop="tabcode">
+          <el-input v-model="temp.tabcode" />
+        </el-form-item>
+        <el-form-item :label="$t('pcTab.usercode')" prop="usercode">
           <el-select 
-            v-model="temp.area" 
+            v-model="temp.usercode" 
             class="filter-item" 
             filterable 
             clearable 
-            placeholder="输入区域搜索">
-            <el-option v-for="area in areaList" :key="area.id" :label="area.areadescription" :value="area.id"/>
+            placeholder="输入用户搜索">
+            <el-option v-for="user in userList" :key="user.id" :label="user.realname" :value="user.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('pcTab.stkcat')" prop="stkcat">
+        <el-form-item :label="$t('pcTab.typetabcode')" prop="typetabcode">
           <el-select 
-            v-model="temp.stkcat" 
+            v-model="temp.typetabcode" 
             class="filter-item" 
             filterable 
             clearable 
-            placeholder="输入库存种类搜索">
-            <el-option v-for="stock in stockCategoryList" :key="stock.id" :label="stock.categorydescription" :value="stock.id"/>
+            placeholder="输入标签种类搜索">
+            <el-option v-for="type in pcTypeTabList" :key="type.id" :label="type.typetabdescription" :value="type.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('pcTab.salestype')" prop="salestype">
+        <el-form-item :label="$t('pcTab.tablimit')" prop="tablimit">
+          <el-input-number 
+            v-model='temp.tablimit'   
+            :min="0" 
+            :precision="2"
+            label="限额">
+          </el-input-number>
+        </el-form-item> 
+        <el-form-item :label="$t('pcTab.assigner')" prop="assigner">
           <el-select 
-            v-model="temp.salestype" 
+            v-model="temp.assigner" 
             class="filter-item" 
             filterable 
             clearable 
-            placeholder="输入销售方式搜索">
-            <el-option v-for="sale in saleTypeList" :key="sale.id" :label="sale.sales_type" :value="sale.id"/>
+            placeholder="输入用户搜索">
+            <el-option v-for="user in userList" :key="user.id" :label="user.realname" :value="user.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('pcTab.salesglcode')" prop="salesglcode">
+        <el-form-item :label="$t('pcTab.authorizer')" prop="authorizer">
           <el-select 
-            v-model="temp.salesglcode" 
+            v-model="temp.authorizer" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入用户搜索">
+            <el-option v-for="user in userList" :key="user.id" :label="user.realname" :value="user.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('pcTab.glaccountassignment')" prop="glaccountassignment">
+          <el-select 
+            v-model="temp.glaccountassignment" 
             class="filter-item" 
             filterable 
             clearable 
             placeholder="输入会计科目搜索">
-            <el-option v-for="chart in chartMasterList" v-if="chart.belongs_to_account_group.pandl == 1" :key="chart.id" :label="chart.accountname" :value="chart.id"/>
+            <el-option v-for="chart in chartMasterList" v-if="chart.belongs_to_bank_account.accountcode != ''" :key="chart.id" :label="chart.accountname" :value="chart.id"/>
           </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('pcTab.discountglcode')" prop="discountglcode">
+        </el-form-item>  
+        <el-form-item :label="$t('pcTab.glaccountpcash')" prop="glaccountpcash">
           <el-select 
-            v-model="temp.discountglcode" 
+            v-model="temp.glaccountpcash" 
             class="filter-item" 
             filterable 
             clearable 
             placeholder="输入会计科目搜索">
-            <el-option v-for="chart in chartMasterList" v-if="chart.belongs_to_account_group.pandl == 1" :key="chart.id" :label="chart.accountname" :value="chart.id"/>
+            <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.accountname" :value="chart.id"/>
           </el-select>
-        </el-form-item>    
+        </el-form-item>  
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -111,9 +147,8 @@
 <script>
   import { getPcTabList,  createPcTab, updatePcTab, deletePcTab} from '@/api/pcTab'
   import { chartMasterAll } from '@/api/chartMaster'
-  import { areaAll } from '@/api/area'
-  import { saleTypeAll } from '@/api/saleType'
-  import { stockCategoryAll } from '@/api/stockCategory'
+  import { pcTypeTabAll } from '@/api/pcTypeTab'
+  import { userAll } from '@/api/user'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
@@ -158,20 +193,18 @@ export default {
       listQuery: {
         page: 1,
       },
-      tanxontaxStatus:['否', '是'],
-      taxGroupTemp: {
-          id: null,
-          permissions:[],
-      },
       calendarTypeOptions,
       showReviewer: false,
       temp: {
         id: undefined,
-        area: null,
-        stkcat : null,
-        discountglcode : null,
-        salesglcode : null,
-        salestype : null,
+        usercode: null,
+        tabcode: '',
+        typetabcode : null,
+        tablimit : 0,
+        assigner : null,
+        authorizer : null,
+        glaccountassignment : null,
+        glaccountpcash : null,
       },
       dialogFormVisible: false,
       setRateVisible: false,
@@ -183,17 +216,22 @@ export default {
       },
       pvData: [],
       rules: {
-        area: [{ required: true, message: '请选择区域', trigger: 'blur' }],
-        stkcat: [{ required: true, message: '请选择库存种类', trigger: 'change' }],
-        discountglcode: [{ required: true, message: '请选择会计科目', trigger: 'change' }],
-        salesglcode: [{ required: true, message: '请选择会计科目', trigger: 'change' }],
-        salestype: [{ required: true, message: '请选择销售方式', trigger: 'change' }],
+        tabcode: [
+          { required: true, message: '请输入名称', trigger: 'change' },
+          { min: 1, max: 10, message: '长度在1到10个字符', trigger: 'blur'},
+        ],
+        usercode: [{ required: true, message: '请选择用户', trigger: 'change' }],
+        tablimit: [{ required: true, message: '请输入限额', trigger: 'change' }],
+        assigner: [{ required: true, message: '请选择用户', trigger: 'change' }],
+        authorizer: [{ required: true, message: '请选择用户', trigger: 'change' }],
+        typetabcode: [{ required: true, message: '请选择标签种类', trigger: 'change' }],
+        glaccountassignment: [{ required: true, message: '请选择会计科目', trigger: 'change' }],
+        glaccountpcash: [{ required: true, message: '请选择会计科目', trigger: 'change' }],
       },
       pcTabList: [],
       chartMasterList: [],
-      areaList: [],
-      saleTypeList: [],
-      stockCategoryList: [],
+      userList: [],
+      pcTypeTabList: [],
     }
   },
   created() {
@@ -201,9 +239,8 @@ export default {
     Promise.all([
       this.getList(),
       this.getAllChartMasters(),
-      this.getAllArea(),
-      this.getAllSaleType(),
-      this.getAllStockCategory(),
+      this.getAllUser(),
+      this.getAllPcTypeTab(),
     ])
   },
   methods: {
@@ -225,19 +262,14 @@ export default {
         this.chartMasterList = response.data
       })
     },
-    getAllArea(){
-      areaAll().then(response => {
-        this.areaList = response.data
+    getAllUser(){
+      userAll().then(response => {
+        this.userList = response.data
       })
     },
-    getAllSaleType(){
-      saleTypeAll().then(response => {
-        this.saleTypeList = response.data
-      })
-    },
-    getAllStockCategory(){
-      stockCategoryAll().then(response => {
-        this.stockCategoryList = response.data
+    getAllPcTypeTab(){
+      pcTypeTabAll().then(response => {
+        this.pcTypeTabList = response.data
       })
     },
     handleSetRate(row){
@@ -249,8 +281,7 @@ export default {
         setTimeout(() => {
           this.setRateVisible = true
         }, 0.5 * 1000)
-      })
-      
+      })      
     },
     setTaxRateDel(){
       console.log(this.pcTabList)
@@ -324,11 +355,14 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        area: undefined,
-        stkcat : null,
-        discountglcode : null,
-        salesglcode : null,
-        salestype : null,
+        usercode: null,
+        tabcode: '',
+        typetabcode : null,
+        tablimit : 0,
+        assigner : null,
+        authorizer : null,
+        glaccountassignment : null,
+        glaccountpcash : null,
       }
     },
     handleCreate() {
@@ -368,11 +402,12 @@ export default {
       })
     },
     handleUpdate(row) {
-      row.area = parseInt(row.area)
-      row.stkcat = parseInt(row.stkcat)
-      row.discountglcode = parseInt(row.discountglcode)
-      row.salesglcode = parseInt(row.salesglcode)
-      row.salestype = parseInt(row.salestype)
+      row.usercode = parseInt(row.usercode)
+      row.typetabcode = parseInt(row.typetabcode)
+      row.assigner = parseInt(row.assigner)
+      row.authorizer = parseInt(row.authorizer)
+      row.glaccountassignment = parseInt(row.glaccountassignment)
+      row.glaccountpcash = parseInt(row.glaccountpcash)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true

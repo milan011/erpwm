@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 // use App\Http\Resources\PcTypeTab\PcTypeTabResource;
 // use App\Http\Resources\PcTypeTab\PcTypeTabResourceCollection;
+use App\PcExpensesTypeTab;
 use App\Repositories\PcTypeTab\PcTypeTabRepositoryInterface;
+use DB;
 use Illuminate\Http\Request;
 
 class PcTypeTabController extends Controller
@@ -129,5 +131,68 @@ class PcTypeTabController extends Controller
         // dd($id);
         $this->pcTypeTab->destroy($id);
         return $this->baseSucceed($message = '修改成功');
+    }
+
+    //获取费用种类
+    public function getTypePcExpenses($id)
+    {
+        // dd($id);
+        $pc_expenses = PcExpensesTypeTab::where('typetabcode', $id)->get();
+        // dd($pc_expenses);
+
+        $curr_list = [];
+
+        if (!empty($pc_expenses)) {
+            foreach ($pc_expenses as $key => $value) {
+                $curr_list[] = (int) $value->codeexpense;
+            }
+        }
+
+        // dd($curr_list);
+        return response([
+            'data' => $curr_list,
+        ]);
+
+    }
+
+    //分配费用种类
+    public function giveTypePcExpenses($id, Request $request)
+    {
+        // p($id);
+        // dd($request->list);
+        if (!empty($request->list)) {
+            //有费用种类
+            $data_list = [];
+            foreach ($request->list as $key => $value) {
+                $data_list[$key]['codeexpense'] = (string) $value;
+                $data_list[$key]['typetabcode'] = $id;
+            }
+            // dd($data_list);
+            DB::beginTransaction();
+            try {
+
+                //删除现在关联
+                DB::table('pctabexpenses')->where('typetabcode', $id)->delete();
+
+                $pc = new PcExpensesTypeTab();
+
+                foreach ($data_list as $key => $value) {
+                    $input = array_replace($value);
+                    $pc->fill($input);
+                    $pc = $pc->create($input);
+                }
+
+                DB::commit();
+                return $pc;
+
+            } catch (\Exception $e) {
+                throw $e;
+                DB::rollBack();
+                return false;
+            }
+        } else {
+            //没有选择费用种类
+            DB::table('pctabexpenses')->where('typetabcode', $id)->delete();
+        }
     }
 }

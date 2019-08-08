@@ -31,7 +31,7 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
     public function getList($queryList)
     {
         $query = new ChartMaster(); // 返回的是一个Order实例,两种方法均可
-        $query = $query->with('belongsToAccountGroup')->where('status', '1');
+        $query = $query->with('belongsToAccountGroup', 'belongsToBankAccount')->where('status', '1');
         if (empty($queryList['page'])) {
             //无分页,全部返还
             return $query->get();

@@ -60,7 +60,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'provincesTax',
+  name: 'unitsOfMeasure',
   // components: { SwitchRoles },
   directives: {
     waves

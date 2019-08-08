@@ -47,7 +47,6 @@
       handleStockCategory(row) { 
         /*row参数为点击的角色信息对象*/
         getRoleStockCategory(row).then((response) => {
-          // console.log(response.data.data)
           this.checkList = response.data.data
           this.stockCategoryTemp.id = row.id
           this.stockCategoryDialogFormVisible = true

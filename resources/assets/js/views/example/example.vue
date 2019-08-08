@@ -6,25 +6,38 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('department.departmentid')" align="center">
+      <el-table-column :label="$t('example.id')" width="60%" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.departmentid }}</span>
+          <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('department.description')" align="center">
+      <el-table-column :label="$t('example.chart')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span>{{ scope.row.belongs_to_chart.chartdescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('department.authoriser')" align="center">
+      <el-table-column :label="$t('example.cancreate')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_user.realname }}</span>
+          <span>
+            <el-tag :type="scope.row.cancreate | statusFilter">
+              {{ cancreateStatus[scope.row.cancreate] }}
+            </el-tag>
+          </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
+          <el-button type="success" size="mini" @click="handleShow(scope.row)">
+            {{ $t('table.content') }}
+          </el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
+            {{ $t('table.edit') }}
+          </el-button>
+          <!-- <el-button type="success" size="mini" @click="handleSetChild(scope.row)">
+            {{ $t('table.setOrther') }}
+          </el-button> -->
+          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
+            {{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -33,36 +46,63 @@
       <el-pagination v-show="total>0" :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next" @current-change="handleCurrentChange" />
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('department.description')" prop="description">
-          <el-input v-model="temp.description" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
+        <el-form-item :label="$t('example.name')" prop="name">
+          <el-input v-model="temp.name" />
         </el-form-item>
-        <el-form-item :label="$t('department.authoriser')" prop="authoriser">
+        <el-form-item :label="$t('example.chart')" prop="chart">
           <el-select 
-            v-model="temp.authoriser" 
+            v-model="temp.chart" 
             class="filter-item" 
             filterable 
             clearable 
-            placeholder="输入用户搜索">
-            <el-option v-for="user in userList" :key="user.id" :label="user.realname" :value="user.id"/>
+            placeholder="输入区域搜索">
+            <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.chartdescription" :value="chart.id"/>
           </el-select>
         </el-form-item>
-      </el-form>  
+        <el-form-item :label="$t('example.paymenttype')">
+          <el-radio-group @change="changeType" v-model="temp.paymenttype">
+            <el-radio-button label="1">次月截止</el-radio-button>
+            <el-radio-button label="2">N天后截止</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item :label="$t('example.cancreate')">
+          <el-switch
+            v-model="temp.cancreate"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0">
+          </el-switch>
+        </el-form-item>
+        <el-form-item :label="$t('example.discountrate')" prop="discountrate">
+          <el-input-number 
+            v-model='temp.discountrate'   
+            :min="0" 
+            :max="1" 
+            :precision="2"
+            :step="0.1"
+            label="折扣率">
+          </el-input-number>
+        </el-form-item>  
+      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('table.confirm') }}</el-button>
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+    <!-- 组件 -->
+    <!-- <example-components ref="exampleChild"></example-components>  -->
   </div>
 </template>
 <script>
-  import { getDepartmentList, createDepartment, updateDepartment, deleteDepartment} from '@/api/department'
-  import { userAll } from '@/api/user'
-import waves from '@/directive/waves' // 水波纹指令
-import { parseTime } from '@/utils'
-// import SwitchRoles from './components/Permission'
-// import SwitchRoles from './components/RolePermission'
+  import { getExampleList,  createExample, updateExample, deleteExample} from '@/api/example'
+  import { chartMasterAll } from '@/api/chartMaster'
+  import waves from '@/directive/waves' // 水波纹指令
+  import { parseTime } from '@/utils'
+  import { isEmpty } from '@/common.js'
+  // import ExampleComponents from './components/ExampleComponents'
 
 const calendarTypeOptions = [
   { key: 'web', display_name: 'web' },
@@ -76,17 +116,16 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'department',
-  // components: { SwitchRoles },
+  name: 'example',
+  // components: { ExampleComponents },
   directives: {
     waves
   },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        1: 'success',
+        0: 'danger',
       }
       return statusMap[status]
     },
@@ -103,55 +142,60 @@ export default {
       listQuery: {
         page: 1,
       },
+      cancreateStatus:['否', '是'],
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        departmentid: undefined,
-        description: '',
+        id: undefined,
+        name: '',
+        chart: null,
+        cancreate : '1',
+        discountrate : 0,
+        paymenttype: '1',
       },
       dialogFormVisible: false,
+      setRateVisible: false,
+      exampleName: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑内部部门',
-        create: '新增内部部门'
+        update: '编辑',
+        create: '新增'
       },
-      userList: [],
       pvData: [],
       rules: {
-        authoriser: [        
-          { required: true, message: '请选择授权用户', trigger: 'change' },
+        name: [
+          { required: true, message: '请输入名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在3到5个字符', trigger: 'blur'},
         ],
-        description: [
-          { required: true, message: '请输入名称', trigger: 'change' },
-          { min: 1, max: 6, message: '长度在1到20个字符', trigger: 'change' }
+        chart: [{ required: true, message: '请选择库存种类', trigger: 'change' }],
+        quantitybreak: [ 
+          { required: true, message: '折扣率', trigger: 'change'}, 
         ],
       },
+      chartMasterList: [],
     }
   },
   created() {
-    // this.getList()
     Promise.all([
       this.getList(),
-      this.getAllUserList(),
+      // this.getAllChartMasters(),
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getDepartmentList(this.listQuery).then(response => {
-        // console.log(response.data)
+      getExampleList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
-
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
     },
-    getAllUserList(){
-      userAll().then(response => {
-        this.userList = response.data
+    getAllChartMasters(){
+      chartMasterAll().then(response => {
+        this.chartMasterList = response.data
       })
     },
     handleFilter() {
@@ -173,12 +217,11 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteDepartment(this.temp).then((response) => {
-          // console.log(response.data);
-          if(response.data.status === 0){
+        deleteExample(this.temp).then((response) => {
+          if(!response.data.status){
             this.$notify({
               title: '失败',
-              message: '删除失败',
+              message: response.data.message,
               type: 'warning',
               duration: 2000
             })
@@ -203,8 +246,12 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        departmentid: undefined,
-        description: '',
+        id: undefined,
+        name: '',
+        chart: null,
+        cancreate : '1',
+        discountrate : 0,
+        paymenttype: '1',
       }
     },
     handleCreate() {
@@ -218,8 +265,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createDepartment(this.temp).then((response) => {
-            console.log(response.data);
+          createExample(this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
               this.temp.id = response_data.data.id
@@ -232,7 +278,6 @@ export default {
                 duration: 2000
               })
             }else{
-              // this.dialogFormVisible = false
               this.$notify.error({
                 title: '失败',
                 message: response_data.message,
@@ -245,7 +290,7 @@ export default {
       })
     },
     handleUpdate(row) {
-      row.authoriser = parseInt(row.authoriser)
+      row.chart = parseInt(row.chart)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -257,12 +302,11 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateDepartment(tempData).then((response) => {
-            console.log(response.data)
+          updateExample(tempData).then((response) => {
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.departmentid === this.temp.departmentid) {
+                if (v.id === this.temp.id) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, response_data.data)
                   break
@@ -276,7 +320,6 @@ export default {
                 duration: 2000
               })
             }else{
-              // this.dialogFormVisible = false
               this.$notify.error({
                 title: '失败',
                 message: response_data.message,
@@ -287,23 +330,59 @@ export default {
         }
       })
     },
-    handleDelete(row) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
-      })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
+    handleShow(row) {
+      row.taxprovinceid = row.belongs_to_taxprovinces.taxprovincename
+      row.cashsalebranch = row.belongs_to_custbranch.brname
+      row.cashsalecustomer = row.belongs_to_debtors_master.name
+      this.temp = Object.assign({}, row) // copy obj
+      console.log(this.temp)
+      this.dialogInfoVisible = true
+    },
+    handleSetChild(row){
+      this.$refs.exampleChild.handleStockCategory(row) 
     },
   }
 }
 </script>
-<style type="sass" scop>
-  /* .fixed-width .el-button--mini {
-    padding: 10px 3px;
-    width: 70px;
-    margin-left: 0px;
-  } */
+<style lang="scss" scoped>
+  .el-dialog__body {
+    padding: 15px 15px;
+  }
+  .el-dialog__header {
+     padding-top: 10px; 
+  }
+  .el-form-item{
+    margin-bottom: 15px;
+  }
+  .el-row {
+    margin-bottom: 5px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }white
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 16px;
+  }
+  .row-bg {
+    padding: 5px 0;
+    background-color: #f9fafc;
+  }
+  .self-style{
+    text-align: -webkit-center;
+    font-size: 14px;
+    padding: 5px 0px;
+  }
 </style>

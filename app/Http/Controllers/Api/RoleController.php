@@ -134,7 +134,7 @@ class RoleController extends Controller
 
         if (!empty($roleStock)) {
             foreach ($roleStock as $key => $value) {
-                $stock_list[] = $value->categoryid;
+                $stock_list[] = (int) $value->categoryid;
             }
         }
 
@@ -154,7 +154,7 @@ class RoleController extends Controller
             //有物料组
             $data_list = [];
             foreach ($request->list as $key => $value) {
-                $data_list[$key]['categoryid'] = $value;
+                $data_list[$key]['categoryid'] = (string) $value;
                 $data_list[$key]['secroleid']  = $id;
             }
             DB::beginTransaction();

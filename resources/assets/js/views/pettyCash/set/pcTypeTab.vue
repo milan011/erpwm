@@ -16,9 +16,10 @@
           <span>{{ scope.row.typetabdescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" show-overflow-tooltip class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" width="260%" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-button type="success" size="mini" style="width:40%;"  @click="handleEditPcExpenses(scope.row)">{{ $t('pcTypeTab.editPcExpenses') }}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
         </template>
@@ -39,13 +40,26 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="费用种类维护" :visible.sync="pcExpensesDialogFormVisible">
+      <el-form ref="PcExpensesDForm" :model="pcExpensesTemp" label-position="left" label-width="100px">
+        <el-checkbox-group v-model="checkList">
+          <el-checkbox border size="medium" v-for="pc in pcExpensesList" :label="pc.id" :key="pc.id">
+            {{ pc.description }}
+          </el-checkbox>
+        </el-checkbox-group>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="pcExpensesDialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="givePcExpenses">{{ $t('table.confirm') }}</el-button>
+      </div>
+  </el-dialog>
   </div>
 </template>
 <script>
-  import { getPcTypeTabList, createPcTypeTab, updatePcTypeTab, deletePcTypeTab,  getPcTypeTab} from '@/api/pcTypeTab'
+  import { getPcTypeTabList, createPcTypeTab, updatePcTypeTab, deletePcTypeTab,  getTypePcExpenses, giveTypePcExpenses} from '@/api/pcTypeTab'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
-// import SwitchRoles from './components/Permission'
+import { pcExpensesAll } from '@/api/pcExpenses'
 // import SwitchRoles from './components/RolePermission'
 
 const calendarTypeOptions = [
@@ -60,7 +74,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'provincesTax',
+  name: 'pcTypeTab',
   // components: { SwitchRoles },
   directives: {
     waves
@@ -93,7 +107,13 @@ export default {
         id: undefined,
         typetabdescription: '',
       },
+      pcExpensesTemp:{
+        id: null,
+        list:[],
+      },
+      checkList: [],
       dialogFormVisible: false,
+      pcExpensesDialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: '编辑标签类别',
@@ -106,13 +126,13 @@ export default {
           { min: 1, max: 50,  message: '长度在1到50个字符', trigger: 'blur' },
         ],
       },
+      pcExpensesList: [],
     }
   },
   created() {
-    // this.getList()
     Promise.all([
       this.getList(),
-      // this.getPermissionList()
+      this.getAllPcExpenses(),
     ])
   },
   methods: {
@@ -129,6 +149,11 @@ export default {
         }, 1.5 * 1000)
       })
     },
+    getAllPcExpenses(){
+      pcExpensesAll().then(response => {
+        this.pcExpensesList = response.data
+      })
+    },
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
@@ -140,6 +165,27 @@ export default {
     handleCurrentChange(val) {
       this.listQuery.page = val
       this.getList()
+    },
+    handleEditPcExpenses(row){
+      // console.log(row)    
+      getTypePcExpenses(row).then((response) => {
+          this.checkList = response.data.data
+          this.pcExpensesTemp.id = row.id
+          this.pcExpensesDialogFormVisible = true
+        })
+    },
+    givePcExpenses(){
+      console.log(this.checkList)
+      this.pcExpensesTemp.list = this.checkList
+      giveTypePcExpenses(this.pcExpensesTemp).then((response) => {
+        this.pcExpensesDialogFormVisible = false
+        this.$notify({
+          title: '成功',
+          message: '创建成功',
+          type: 'success',
+          duration: 2000
+        })
+      })
     },
     handleModifyStatus(row, status) {
       this.$confirm('确定要删除?', '提示', {
