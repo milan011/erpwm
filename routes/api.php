@@ -290,6 +290,13 @@ Route::group([
     Route::post('tags', 'TagsController@store');
     Route::put('tags/{id}', 'TagsController@update');
     Route::delete('tags/{id}', 'TagsController@destroy');
+
+    // PcAssignCashToTab
+    Route::get('pcAssignCashToTabList', 'PcAssignCashToTabController@index');
+    Route::get('pcAssignCashToTab/{id}', 'PcAssignCashToTabController@show');
+    Route::post('pcAssignCashToTab', 'PcAssignCashToTabController@store');
+    Route::put('pcAssignCashToTab/{id}', 'PcAssignCashToTabController@update');
+    Route::delete('pcAssignCashToTab/{id}', 'PcAssignCashToTabController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

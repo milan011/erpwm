@@ -34,7 +34,7 @@ const user = {
       state.status = status
     },
     SET_NAME: (state, name) => {
-      state.name = name
+      state.username = name
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar

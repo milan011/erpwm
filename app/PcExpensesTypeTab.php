@@ -33,13 +33,6 @@ class PcExpensesTypeTab extends Model
      */
     public $timestamps = false;
 
-    // 定义Example表与Shop表一对一关系
-    public function belongsToShop()
-    {
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
-        ]);
-    }
-
     // 定义Example表与Notice表一对多关系
     public function hasManyNotice()
     {

@@ -1,55 +1,86 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input 
-        :placeholder="$t('example.new_telephone')"
+      <!-- <el-input 
+        :placeholder="$t('pcAssignCashToTab.tabcode')"
         clearable 
-        v-model="listQuery.name"
+        v-model="listQuery.tabcode"
         style="width: 150px;" 
         class="filter-item">
-      </el-input>
-      <el-select clearable style="width:100px;" v-model="listQuery.condetion" class="filter-item" filterable placeholder="条件">
-        <!-- <el-option v-for="user in userList" :key="user.id" :label="user.nick_name" :value="user.id"/> -->
+      </el-input> -->
+      <el-select clearable style="width:100px;" v-model="listQuery.tabcode" class="filter-item" filterable :placeholder="$t('pcAssignCashToTab.tabcode')">
+        <el-option 
+          v-for="tab in pcTabList" 
+          v-if="tab.assigner == $store.getters.userid"
+          :key="tab.id" 
+          :label="tab.tabcode" 
+          :value="tab.id"/>
       </el-select>
+      <el-select clearable style="width:100px;" v-model="listQuery.posted" class="filter-item" filterable :placeholder="$t('pcAssignCashToTab.posted')">
+        <el-option v-for="item in postedStatus" :key="item.key" :label="item.value" :value="item.key"/>
+      </el-select>
+      <el-date-picker
+        v-model="listQuery.date"
+        style="bottom:3px;width:220px;"
+        type="daterange"
+        align="center"
+        unlink-panels
+        range-separator="- "
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :picker-options="pickerOptions">
+      </el-date-picker>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <!-- <el-tooltip class="item" effect="dark" content="注意:默认只导出当月信息,如需导出其他月,请选择筛选条件" placement="top">
-        <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
-      </el-tooltip> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('example.id')" width="60%" align="center">
+      <el-table-column :label="$t('pcAssignCashToTab.counterindex')" width="60%" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.counterindex }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('example.chart')" align="center">
+      <el-table-column :label="$t('pcAssignCashToTab.tabcode')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_chart.chartdescription }}</span>
+          <span>{{ scope.row.belongs_to_pc_tab.tabcode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('example.cancreate')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('pcAssignCashToTab.date')"  align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.date }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('pcAssignCashToTab.amount')"  align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.amount }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('pcAssignCashToTab.notes')" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.notes }}</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column :label="$t('pcAssignCashToTab.receipt')"  align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.receipt }}</span>
+        </template>
+      </el-table-column> -->
+      <el-table-column :label="$t('pcAssignCashToTab.posted')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
           <span>
-            <el-tag :type="scope.row.cancreate | statusFilter">
-              {{ cancreateStatus[scope.row.cancreate] }}
+            <el-tag :type="scope.row.posted | statusFilter">
+              <span v-if="scope.row.posted == 1">未授权</span>
+              <span v-else>{{ scope.row.authorized }}</span>
             </el-tag>
           </span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="handleShow(scope.row)">
-            {{ $t('table.content') }}
-          </el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
             {{ $t('table.edit') }}
           </el-button>
-          <!-- <el-button type="success" size="mini" @click="handleSetChild(scope.row)">
-            {{ $t('table.setOrther') }}
-          </el-button> -->
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
             {{ $t('table.delete') }}
           </el-button>
@@ -61,44 +92,38 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('example.name')" prop="name">
-          <el-input v-model="temp.name" />
-        </el-form-item>
-        <el-form-item :label="$t('example.chart')" prop="chart">
+        <!-- <el-form-item :label="$t('pcAssignCashToTab.tabcode')" prop="tabcode">
+          <el-input v-model="temp.tabcode" />
+        </el-form-item> -->
+        <el-form-item :label="$t('pcAssignCashToTab.tabcode')" prop="tabcode">
           <el-select 
-            v-model="temp.chart" 
+            v-model="temp.tabcode" 
             class="filter-item" 
             filterable 
             clearable 
-            placeholder="输入区域搜索">
-            <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.chartdescription" :value="chart.id"/>
+            placeholder="输入标签搜索">
+            <el-option v-for="tab in pcTabList" v-if="tab.assigner == $store.getters.userid" :key="tab.id" :label="tab.tabcode" :value="tab.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('example.paymenttype')">
-          <el-radio-group @change="changeType" v-model="temp.paymenttype">
-            <el-radio-button label="1">次月截止</el-radio-button>
-            <el-radio-button label="2">N天后截止</el-radio-button>
-          </el-radio-group>
+        <el-form-item :label="$t('pcAssignCashToTab.date')" prop="date">
+          <el-date-picker
+            v-model="temp.date"
+            type="date"
+            value-format="yyyy-MM-dd"
+            :picker-options="pickerOptionsAdd"
+            placeholder="预支款日期">
+          </el-date-picker>
         </el-form-item>
-        <el-form-item :label="$t('example.cancreate')">
-          <el-switch
-            v-model="temp.cancreate"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0">
-          </el-switch>
-        </el-form-item>
-        <el-form-item :label="$t('example.discountrate')" prop="discountrate">
+        <el-form-item :label="$t('pcAssignCashToTab.amount')" prop="amount">
           <el-input-number 
-            v-model='temp.discountrate'   
+            v-model='temp.amount'   
             :min="0" 
-            :max="1" 
-            :precision="2"
-            :step="0.1"
-            label="折扣率">
+            label="金额">
           </el-input-number>
         </el-form-item>  
+        <el-form-item :label="$t('pcAssignCashToTab.notes')" prop="notes">
+          <el-input v-model="temp.notes" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -106,17 +131,15 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
-    <!-- 组件 -->
-    <!-- <example-components ref="exampleChild"></example-components>  -->
   </div>
 </template>
 <script>
-  import { getExampleList,  createExample, updateExample, deleteExample} from '@/api/example'
-  import { chartMasterAll } from '@/api/chartMaster'
+  import { getPcAssignCashToTabList,  createPcAssignCashToTab, updatePcAssignCashToTab, deletePcAssignCashToTab} from '@/api/pcAssignCashToTab'
+  import { pcTabAll } from '@/api/pcTab'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
-  // import ExampleComponents from './components/ExampleComponents'
+  // import PcAssignCashToTabComponents from './components/PcAssignCashToTabComponents'
 
 const calendarTypeOptions = [
   { key: 'web', display_name: 'web' },
@@ -130,16 +153,15 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'example',
-  // components: { ExampleComponents },
+  name: 'pcAssignCashToTab',
   directives: {
     waves
   },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        1: 'success',
-        0: 'danger',
+        2: 'success',
+        1: 'danger',
       }
       return statusMap[status]
     },
@@ -155,52 +177,89 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        name: '',
-        condetion: '',
+        tabcode: '',
+        date: '',
+        posted: undefined,
       },
-      cancreateStatus:['否', '是'],
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          },
+        ],
+      },
+      pickerOptionsAdd: {
+        disabledDate: time => {
+          return time.getTime() < Date.now()  
+        }
+      },
+      postedStatus:[ { key:1, value:'未授权'}, { key:2, value: '已授权'}],
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        id: undefined,
-        name: '',
-        chart: null,
-        cancreate : '1',
-        discountrate : 0,
-        paymenttype: '1',
+        counterindex: undefined,
+        tabcode: '',
+        notes: '',
+        amount : 0,
+        date: '',
       },
       dialogFormVisible: false,
       setRateVisible: false,
-      exampleName: '',
+      pcAssignCashToTabName: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑',
-        create: '新增'
+        update: '编辑预付款',
+        create: '新增预付款'
       },
       pvData: [],
       rules: {
-        name: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在3到5个字符', trigger: 'blur'},
+        tabcode: [
+          { required: true, message: '请选择标签', trigger: 'blur' },
+          // { min: 3, max: 5, message: '长度在3到5个字符', trigger: 'blur'},
         ],
-        chart: [{ required: true, message: '请选择库存种类', trigger: 'change' }],
-        quantitybreak: [ 
-          { required: true, message: '折扣率', trigger: 'change'}, 
+        amount: [{ required: true, message: '请输入金额', trigger: 'change' }],
+        notes: [ 
+          { required: true, message: '请填写备注', trigger: 'change'}, 
         ],
+        date: [{ required: true, message: '请选择日期', trigger: 'change' }],
       },
-      chartMasterList: [],
+      pcTabList: [],
     }
   },
   created() {
+    console.log('hehe')
+    console.log(this.$store.getters.userid)
+    console.log(this.$store.getters.username)
     Promise.all([
       this.getList(),
-      // this.getAllChartMasters(),
+      this.getAllPcTab(),
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getExampleList(this.listQuery).then(response => {
+      getPcAssignCashToTabList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
         // Just to simulate the time of the request
@@ -209,12 +268,13 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    getAllChartMasters(){
-      chartMasterAll().then(response => {
-        this.chartMasterList = response.data
+    getAllPcTab(){
+      pcTabAll().then(response => {
+        this.pcTabList = response.data
       })
     },
     handleFilter() {
+      console.log(this.listQuery)
       this.listQuery.page = 1
       this.getList()
     },
@@ -233,7 +293,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteExample(this.temp).then((response) => {
+        deletePcAssignCashToTab(this.temp).then((response) => {
           if(!response.data.status){
             this.$notify({
               title: '失败',
@@ -262,12 +322,11 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        id: undefined,
-        name: '',
-        chart: null,
-        cancreate : '1',
-        discountrate : 0,
-        paymenttype: '1',
+        counterindex: undefined,
+        tabcode: '',
+        notes: '',
+        amount : 0,
+        date: '',
       }
     },
     handleCreate() {
@@ -281,10 +340,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createExample(this.temp).then((response) => {
+          createPcAssignCashToTab(this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
-              this.temp.id = response_data.data.id
+              this.temp.counterindex = response_data.data.counterindex
+              response_data.data.posted = 0
               this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
@@ -306,7 +366,7 @@ export default {
       })
     },
     handleUpdate(row) {
-      row.chart = parseInt(row.chart)
+      row.tabcode = parseInt(row.tabcode)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -318,11 +378,11 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateExample(tempData).then((response) => {
+          updatePcAssignCashToTab(tempData).then((response) => {
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.id === this.temp.id) {
+                if (v.counterindex === this.temp.counterindex) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, response_data.data)
                   break
@@ -345,17 +405,6 @@ export default {
           })
         }
       })
-    },
-    handleShow(row) {
-      row.taxprovinceid = row.belongs_to_taxprovinces.taxprovincename
-      row.cashsalebranch = row.belongs_to_custbranch.brname
-      row.cashsalecustomer = row.belongs_to_debtors_master.name
-      this.temp = Object.assign({}, row) // copy obj
-      console.log(this.temp)
-      this.dialogInfoVisible = true
-    },
-    handleSetChild(row){
-      this.$refs.exampleChild.handleStockCategory(row) 
     },
   }
 }

@@ -20,10 +20,10 @@ const pettyCashRouter = {
         meta: { title: 'pettyCashManage' },
         children: [
           {
-            path: 'taxProvinces',
-            component: resolve => void(require(['@/views/set/base/taxProvinces.vue'], resolve)),
-            name: 'taxProvinces',
-            meta: { title: 'taxProvinces' },
+            path: 'pcAssignCashToTab',
+            component: resolve => void(require(['@/views/pettyCash/manage/pcAssignCashToTab.vue'], resolve)),
+            name: 'pcAssignCashToTab',
+            meta: { title: 'pcAssignCashToTab' },
           },
           {
             path: 'taxCategories',
