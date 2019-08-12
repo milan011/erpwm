@@ -2,21 +2,28 @@
   <div class="app-container">
     <div class="filter-container">
       <!-- <el-input 
-        :placeholder="$t('pcAssignCashToTab.tabcode')"
+        :placeholder="$t('pcClaimExpensesFromTab.tabcode')"
         clearable 
         v-model="listQuery.tabcode"
         style="width: 150px;" 
         class="filter-item">
       </el-input> -->
-      <el-select clearable style="width:100px;" v-model="listQuery.tabcode" class="filter-item" filterable :placeholder="$t('pcAssignCashToTab.tabcode')">
+      <el-select clearable style="width:100px;" v-model="listQuery.tabcode" class="filter-item" filterable :placeholder="$t('pcClaimExpensesFromTab.tabcode')">
         <el-option 
           v-for="tab in pcTabList" 
-          v-if="tab.assigner == $store.getters.userid"
+          v-if="tab.usercode == $store.getters.userid"
           :key="tab.id" 
           :label="tab.tabcode" 
           :value="tab.id"/>
       </el-select>
-      <el-select clearable style="width:100px;" v-model="listQuery.posted" class="filter-item" filterable :placeholder="$t('pcAssignCashToTab.posted')">
+      <el-select clearable style="width:120px;" v-model="listQuery.codeexpense" class="filter-item" filterable :placeholder="$t('pcClaimExpensesFromTab.codeexpense')">
+        <el-option 
+          v-for="expenses in expensesList" 
+          :key="expenses.id" 
+          :label="expenses.description" 
+          :value="expenses.id"/>
+      </el-select>
+      <el-select clearable style="width:100px;" v-model="listQuery.posted" class="filter-item" filterable :placeholder="$t('pcClaimExpensesFromTab.posted')">
         <el-option v-for="item in postedStatus" :key="item.key" :label="item.value" :value="item.key"/>
       </el-select>
       <el-date-picker
@@ -36,37 +43,42 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('pcAssignCashToTab.counterindex')" width="80%" align="center">
+      <el-table-column :label="$t('pcClaimExpensesFromTab.counterindex')" width="80%" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.counterindex }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcAssignCashToTab.tabcode')" align="center">
+      <el-table-column :label="$t('pcClaimExpensesFromTab.tabcode')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.belongs_to_pc_tab.tabcode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcAssignCashToTab.date')"  align="center">
+      <el-table-column :label="$t('pcClaimExpensesFromTab.codeexpense')" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_pc_expenses.description }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('pcClaimExpensesFromTab.date')"  align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.date }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcAssignCashToTab.amount')"  align="center">
+      <el-table-column :label="$t('pcClaimExpensesFromTab.amount')"  align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.amount }}</span>
+          <span>-{{ scope.row.amount }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('pcAssignCashToTab.notes')" align="center">
+      <el-table-column :label="$t('pcClaimExpensesFromTab.notes')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.notes }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column :label="$t('pcAssignCashToTab.receipt')"  align="center">
+      <!-- <el-table-column :label="$t('pcClaimExpensesFromTab.receipt')"  align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.receipt }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column :label="$t('pcAssignCashToTab.posted')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('pcClaimExpensesFromTab.posted')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
           <span>
             <el-tag :type="scope.row.posted | statusFilter">
@@ -76,7 +88,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
+      <el-table-column  :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="scope.row.posted == 1" type="primary" size="mini" @click="handleUpdate(scope.row)">
             {{ $t('table.edit') }}
@@ -92,20 +104,31 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
-        <!-- <el-form-item :label="$t('pcAssignCashToTab.tabcode')" prop="tabcode">
+        <!-- <el-form-item :label="$t('pcClaimExpensesFromTab.tabcode')" prop="tabcode">
           <el-input v-model="temp.tabcode" />
         </el-form-item> -->
-        <el-form-item :label="$t('pcAssignCashToTab.tabcode')" prop="tabcode">
+        <el-form-item :label="$t('pcClaimExpensesFromTab.tabcode')" prop="tabcode">
           <el-select 
             v-model="temp.tabcode" 
             class="filter-item" 
             filterable 
             clearable 
+            @change="setExpenseList"
             placeholder="输入标签搜索">
-            <el-option v-for="tab in pcTabList" v-if="tab.assigner == $store.getters.userid" :key="tab.id" :label="tab.tabcode" :value="tab.id"/>
+            <el-option v-for="tab in pcTabList" v-if="tab.usercode == $store.getters.userid" :key="tab.id" :label="tab.tabcode" :value="tab.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('pcAssignCashToTab.date')" prop="date">
+        <el-form-item :label="$t('pcClaimExpensesFromTab.codeexpense')" prop="codeexpense">
+          <el-select 
+            v-model="temp.codeexpense" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入费用搜索">
+            <el-option v-for="expense in setExpensesList" :key="expense.id" :label="expense.description" :value="expense.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('pcClaimExpensesFromTab.date')" prop="date">
           <el-date-picker
             v-model="temp.date"
             type="date"
@@ -114,14 +137,14 @@
             placeholder="预支款日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item :label="$t('pcAssignCashToTab.amount')" prop="amount">
+        <el-form-item :label="$t('pcClaimExpensesFromTab.amount')" prop="amount">
           <el-input-number 
             v-model='temp.amount'   
             :min="0" 
             label="金额">
           </el-input-number>
         </el-form-item>  
-        <el-form-item :label="$t('pcAssignCashToTab.notes')" prop="notes">
+        <el-form-item :label="$t('pcClaimExpensesFromTab.notes')" prop="notes">
           <el-input v-model="temp.notes" />
         </el-form-item>
       </el-form>
@@ -134,12 +157,12 @@
   </div>
 </template>
 <script>
-  import { getPcAssignCashToTabList,  createPcAssignCashToTab, updatePcAssignCashToTab, deletePcAssignCashToTab} from '@/api/pcAssignCashToTab'
+  import { getPcClaimExpensesFromTabList,  createPcClaimExpensesFromTab, updatePcClaimExpensesFromTab, deletePcClaimExpensesFromTab, expensesAll} from '@/api/pcClaimExpensesFromTab'
   import { pcTabAll } from '@/api/pcTab'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
-  // import PcAssignCashToTabComponents from './components/PcAssignCashToTabComponents'
+  // import PcClaimExpensesFromTabComponents from './components/PcClaimExpensesFromTabComponents'
 
 const calendarTypeOptions = [
   { key: 'web', display_name: 'web' },
@@ -153,7 +176,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'pcAssignCashToTab',
+  name: 'pcClaimExpensesFromTab',
   directives: {
     waves
   },
@@ -180,7 +203,7 @@ export default {
         tabcode: '',
         date: '',
         posted: undefined,
-        codeexpense: 'ASSIGNCASH',
+        codeexpense: undefined,
       },
       pickerOptions: {
         shortcuts: [{
@@ -223,17 +246,17 @@ export default {
         tabcode: '',
         notes: '',
         amount : 0,
-        codeexpense: 'ASSIGNCASH',
+        codeexpense: undefined,
         date: '',
         posted: '1',
       },
       dialogFormVisible: false,
       setRateVisible: false,
-      pcAssignCashToTabName: '',
+      pcClaimExpensesFromTabName: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑预付款',
-        create: '新增预付款'
+        update: '编辑报销',
+        create: '新增报销'
       },
       pvData: [],
       rules: {
@@ -241,6 +264,7 @@ export default {
           { required: true, message: '请选择标签', trigger: 'blur' },
           // { min: 3, max: 5, message: '长度在3到5个字符', trigger: 'blur'},
         ],
+        codeexpense:[{ required: true, message: '请选择费用', trigger: 'change' }],
         amount: [{ required: true, message: '请输入金额', trigger: 'change' }],
         notes: [ 
           { required: true, message: '请填写备注', trigger: 'change'}, 
@@ -248,6 +272,8 @@ export default {
         date: [{ required: true, message: '请选择日期', trigger: 'change' }],
       },
       pcTabList: [],
+      expensesList: [],
+      setExpensesList: [],
     }
   },
   created() {
@@ -257,12 +283,13 @@ export default {
     Promise.all([
       this.getList(),
       this.getAllPcTab(),
+      this.getExpensesList(),
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getPcAssignCashToTabList(this.listQuery).then(response => {
+      getPcClaimExpensesFromTabList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
         // Just to simulate the time of the request
@@ -274,6 +301,20 @@ export default {
     getAllPcTab(){
       pcTabAll().then(response => {
         this.pcTabList = response.data
+      })
+    },
+    getExpensesList(){
+      expensesAll().then(response => {
+        this.expensesList = response.data
+      })
+    },
+    setExpenseList(val){
+      console.log(val)
+      this.temp.codeexpense = undefined
+      const condition = {tabId: val}
+      expensesAll(condition).then(response => {
+        this.setExpensesList = response.data
+        console.log(this.setExpensesList)
       })
     },
     handleFilter() {
@@ -296,7 +337,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deletePcAssignCashToTab(this.temp).then((response) => {
+        deletePcClaimExpensesFromTab(this.temp).then((response) => {
           if(!response.data.status){
             this.$notify({
               title: '失败',
@@ -329,7 +370,7 @@ export default {
         tabcode: '',
         notes: '',
         amount : 0,
-        codeexpense: 'ASSIGNCASH',
+        codeexpense: undefined,
         date: '',
         posted: '1',
       }
@@ -345,7 +386,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createPcAssignCashToTab(this.temp).then((response) => {
+          createPcClaimExpensesFromTab(this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
               this.temp.counterindex = response_data.data.counterindex
@@ -370,7 +411,10 @@ export default {
       })
     },
     handleUpdate(row) {
+
       row.tabcode = parseInt(row.tabcode)
+      row.codeexpense = parseInt(row.codeexpense)
+      this.setExpenseList(row.tabcode)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -382,7 +426,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updatePcAssignCashToTab(tempData).then((response) => {
+          updatePcClaimExpensesFromTab(tempData).then((response) => {
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {

@@ -47,6 +47,9 @@ class PcAssignCashToTab extends Model
         if (!empty($queryList['posted'])) {
             $query = $query->where('posted', $queryList['posted']);
         }
+        if (!empty($queryList['codeexpense'])) {
+            $query = $query->where('codeexpense', $queryList['codeexpense']);
+        }
         // $query = $query->where('posted', $queryList['posted']);
         if (!empty($queryList['date'])) {
             // dd($queryList['date']);
@@ -67,10 +70,11 @@ class PcAssignCashToTab extends Model
             ->withDefault(['tabcode' => '']);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义PcExpensesTypeTab表与PcExpenses表一对一关系
+    public function belongsToPcExpenses()
     {
-
-        return $this->hasMany('App\Notice', 'user_id', 'id');
+        return $this->belongsTo('App\PcExpenses', 'codeexpense', 'id')
+        // ->where('assigner', '5')
+            ->withDefault(['description' => '']);
     }
 }

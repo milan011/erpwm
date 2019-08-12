@@ -5,7 +5,7 @@ import Layout from '@/views/layout/Layout'
 const pettyCashRouter = {
     path: '/pettyCash',
     component: Layout,
-    redirect: '/pettyCash/manage/taxCategories',
+    redirect: '/pettyCash/manage/pcAssignCashToTab',
     name: 'pettyCash',
     meta: {
       title: 'pettyCash',
@@ -26,10 +26,10 @@ const pettyCashRouter = {
             meta: { title: 'pcAssignCashToTab' },
           },
           {
-            path: 'taxCategories',
-            component: resolve => void(require(['@/views/set/base/taxCategories.vue'], resolve)),
-            name: 'taxCategories',
-            meta: { title: 'taxCategories' },
+            path: 'pcClaimExpensesFromTab',
+            component: resolve => void(require(['@/views/pettyCash/manage/pcClaimExpensesFromTab.vue'], resolve)),
+            name: 'pcClaimExpensesFromTab',
+            meta: { title: 'pcClaimExpensesFromTab' },
           }
         ]
       },

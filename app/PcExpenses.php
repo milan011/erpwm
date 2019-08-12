@@ -46,4 +46,5 @@ class PcExpenses extends Model
         return $this->belongsTo('App\ChartMaster', 'glaccount', 'id')->withDefault(['accountname' => '',
         ]);
     }
+
 }

@@ -297,6 +297,14 @@ Route::group([
     Route::post('pcAssignCashToTab', 'PcAssignCashToTabController@store');
     Route::put('pcAssignCashToTab/{id}', 'PcAssignCashToTabController@update');
     Route::delete('pcAssignCashToTab/{id}', 'PcAssignCashToTabController@destroy');
+
+    // PcClaimExpensesFromTab   getExpenses
+    Route::get('pcClaimExpensesFromTabList', 'PcClaimExpensesFromTabController@index');
+    Route::get('pcClaimExpensesFromTab/{id}', 'PcClaimExpensesFromTabController@show');
+    Route::get('getExpenses', 'PcClaimExpensesFromTabController@getExpenses');
+    Route::post('pcClaimExpensesFromTab', 'PcClaimExpensesFromTabController@store');
+    Route::put('pcClaimExpensesFromTab/{id}', 'PcClaimExpensesFromTabController@update');
+    Route::delete('pcClaimExpensesFromTab/{id}', 'PcClaimExpensesFromTabController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

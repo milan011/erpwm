@@ -74,10 +74,26 @@ class PcTab extends Model
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    //PcTab远层一对多Pcexpenses
+    public function hasManyPcexpenses()
     {
+        /*return $this->hasManyThrough(
+        'App\TaxAuthorities',
+        'App\TaxGroupTaxes',
+        'taxgroupid', // TaxGroupTaxes表使用的外键...
+        'taxid', // TaxAuthorities表使用的外键...
+        'taxgroupid', // TaxGroup表主键...
+        'taxauthid' // TaxGroupTaxes表主键...
+        );*/
 
-        return $this->hasMany('App\Notice', 'user_id', 'id');
+        return $this->hasManyThrough(
+            'App\Pcexpenses',
+            'App\PcExpensesTypeTab',
+            'typetabcode', // PcExpensesTypeTab表使用的外键...
+            'id', // Pcexpenses表使用的外键...
+            'typetabcode', // TcTab表主键...
+            'codeexpense' // PcExpensesTypeTab表主键...
+        );
+
     }
 }

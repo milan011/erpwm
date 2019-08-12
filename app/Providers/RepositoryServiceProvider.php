@@ -67,5 +67,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\PcExpenses\PcExpensesRepositoryInterface', 'App\Repositories\PcExpenses\PcExpensesRepository');
         $this->app->bind('App\Repositories\Tags\TagsRepositoryInterface', 'App\Repositories\Tags\TagsRepository');
         $this->app->bind('App\Repositories\PcAssignCashToTab\PcAssignCashToTabRepositoryInterface', 'App\Repositories\PcAssignCashToTab\PcAssignCashToTabRepository');
+        $this->app->bind('App\Repositories\PcClaimExpensesFromTab\PcClaimExpensesFromTabRepositoryInterface', 'App\Repositories\PcClaimExpensesFromTab\PcClaimExpensesFromTabRepository');
     }
 }
