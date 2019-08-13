@@ -31,6 +31,7 @@ export default {
     pcExpenses: '费用种类',
     pcAssignCashToTab: '预支现金',
     pcClaimExpensesFromTab: '报销申请',
+    pcAuthorizeExpense: '费用审批',
     setBase:'基础信息',
     setGatherPay: '应收应付',
     setSale: '销售相关',
@@ -419,4 +420,15 @@ export default {
     notes: '备注',
     receipt: '收款',
   },
+  pcAuthorizeExpense:{
+    counterindex: '序号',
+    tabcode: '标签',
+    date: '预支款日期',
+    codeexpense: '报销费用',
+    amount: '金额(元)',
+    authorized: '授权日期',
+    posted: '授权',
+    notes: '备注',
+    receipt: '收款',
+  }
 }

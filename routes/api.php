@@ -305,6 +305,34 @@ Route::group([
     Route::post('pcClaimExpensesFromTab', 'PcClaimExpensesFromTabController@store');
     Route::put('pcClaimExpensesFromTab/{id}', 'PcClaimExpensesFromTabController@update');
     Route::delete('pcClaimExpensesFromTab/{id}', 'PcClaimExpensesFromTabController@destroy');
+
+    // PcAuthorizeExpense
+    Route::get('pcAuthorizeExpenseList', 'PcAuthorizeExpenseController@index');
+    Route::get('pcAuthorizeExpense/{id}', 'PcAuthorizeExpenseController@show');
+    Route::post('pcAuthorizeExpense', 'PcAuthorizeExpenseController@store');
+    Route::put('pcAuthorizeExpense/{id}', 'PcAuthorizeExpenseController@update');
+    Route::post('approvalAuthorizeExpense/{id}', 'PcAuthorizeExpenseController@approval');
+
+    // BankTrans
+    Route::get('bankTransList', 'BankTransController@index');
+    Route::get('bankTrans/{id}', 'BankTransController@show');
+    Route::post('bankTrans', 'BankTransController@store');
+    Route::put('bankTrans/{id}', 'BankTransController@update');
+    Route::delete('bankTrans/{id}', 'BankTransController@destroy');
+
+    // Gltrans
+    Route::get('gltransList', 'GltransController@index');
+    Route::get('gltrans/{id}', 'GltransController@show');
+    Route::post('gltrans', 'GltransController@store');
+    Route::put('gltrans/{id}', 'GltransController@update');
+    Route::delete('gltrans/{id}', 'GltransController@destroy');
+
+    // SysType
+    Route::get('sysTypeList', 'SysTypeController@index');
+    Route::get('sysType/{id}', 'SysTypeController@show');
+    Route::post('sysType', 'SysTypeController@store');
+    Route::put('sysType/{id}', 'SysTypeController@update');
+    Route::delete('sysType/{id}', 'SysTypeController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

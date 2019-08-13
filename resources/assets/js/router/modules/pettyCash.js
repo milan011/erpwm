@@ -30,6 +30,12 @@ const pettyCashRouter = {
             component: resolve => void(require(['@/views/pettyCash/manage/pcClaimExpensesFromTab.vue'], resolve)),
             name: 'pcClaimExpensesFromTab',
             meta: { title: 'pcClaimExpensesFromTab' },
+          },
+          {
+            path: 'pcAuthorizeExpense',
+            component: resolve => void(require(['@/views/pettyCash/manage/pcAuthorizeExpense.vue'], resolve)),
+            name: 'pcAuthorizeExpense',
+            meta: { title: 'pcAuthorizeExpense' },
           }
         ]
       },

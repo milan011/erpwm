@@ -75,6 +75,6 @@ class PcAssignCashToTab extends Model
     {
         return $this->belongsTo('App\PcExpenses', 'codeexpense', 'id')
         // ->where('assigner', '5')
-            ->withDefault(['description' => '']);
+            ->withDefault(['description' => '预支现金']);
     }
 }
