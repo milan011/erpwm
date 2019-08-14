@@ -14,8 +14,8 @@ class BankTrans extends Model
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
     protected $table      = 'banktrans';
-    protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'banktransid', 'type', 'transno', 'bankact', 'ref', 'amountcleared', 'exrate', 'functionalexrate', 'transdate', 'banktranstype', 'amount', 'currcode', 'status'];
+    protected $primaryKey = 'banktransid';
+    protected $fillable   = ['banktransid', 'type', 'transno', 'bankact', 'ref', 'amountcleared', 'exrate', 'functionalexrate', 'transdate', 'banktranstype', 'amount', 'currcode', 'status'];
 
     /**
      * The attributes that should be hidden for arrays.

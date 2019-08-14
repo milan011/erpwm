@@ -39,9 +39,9 @@ class PcAuthorizeExpenseRepository implements PcAuthorizeExpenseRepositoryInterf
         SysTypeRepositoryInterface $sysType,
         GltransRepositoryInterface $bankTrans
     ) {
-        $this->gltrans   = $gltrans;
-        $this->bankTrans = $bankTrans;
-        $this->sysType   = $sysType;
+        $this->gltrans = $gltrans;
+        // $this->bankTrans = $bankTrans;
+        $this->sysType = $sysType;
     }
 
     // 根据ID获得信息
@@ -200,10 +200,10 @@ class PcAuthorizeExpenseRepository implements PcAuthorizeExpenseRepositoryInterf
         try {
             $info = PcAssignCashToTab::with('belongsToPcTab', 'belongsToPcExpenses')
                 ->findorFail($id);
-            $sysType = new SysType();
-            $gltrans = new Gltrans();
+            $sysType   = new SysType();
+            $gltrans   = new Gltrans();
+            $bankTrans = new BankTrans();
 
-            // dd($info);
             /*
             记录审批记录至Gltrans及BankTrans
              */
@@ -219,11 +219,6 @@ class PcAuthorizeExpenseRepository implements PcAuthorizeExpenseRepositoryInterf
             $periodNo                = Periods::whereBetween('lastdate_in_period', [$assignDate, $nextMonth])->first()->periodno;
             $gltransInfo['periodno'] = $periodNo;
 
-            //确定
-            /*dd($periodNo);
-            p($assignDate);
-            dd($nextMonth);
-            $dt->addMonths(60);*/
             /*根据codeexpense确认gltrans的type等数据*/
             if ($info->codeexpense == 'ASSIGNCASH') {
                 //预付现金
@@ -264,45 +259,28 @@ class PcAuthorizeExpenseRepository implements PcAuthorizeExpenseRepositoryInterf
             $gltransInfoTo            = $gltransInfo;
             $gltransInfoTo['account'] = $gltransInfo['accountTo'];
 
-            /*p($gltransInfoFrom);
-            dd($gltransInfoTo);*/
-
             /*新增Gltrans*/
             $gltransF = $gltrans->create($gltransInfoFrom);
             $gltransT = $gltrans->create($gltransInfoTo);
-            // dd($gltransF);
 
-            /*新增BankTrans*/
             $bankTransInfo = [];
 
             if ($info->codeexpense == 'ASSIGNCASH') {
                 //预付现金
                 $bankTrans = new BankTrans();
-                $bankTrans->create();
-                dd($bankTrans);
-                /*处理标签代码*/
-                // $sysInfo = $sysType->where('typeid', 2)->first();
 
-                // $bankTransInfo['transno'] = $sysInfo->typeno + 2;
-                // $bankTransInfo['transno'] = 2;
-                /*$bankTransInfo['type']          = 1;
+                $bankTransInfo['type']          = 1;
+                $bankTransInfo['typeno']        = $sysInfo->typeno + 2;
                 $bankTransInfo['bankact']       = $gltransInfo['accountFrom'];
                 $bankTransInfo['ref']           = $gltransInfo['narrative'];
                 $bankTransInfo['exrate']        = 1;
                 $bankTransInfo['transdate']     = $info->date;
                 $bankTransInfo['banktranstype'] = 'Cash';
                 $bankTransInfo['currcode']      = 'CNY';
-                $bankTransInfo['amount']        = -$info->amount;*/
-                // dd($bankTrans);
-                $gltransssT = $bankTrans->create($bankTransInfo);
-                // $gltransT   = $gltrans->create([$gltransInfoTo]);
-                dd(lastSql());
+                $bankTransInfo['amount']        = -$info->amount;
+
+                $bankTrans = $bankTrans->create($bankTransInfo);
             }
-            // dd($bankTransInfo);
-            // dd('hehe');
-            // $bankTrans = $bankTrans->create($bankTransInfo);
-            dd(lastSql());
-            dd($bankTrans);
 
             $info->posted     = '2'; //审批通过
             $info->authorized = Carbon::now()->toDateString(); //审批通过

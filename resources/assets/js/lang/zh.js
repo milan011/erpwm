@@ -32,6 +32,11 @@ export default {
     pcAssignCashToTab: '预支现金',
     pcClaimExpensesFromTab: '报销申请',
     pcAuthorizeExpense: '费用审批',
+    asset: '资产管理',
+    assetManage: '管理功能',
+    assetSelect: '查询及报告',
+    assetSet: '维护',
+    fixedAssetCategorie: '固定资产种类',
     setBase:'基础信息',
     setGatherPay: '应收应付',
     setSale: '销售相关',
@@ -430,5 +435,15 @@ export default {
     posted: '授权',
     notes: '备注',
     receipt: '收款',
-  }
+  },
+  fixedAssetCategorie: {
+    id: '序号',
+    categorydescription: '名称',
+    costact: '固定资产成本总账',
+    depnact: '损益折旧总账',
+    disposalact: '处置损益的总账',
+    accumdepnact: '资产负债表中累计折旧的总账',
+    defaultdepnrate: '',
+    defaultdepntype: '',
+  },
 }

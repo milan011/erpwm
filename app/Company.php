@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Example extends Model
+class Company extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,9 +13,9 @@ class Example extends Model
      * @var array
      */
     protected $guard_name = 'api'; // 使用任何你想要的守卫
-    protected $table      = 'example';
+    protected $table      = 'companies';
     protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'examplename'];
+    protected $fillable   = ['id', 'coycode', 'coyname', 'gstno', 'companynumber', 'regoffice1', 'regoffice2', 'regoffice3', 'regoffice4', 'regoffice5', 'regoffice6', 'telephone', 'fax', 'email', 'currencydefault', 'debtorsact', 'pytdiscountact', 'creditorsact', 'payrollact', 'grnact', 'exchangediffact', 'purchasesexchangediffact', 'retainedearnings', 'gllink_debtors', 'gllink_creditors', 'gllink_stock', 'freightact'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -32,34 +32,6 @@ class Example extends Model
      * @var bool
      */
     public $timestamps = false;
-
-    // 搜索条件处理
-    /*public function addCondition($queryList)
-    {
-
-    $query = $this;
-
-    if (!empty($queryList['tabcode'])) {
-    $query = $query->where('tabcode', $queryList['tabcode']);
-    }
-    // dd($queryList['posted']);
-    if (!empty($queryList['posted'])) {
-    $query = $query->where('posted', $queryList['posted']);
-    }
-    if (!empty($queryList['codeexpense'])) {
-    $query = $query->where('codeexpense', $queryList['codeexpense']);
-    }
-    // $query = $query->where('posted', $queryList['posted']);
-    if (!empty($queryList['date'])) {
-    // dd($queryList['date']);
-    $start = substr($queryList['date'][0], 0, 10);
-    $end   = substr($queryList['date'][1], 0, 10);
-
-    $query = $query->whereBetween('date', [$start, $end]);
-    }
-
-    return $query;
-    }*/
 
     // 定义Example表与Shop表一对一关系
     public function belongsToShop()

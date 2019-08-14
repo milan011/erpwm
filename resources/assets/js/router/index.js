@@ -10,6 +10,7 @@ import Layout from '@/views/layout/Layout'
 import userRouter from './modules/user'
 import setRouter from './modules/set'
 import pettyCashRouter from './modules/pettyCash'
+import assetRouter from './modules/asset'
 import roleRouter from './modules/role'
 
 
@@ -76,6 +77,7 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+  assetRouter,
   pettyCashRouter,
   setRouter,
   userRouter,

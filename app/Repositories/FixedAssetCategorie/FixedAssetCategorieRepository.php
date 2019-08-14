@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\Example;
+namespace App\Repositories\FixedAssetCategorie;
 
-use App\Example;
+use App\FixedAssetCategorie;
 use App\Repositories\BaseInterface\Repository;
-use App\Repositories\Example\ExampleRepositoryInterface;
+use App\Repositories\FixedAssetCategorie\FixedAssetCategorieRepositoryInterface;
 use Auth;
 use Datatables;
 use DB;
@@ -15,23 +15,24 @@ use PHPZen\LaravelRbac\Traits\Rbac;
 use Planbon;
 use Session;
 
-class ExampleRepository implements ExampleRepositoryInterface
+class FixedAssetCategorieRepository implements FixedAssetCategorieRepositoryInterface
 {
     //默认查询数据
-    protected $select_columns = ['id', 'taxcatname'];
+    protected $select_columns = ['id', 'categorydescription', 'costact', 'depnact', 'disposalact', 'accumdepnact', 'defaultdepnrate', 'defaultdepntype', 'status'];
 
     // 根据ID获得信息
     public function find($id)
     {
-        return Example::select($this->select_columns)
+        return FixedAssetCategorie::select($this->select_columns)
             ->findOrFail($id);
     }
 
     // 根据不同参数获得信息列表
     public function getList($queryList)
     {
-        $query = new Example(); // 返回的是一个Order实例,两种方法均可
-        // $query = $query->addCondition($queryList); //根据条件组合语句
+        $query = new FixedAssetCategorie(); // 返回的是一个Order实例,两种方法均可
+        $query = $query->addCondition($queryList); //根据条件组合语句
+        $query = $query->with('belongsToChartMasterWithAccumdepnact', 'belongsToChartMasterWithDisposalact', 'belongsToChartMasterWithCostact', 'belongsToChartMasterWithDepnact');
         $query = $query->where('status', '1')->orderBy('id', 'DESC');
         // $query = $query->with('');
         if (empty($queryList['page'])) {
@@ -49,7 +50,7 @@ class ExampleRepository implements ExampleRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new Example(); //税目
+            $example = new FixedAssetCategorie(); //税目
 
             $input = array_replace($requestData->all());
             $example->fill($input);
@@ -70,9 +71,13 @@ class ExampleRepository implements ExampleRepositoryInterface
     public function update($requestData, $id)
     {
         // dd($requestData->all());
-        $info = Example::select($this->select_columns)->findorFail($id); //获取信息
+        $info = FixedAssetCategorie::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->categorydescription = $requestData->categorydescription;
+        $info->costact             = $requestData->costact;
+        $info->depnact             = $requestData->depnact;
+        $info->disposalact         = $requestData->disposalact;
+        $info->accumdepnact        = $requestData->accumdepnact;
 
         $info->save();
 
@@ -84,7 +89,16 @@ class ExampleRepository implements ExampleRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = Example::findorFail($id);
+            $info = FixedAssetCategorie::findorFail($id);
+
+            //是否有fixed存在
+            $count = $info->hasManyFixedAssets->count();
+
+            if ($count > 0) {
+                return false;
+            }
+            // dd($count);
+
             $info->status = '0'; //删除税目
             $info->save();
 
@@ -98,8 +112,8 @@ class ExampleRepository implements ExampleRepositoryInterface
     }
 
     //名称是否重复
-    public function isRepeat($taxcatname)
+    public function isRepeat($categorydescription)
     {
-        return Example::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return FixedAssetCategorie::where('categorydescription', $categorydescription)->where('status', '1')->first();
     }
 }

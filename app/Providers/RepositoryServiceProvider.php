@@ -72,5 +72,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\BankTrans\BankTransRepositoryInterface', 'App\Repositories\BankTrans\BankTransRepository');
         $this->app->bind('App\Repositories\Gltrans\GltransRepositoryInterface', 'App\Repositories\Gltrans\GltransRepository');
         $this->app->bind('App\Repositories\SysType\SysTypeRepositoryInterface', 'App\Repositories\SysType\SysTypeRepository');
+        $this->app->bind('App\Repositories\FixedAssetCategorie\FixedAssetCategorieRepositoryInterface', 'App\Repositories\FixedAssetCategorie\FixedAssetCategorieRepository');
+        $this->app->bind('App\Repositories\Company\CompanyRepositoryInterface', 'App\Repositories\Company\CompanyRepository');
+        $this->app->bind('App\Repositories\FixedAssets\FixedAssetsRepositoryInterface', 'App\Repositories\FixedAssets\FixedAssetsRepository');
     }
 }

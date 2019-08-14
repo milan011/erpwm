@@ -333,6 +333,27 @@ Route::group([
     Route::post('sysType', 'SysTypeController@store');
     Route::put('sysType/{id}', 'SysTypeController@update');
     Route::delete('sysType/{id}', 'SysTypeController@destroy');
+
+    // FixedAssetCategorie
+    Route::get('fixedAssetCategorieList', 'FixedAssetCategorieController@index');
+    Route::get('fixedAssetCategorie/{id}', 'FixedAssetCategorieController@show');
+    Route::post('fixedAssetCategorie', 'FixedAssetCategorieController@store');
+    Route::put('fixedAssetCategorie/{id}', 'FixedAssetCategorieController@update');
+    Route::delete('fixedAssetCategorie/{id}', 'FixedAssetCategorieController@destroy');
+
+    // Company
+    Route::get('companyList', 'CompanyController@index');
+    Route::get('company/{id}', 'CompanyController@show');
+    Route::post('company', 'CompanyController@store');
+    Route::put('company/{id}', 'CompanyController@update');
+    Route::delete('company/{id}', 'CompanyController@destroy');
+
+    // FixedAssets
+    Route::get('fixedAssetsList', 'FixedAssetsController@index');
+    Route::get('fixedAssets/{id}', 'FixedAssetsController@show');
+    Route::post('fixedAssets', 'FixedAssetsController@store');
+    Route::put('fixedAssets/{id}', 'FixedAssetsController@update');
+    Route::delete('fixedAssets/{id}', 'FixedAssetsController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {
