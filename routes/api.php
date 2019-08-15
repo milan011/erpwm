@@ -354,6 +354,27 @@ Route::group([
     Route::post('fixedAssets', 'FixedAssetsController@store');
     Route::put('fixedAssets/{id}', 'FixedAssetsController@update');
     Route::delete('fixedAssets/{id}', 'FixedAssetsController@destroy');
+
+    // FixedAssetLocation
+    Route::get('fixedAssetLocationList', 'FixedAssetLocationController@index');
+    Route::get('fixedAssetLocation/{id}', 'FixedAssetLocationController@show');
+    Route::post('fixedAssetLocation', 'FixedAssetLocationController@store');
+    Route::put('fixedAssetLocation/{id}', 'FixedAssetLocationController@update');
+    Route::delete('fixedAssetLocation/{id}', 'FixedAssetLocationController@destroy');
+
+    // MaintenanceTask
+    Route::get('maintenanceTaskList', 'MaintenanceTaskController@index');
+    Route::get('maintenanceTask/{id}', 'MaintenanceTaskController@show');
+    Route::post('maintenanceTask', 'MaintenanceTaskController@store');
+    Route::put('maintenanceTask/{id}', 'MaintenanceTaskController@update');
+    Route::delete('maintenanceTask/{id}', 'MaintenanceTaskController@destroy');
+
+    // FixedAssetItem
+    Route::get('fixedAssetItemList', 'FixedAssetItemController@index');
+    Route::get('fixedAssetItem/{id}', 'FixedAssetItemController@show');
+    Route::post('fixedAssetItem', 'FixedAssetItemController@store');
+    Route::put('fixedAssetItem/{id}', 'FixedAssetItemController@update');
+    Route::delete('fixedAssetItem/{id}', 'FixedAssetItemController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

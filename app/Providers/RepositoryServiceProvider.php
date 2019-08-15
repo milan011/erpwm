@@ -75,5 +75,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\FixedAssetCategorie\FixedAssetCategorieRepositoryInterface', 'App\Repositories\FixedAssetCategorie\FixedAssetCategorieRepository');
         $this->app->bind('App\Repositories\Company\CompanyRepositoryInterface', 'App\Repositories\Company\CompanyRepository');
         $this->app->bind('App\Repositories\FixedAssets\FixedAssetsRepositoryInterface', 'App\Repositories\FixedAssets\FixedAssetsRepository');
+        $this->app->bind('App\Repositories\FixedAssetLocation\FixedAssetLocationRepositoryInterface', 'App\Repositories\FixedAssetLocation\FixedAssetLocationRepository');
+        $this->app->bind('App\Repositories\MaintenanceTask\MaintenanceTaskRepositoryInterface', 'App\Repositories\MaintenanceTask\MaintenanceTaskRepository');
+        $this->app->bind('App\Repositories\FixedAssetItem\FixedAssetItemRepositoryInterface', 'App\Repositories\FixedAssetItem\FixedAssetItemRepository');
     }
 }
