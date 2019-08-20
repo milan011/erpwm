@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input 
-        :placeholder="$t('example.condetionName')"
+        placeholder="部分描述"
         clearable 
         v-model="listQuery.name"
         style="width: 150px;" 
@@ -20,33 +20,29 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('example.id')" width="60%" align="center">
+      <el-table-column :label="$t('fixedAssets.assetid')" width="60%" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.assetid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('example.chart')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('fixedAssets.assetlocation')"  align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_chart.chartdescription }}</span>
+          <span>{{ scope.row.belongs_to_fixed_asset_location.locationdescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('example.cancreate')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('fixedAssets.assetcategoryid')"  align="center">
         <template slot-scope="scope">
-          <span>
-            <el-tag :type="scope.row.cancreate | statusFilter">
-              {{ cancreateStatus[scope.row.cancreate] }}
-            </el-tag>
-          </span>
+          <span>{{ scope.row.belongs_to_fixed_asset_categorie.categorydescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.date')" width="150px" align="center">
+      <el-table-column :label="$t('fixedAssets.description')"  align="center">
         <template slot-scope="scope">
-          <span>
-            {{ scope.row.lastcompleted | parseTime('{y}-{m}-{d}') }}
-            <!-- |
-            <span v-if="scope.row.belongs_to_creater">{{scope.row.belongs_to_creater.nick_name}}</span>
-            <span v-else></span> -->
-          </span>
+          <span>{{ scope.row.description }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('fixedAssets.datepurchased')"  align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.datepurchased }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
@@ -71,10 +67,10 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('example.name')" prop="name">
+        <el-form-item :label="$t('fixedAssets.name')" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
-        <el-form-item :label="$t('example.chart')" prop="chart">
+        <el-form-item :label="$t('fixedAssets.chart')" prop="chart">
           <el-select 
             v-model="temp.chart" 
             class="filter-item" 
@@ -84,13 +80,13 @@
             <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.chartdescription" :value="chart.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('example.paymenttype')">
+        <el-form-item :label="$t('fixedAssets.paymenttype')">
           <el-radio-group @change="" v-model="temp.paymenttype">
             <el-radio-button label="1">次月截止</el-radio-button>
             <el-radio-button label="2">N天后截止</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item :label="$t('example.cancreate')">
+        <el-form-item :label="$t('fixedAssets.cancreate')">
           <el-switch
             v-model="temp.cancreate"
             active-color="#13ce66"
@@ -99,7 +95,7 @@
             inactive-value="0">
           </el-switch>
         </el-form-item>
-        <el-form-item :label="$t('example.discountrate')" prop="discountrate">
+        <el-form-item :label="$t('fixedAssets.discountrate')" prop="discountrate">
           <el-input-number 
             v-model='temp.discountrate'   
             :min="0" 
@@ -117,16 +113,16 @@
       </div>
     </el-dialog>
     <!-- 组件 -->
-    <!-- <example-components ref="exampleChild"></example-components>  -->
+    <!-- <fixedAssets-components ref="fixedAssetsChild"></fixedAssets-components>  -->
   </div>
 </template>
 <script>
-  import { getExampleList,  createExample, updateExample, deleteExample} from '@/api/example'
+  import { getFixedAssetsList,  createFixedAssets, updateFixedAssets, deleteFixedAssets} from '@/api/fixedAssets'
   import { chartMasterAll } from '@/api/chartMaster'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
-  // import ExampleComponents from './components/ExampleComponents'
+  // import FixedAssetsComponents from './components/FixedAssetsComponents'
 
 const calendarTypeOptions = [
   { key: 'web', display_name: 'web' },
@@ -140,8 +136,8 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'example',
-  // components: { ExampleComponents },
+  name: 'fixedAssets',
+  // components: { FixedAssetsComponents },
   directives: {
     waves
   },
@@ -181,7 +177,7 @@ export default {
       },
       dialogFormVisible: false,
       setRateVisible: false,
-      exampleName: '',
+      fixedAssetsName: '',
       dialogStatus: '',
       textMap: {
         update: '编辑',
@@ -210,7 +206,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getExampleList(this.listQuery).then(response => {
+      getFixedAssetsList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
         // Just to simulate the time of the request
@@ -243,7 +239,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteExample(this.temp).then((response) => {
+        deleteFixedAssets(this.temp).then((response) => {
           if(!response.data.status){
             this.$notify({
               title: '失败',
@@ -291,7 +287,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createExample(this.temp).then((response) => {
+          createFixedAssets(this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
               this.temp.id = response_data.data.id
@@ -328,7 +324,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateExample(tempData).then((response) => {
+          updateFixedAssets(tempData).then((response) => {
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
@@ -365,7 +361,7 @@ export default {
       this.dialogInfoVisible = true
     },
     handleSetChild(row){
-      this.$refs.exampleChild.handleStockCategory(row) 
+      this.$refs.fixedAssetsChild.handleStockCategory(row) 
     },
   }
 }

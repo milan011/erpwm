@@ -5,7 +5,7 @@ import Layout from '@/views/layout/Layout'
 const assetRouter = {
     path: '/asset',
     component: Layout,
-    redirect: '/asset/manage/pcAssignCashToTab',
+    redirect: '/asset/manage/fixedAssets',
     name: 'asset',
     meta: {
       title: 'asset',
@@ -20,10 +20,10 @@ const assetRouter = {
         meta: { title: 'assetManage' },
         children: [
           {
-            path: 'pcAssignCashToTab',
-            component: resolve => void(require(['@/views/pettyCash/manage/pcAssignCashToTab.vue'], resolve)),
-            name: 'pcAssignCashToTab',
-            meta: { title: 'pcAssignCashToTab' },
+            path: 'fixedAssets',
+            component: resolve => void(require(['@/views/asset/manage/fixedAssets.vue'], resolve)),
+            name: 'fixedAssets',
+            meta: { title: 'fixedAssets' },
           },
           {
             path: 'pcClaimExpensesFromTab',

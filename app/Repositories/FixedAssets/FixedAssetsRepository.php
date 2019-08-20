@@ -32,8 +32,8 @@ class FixedAssetsRepository implements FixedAssetsRepositoryInterface
     {
         $query = new FixedAssets(); // 返回的是一个Order实例,两种方法均可
         // $query = $query->addCondition($queryList); //根据条件组合语句
-        $query = $query->where('status', '1')->orderBy('id', 'DESC');
-        // $query = $query->with('');
+        $query = $query->where('status', '1')->orderBy('assetid', 'DESC');
+        $query = $query->with('belongsToFixedAssetCategorie:id,categorydescription', 'belongsToFixedAssetLocation:id,locationdescription');
         if (empty($queryList['page'])) {
             //无分页,全部返还
             return $query->get();

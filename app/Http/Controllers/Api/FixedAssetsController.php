@@ -59,8 +59,8 @@ class FixedAssetsController extends Controller
         }
 
         $info = $this->fixedAssets->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info->belongsToFixedAssetCategorie;
+        $info->belongsToFixedAssetCategorie;
 
         if ($info) {
             //添加成功
@@ -113,7 +113,8 @@ class FixedAssetsController extends Controller
         }
 
         $info = $this->fixedAssets->update($request, $id);
-        $info->hasOnePackage;
+        $info->belongsToFixedAssetCategorie;
+        $info->belongsToFixedAssetCategorie;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }

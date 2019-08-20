@@ -61,10 +61,17 @@ class FixedAssets extends Model
     return $query;
     }*/
 
-    // 定义Example表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义FixedAssets表与FixedAssetLocation表一对一关系
+    public function belongsToFixedAssetLocation()
     {
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
+        return $this->belongsTo('App\FixedAssetLocation', 'assetlocation', 'id')->withDefault(['locationdescription' => '',
+        ]);
+    }
+
+    // 定义FixedAssets表与FixedAssetCategorie表一对一关系
+    public function belongsToFixedAssetCategorie()
+    {
+        return $this->belongsTo('App\FixedAssetCategorie', 'assetcategoryid', 'id')->withDefault(['categorydescription' => '',
         ]);
     }
 
