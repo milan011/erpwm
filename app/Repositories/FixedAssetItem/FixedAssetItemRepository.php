@@ -72,7 +72,14 @@ class FixedAssetItemRepository implements FixedAssetItemRepositoryInterface
         // dd($requestData->all());
         $info = FixedAssetItem::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->description     = $requestData->description;
+        $info->longdescription = $requestData->longdescription;
+        $info->assetcategoryid = $requestData->assetcategoryid;
+        $info->assetlocation   = $requestData->assetlocation;
+        $info->serialno        = !empty($requestData->serialno) ? $requestData->serialno : '';
+        $info->barcode         = !empty($requestData->barcode) ? $requestData->barcode : '';
+        $info->depntype        = $requestData->depntype;
+        $info->depnrate        = $requestData->depnrate;
 
         $info->save();
 

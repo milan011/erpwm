@@ -129,7 +129,7 @@
 </template>
 <script>
   import { getMaintenanceTaskList,  createMaintenanceTask, updateMaintenanceTask, deleteMaintenanceTask} from '@/api/maintenanceTask'
-  import { fixedAssetItemAll } from '@/api/fixedAssetItem'
+  import { fixedAssetsAll } from '@/api/fixedAssets'
   import { userAll } from '@/api/user'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
@@ -216,7 +216,7 @@ export default {
   created() {
     Promise.all([
       this.getList(),
-      this.getAllFixedAssetItem(),
+      this.getAllFixedAssets(),
       this.getAllUser(),
     ])
   },
@@ -232,8 +232,8 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    getAllFixedAssetItem(){
-      fixedAssetItemAll().then(response => {
+    getAllFixedAssets(){
+      fixedAssetsAll().then(response => {
         this.assetList = response.data
       })
     },

@@ -24,40 +24,40 @@ const assetRouter = {
             component: resolve => void(require(['@/views/asset/manage/fixedAssets.vue'], resolve)),
             name: 'fixedAssets',
             meta: { title: 'fixedAssets' },
-          },
+          }/*,
           {
             path: 'pcClaimExpensesFromTab',
-            component: resolve => void(require(['@/views/pettyCash/manage/pcClaimExpensesFromTab.vue'], resolve)),
+            component: resolve => void(require(['@/views/asset/manage/index.vue'], resolve)),
             name: 'pcClaimExpensesFromTab',
             meta: { title: 'pcClaimExpensesFromTab' },
           },
           {
             path: 'pcAuthorizeExpense',
-            component: resolve => void(require(['@/views/pettyCash/manage/pcAuthorizeExpense.vue'], resolve)),
+            component: resolve => void(require(['@/views/asset/manage/index.vue'], resolve)),
             name: 'pcAuthorizeExpense',
             meta: { title: 'pcAuthorizeExpense' },
-          }
+          }*/
         ]
       },
       {
         path: 'select',
-        component: resolve => void(require(['@/views/pettyCash/select/index'], resolve)),
+        component: resolve => void(require(['@/views/asset/manage/index'], resolve)),
         name: 'assetSelect',
         meta: { title: 'assetSelect' },
-        children: [
+        /*children: [
           {
             path: 'taxProvinces',
-            component: resolve => void(require(['@/views/set/base/taxProvinces.vue'], resolve)),
+            component: resolve => void(require(['@/views/asset/manage/index.vue'], resolve)),
             name: 'taxProvinces',
             meta: { title: 'taxProvinces' },
           },
           {
             path: 'taxCategories',
-            component: resolve => void(require(['@/views/set/base/taxCategories.vue'], resolve)),
+            component: resolve => void(require(['@/views/asset/manage/index.vue'], resolve)),
             name: 'taxCategories',
             meta: { title: 'taxCategories' },
           }
-        ]
+        ]*/
       },
       {
         path: 'assetSet',

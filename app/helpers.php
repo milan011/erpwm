@@ -68,3 +68,16 @@ function nullToEmptyString($data)
 {
     return !empty($data) ? $data : '';
 }
+
+/**
+ * 清除数组中值为null的变量
+ */
+function nullDel($arr = array())
+{
+    foreach ($arr as $key => $value) {
+        if ($value === null) {
+            unset($arr[$key]);
+        }
+    }
+    return $arr;
+}

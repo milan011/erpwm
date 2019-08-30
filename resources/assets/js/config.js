@@ -31,6 +31,12 @@ const stockType = {
   L: '人工',
 };
 
+//折旧类型
+const depnType = {
+  1: '直线', 
+  2: '减值折旧法',
+};
+
 //星期
 const weekDay = [
   {'key': '1', 'day': '星期一'},
@@ -46,6 +52,7 @@ export {
     ROAST_CONFIG, 
     stockType,
     weekDay,
+    depnType,
 }
 
 /*export const zrConfig = {

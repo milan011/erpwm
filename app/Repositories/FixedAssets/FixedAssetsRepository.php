@@ -31,7 +31,7 @@ class FixedAssetsRepository implements FixedAssetsRepositoryInterface
     public function getList($queryList)
     {
         $query = new FixedAssets(); // 返回的是一个Order实例,两种方法均可
-        // $query = $query->addCondition($queryList); //根据条件组合语句
+        $query = $query->addCondition($queryList); //根据条件组合语句
         $query = $query->where('status', '1')->orderBy('assetid', 'DESC');
         $query = $query->with('belongsToFixedAssetCategorie:id,categorydescription', 'belongsToFixedAssetLocation:id,locationdescription');
         if (empty($queryList['page'])) {
@@ -49,14 +49,16 @@ class FixedAssetsRepository implements FixedAssetsRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new FixedAssets(); //税目
+            $assets = new FixedAssets(); //税目
 
             $input = array_replace($requestData->all());
-            $example->fill($input);
-            $example = $example->create($input);
+            $input = nullDel($input);
+
+            $assets->fill($input);
+            $assets = $assets->create($input);
 
             DB::commit();
-            return $example;
+            return $assets;
 
         } catch (\Exception $e) {
             throw $e;
@@ -72,7 +74,14 @@ class FixedAssetsRepository implements FixedAssetsRepositoryInterface
         // dd($requestData->all());
         $info = FixedAssets::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->description     = $requestData->description;
+        $info->longdescription = $requestData->longdescription;
+        $info->assetcategoryid = $requestData->assetcategoryid;
+        $info->assetlocation   = $requestData->assetlocation;
+        $info->serialno        = !empty($requestData->serialno) ? $requestData->serialno : '';
+        $info->barcode         = !empty($requestData->barcode) ? $requestData->barcode : '';
+        $info->depntype        = $requestData->depntype;
+        $info->depnrate        = $requestData->depnrate;
 
         $info->save();
 
@@ -98,8 +107,8 @@ class FixedAssetsRepository implements FixedAssetsRepositoryInterface
     }
 
     //名称是否重复
-    public function isRepeat($taxcatname)
+    public function isRepeat($description)
     {
-        return FixedAssets::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return FixedAssets::where('description', $description)->where('status', '1')->first();
     }
 }

@@ -131,7 +131,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'salesGLPosting',
+  name: 'salesGLPostings',
   // components: { SwitchRoles },
   directives: {
     waves

@@ -44,20 +44,20 @@ const pettyCashRouter = {
         component: resolve => void(require(['@/views/pettyCash/select/index'], resolve)),
         name: 'pettyCashSelect',
         meta: { title: 'pettyCashSelect' },
-        children: [
+        /*children: [
           {
             path: 'taxProvinces',
-            component: resolve => void(require(['@/views/set/base/taxProvinces.vue'], resolve)),
+            component: resolve => void(require(['@/views/pettyCash/select/index.vue'], resolve)),
             name: 'taxProvinces',
             meta: { title: 'taxProvinces' },
           },
           {
             path: 'taxCategories',
-            component: resolve => void(require(['@/views/set/base/taxCategories.vue'], resolve)),
+            component: resolve => void(require(['@/views/pettyCash/select/index.vue'], resolve)),
             name: 'taxCategories',
             meta: { title: 'taxCategories' },
           }
-        ]
+        ]*/
       },
       {
         path: 'pettyCashSet',

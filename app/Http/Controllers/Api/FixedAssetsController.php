@@ -54,13 +54,13 @@ class FixedAssetsController extends Controller
 
         // dd($request->all());
 
-        if ($this->fixedAssets->isRepeat($request->name)) {
+        if ($this->fixedAssets->isRepeat($request->description)) {
             return $this->baseFailed($message = '数据已存在');
         }
 
         $info = $this->fixedAssets->create($request);
         $info->belongsToFixedAssetCategorie;
-        $info->belongsToFixedAssetCategorie;
+        $info->belongsToFixedAssetLocation;
 
         if ($info) {
             //添加成功
@@ -106,15 +106,15 @@ class FixedAssetsController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $update_info = $this->fixedAssets->isRepeat($request->name);
+        $update_info = $this->fixedAssets->isRepeat($request->description);
 
-        if ($update_info && ($update_info->id != $id)) {
+        if ($update_info && ($update_info->assetid != $id)) {
             return $this->baseFailed($message = '数据已存在');
         }
 
         $info = $this->fixedAssets->update($request, $id);
         $info->belongsToFixedAssetCategorie;
-        $info->belongsToFixedAssetCategorie;
+        $info->belongsToFixedAssetLocation;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }

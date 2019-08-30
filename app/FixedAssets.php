@@ -34,32 +34,17 @@ class FixedAssets extends Model
     public $timestamps = false;
 
     // 搜索条件处理
-    /*public function addCondition($queryList)
+    public function addCondition($queryList)
     {
 
-    $query = $this;
+        $query = $this;
 
-    if (!empty($queryList['tabcode'])) {
-    $query = $query->where('tabcode', $queryList['tabcode']);
-    }
-    // dd($queryList['posted']);
-    if (!empty($queryList['posted'])) {
-    $query = $query->where('posted', $queryList['posted']);
-    }
-    if (!empty($queryList['codeexpense'])) {
-    $query = $query->where('codeexpense', $queryList['codeexpense']);
-    }
-    // $query = $query->where('posted', $queryList['posted']);
-    if (!empty($queryList['date'])) {
-    // dd($queryList['date']);
-    $start = substr($queryList['date'][0], 0, 10);
-    $end   = substr($queryList['date'][1], 0, 10);
+        if (!empty($queryList['description'])) {
+            $query = $query->where('description', 'like', '%' . $queryList['description'] . '%');
+        }
 
-    $query = $query->whereBetween('date', [$start, $end]);
+        return $query;
     }
-
-    return $query;
-    }*/
 
     // 定义FixedAssets表与FixedAssetLocation表一对一关系
     public function belongsToFixedAssetLocation()

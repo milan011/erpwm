@@ -4,13 +4,10 @@
       <el-input 
         placeholder="部分描述"
         clearable 
-        v-model="listQuery.name"
+        v-model="listQuery.description"
         style="width: 150px;" 
         class="filter-item">
       </el-input>
-      <el-select clearable style="width:100px;" v-model="listQuery.condetion" class="filter-item" filterable placeholder="条件">
-        <!-- <el-option v-for="user in userList" :key="user.id" :label="user.nick_name" :value="user.id"/> -->
-      </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <!-- <el-tooltip class="item" effect="dark" content="注意:默认只导出当月信息,如需导出其他月,请选择筛选条件" placement="top">
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
@@ -20,9 +17,15 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
+
       <el-table-column :label="$t('fixedAssets.assetid')" width="60%" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.assetid }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('fixedAssets.description')"  align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('fixedAssets.assetlocation')"  align="center">
@@ -35,16 +38,12 @@
           <span>{{ scope.row.belongs_to_fixed_asset_categorie.categorydescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('fixedAssets.description')"  align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('fixedAssets.datepurchased')"  align="center">
+      
+      <!-- <el-table-column :label="$t('fixedAssets.datepurchased')"  align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.datepurchased }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="success" size="mini" @click="handleShow(scope.row)">
@@ -67,20 +66,58 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('fixedAssets.name')" prop="name">
-          <el-input v-model="temp.name" />
+        <el-form-item :label="$t('fixedAssets.description')" prop="description">
+          <el-input v-model="temp.description" />
         </el-form-item>
-        <el-form-item :label="$t('fixedAssets.chart')" prop="chart">
+        <el-form-item :label="$t('fixedAssets.longdescription')" prop="longdescription">
+          <el-input v-model="temp.longdescription" />
+        </el-form-item>
+        <el-form-item :label="$t('fixedAssets.assetcategoryid')" prop="assetcategoryid">
           <el-select 
-            v-model="temp.chart" 
+            v-model="temp.assetcategoryid" 
             class="filter-item" 
             filterable 
             clearable 
-            placeholder="输入区域搜索">
-            <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.chartdescription" :value="chart.id"/>
+            placeholder="输入种类搜索">
+            <el-option v-for="cate in assetcategoryList" :key="cate.id" :label="cate.categorydescription" :value="cate.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('fixedAssets.paymenttype')">
+        <el-form-item :label="$t('fixedAssets.assetlocation')" prop="assetlocation">
+          <el-select 
+            v-model="temp.assetlocation" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入地点搜索">
+            <el-option v-for="location in assetlocationList" :key="location.id" :label="location.locationdescription" :value="location.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('fixedAssets.barcode')" prop="barcode">
+          <el-input v-model="temp.barcode" />
+        </el-form-item>
+        <el-form-item :label="$t('fixedAssets.serialno')" prop="serialno">
+          <el-input v-model="temp.serialno" />
+        </el-form-item>
+        <el-form-item :label="$t('fixedAssets.depntype')" prop="depntype">
+          <el-select 
+            v-model="temp.depntype" 
+            class="filter-item" 
+            filterable 
+            clearable 
+            placeholder="输入类型搜索">
+            <el-option v-for="(value, key, index) in depnTypeList" :key="index" :label="value" :value="key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('fixedAssets.depnrate')" prop="depnrate">
+          <el-input-number 
+            v-model='temp.depnrate'   
+            :min="0" 
+            :max="100" 
+            :step="1"
+            label="折旧率">%
+          </el-input-number>
+        </el-form-item>
+        <!-- <el-form-item :label="$t('fixedAssets.paymenttype')">
           <el-radio-group @change="" v-model="temp.paymenttype">
             <el-radio-button label="1">次月截止</el-radio-button>
             <el-radio-button label="2">N天后截止</el-radio-button>
@@ -95,16 +132,7 @@
             inactive-value="0">
           </el-switch>
         </el-form-item>
-        <el-form-item :label="$t('fixedAssets.discountrate')" prop="discountrate">
-          <el-input-number 
-            v-model='temp.discountrate'   
-            :min="0" 
-            :max="1" 
-            :precision="2"
-            :step="0.1"
-            label="折扣率">
-          </el-input-number>
-        </el-form-item>  
+           -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -112,16 +140,73 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+    <el-dialog width="80%" :visible.sync="dialogInfoVisible">
+      <el-row>
+        <el-col :span="24">
+          <div class="grid-content bg-purple-dark self-style">
+            <span>{{ $t('fixedAssets.description') }}:{{temp.description}}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col v-if="temp.belongs_to_fixed_asset_categorie" :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.assetcategoryid') }}:{{temp.belongs_to_fixed_asset_categorie.categorydescription}}<span></span></div>
+        </el-col>
+        <el-col v-if="temp.belongs_to_fixed_asset_location" :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.assetlocation') }}:{{temp.belongs_to_fixed_asset_location.locationdescription}}<span></span>
+        </div></el-col>
+        <el-col :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.serialno') }}:{{temp.serialno}}
+        </div></el-col>               
+      </el-row>
+      <el-row>
+        <el-col :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.barcode') }}:{{temp.barcode}}<span></span></div>
+        </el-col>
+        <el-col :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.cost') }}:{{temp.cost}}<span></span>
+        </div></el-col>
+        <el-col :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.accumdepn') }}:{{temp.accumdepn}}
+        </div></el-col>               
+      </el-row>
+
+      <el-row>
+        <el-col :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.depnrate') }}:{{temp.depnrate}}<span></span></div>
+        </el-col>
+        <el-col :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.disposalproceeds') }}:{{temp.disposalproceeds}}<span></span>
+        </div></el-col>
+        <el-col :span="8"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.depntype') }}:{{depnTypeList[temp.depntype]}}
+        </div></el-col>               
+      </el-row>
+      <el-row>
+        <el-col :span="12"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.datepurchased') }}:{{temp.datepurchased}}<span></span></div>
+        </el-col>
+        <el-col :span="12"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.disposaldate') }}:{{temp.disposaldate}}<span></span>
+        </div></el-col>            
+      </el-row>
+      <el-row>
+        <el-col :span="24"><div class="grid-content bg-purple self-style">
+          {{ $t('fixedAssets.longdescription') }}:{{temp.longdescription}}<span></span></div>
+        </el-col>           
+      </el-row>
+    </el-dialog>
     <!-- 组件 -->
     <!-- <fixedAssets-components ref="fixedAssetsChild"></fixedAssets-components>  -->
   </div>
 </template>
 <script>
   import { getFixedAssetsList,  createFixedAssets, updateFixedAssets, deleteFixedAssets} from '@/api/fixedAssets'
-  import { chartMasterAll } from '@/api/chartMaster'
+  import { fixedAssetCategorieAll } from '@/api/fixedAssetCategorie'
+  import { fixedAssetLocationAll } from '@/api/fixedAssetLocation'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
-  import { isEmpty } from '@/common.js'
+  import { depnType, stockType } from '@/config.js'
   // import FixedAssetsComponents from './components/FixedAssetsComponents'
 
 const calendarTypeOptions = [
@@ -161,21 +246,25 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        condetionName: '',
-        condetion: '',
+        description: '',
       },
       cancreateStatus:['否', '是'],
+      depnTypeList:depnType,
       calendarTypeOptions,
       showReviewer: false,
       temp: {
-        id: undefined,
-        name: '',
-        chart: null,
-        cancreate : '1',
-        discountrate : 0,
-        paymenttype: '1',
+        assetid: undefined,
+        description: '',
+        longdescription: '',
+        assetlocation : null,
+        assetcategoryid : null,
+        depntype : null,
+        depnrate: 0,
+        barcode: '',
+        serialno: '',
       },
       dialogFormVisible: false,
+      dialogInfoVisible: false,
       setRateVisible: false,
       fixedAssetsName: '',
       dialogStatus: '',
@@ -185,22 +274,35 @@ export default {
       },
       pvData: [],
       rules: {
-        name: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在3到5个字符', trigger: 'blur'},
+        longdescription: [
+          { required: true, message: '请输入资产描述', trigger: 'change' },
+          { min: 1, max: 50, message: '长度在1到50个字符', trigger: 'change'},
         ],
-        chart: [{ required: true, message: '请选择库存种类', trigger: 'change' }],
-        quantitybreak: [ 
-          { required: true, message: '折扣率', trigger: 'change'}, 
+        description: [
+          { required: true, message: '请输入资产摘要', trigger: 'change' },
+        ],
+        assetlocation: [{ required: true, message: '请选择资产地点', trigger: 'change' }],
+        assetcategoryid: [{ required: true, message: '请选择资产种类', trigger: 'change' }],
+        depntype: [{ required: true, message: '请选择折旧类型', trigger: 'change' }],
+        /*serialno: [
+          { required: true, message: '请输入序列号', trigger: 'change' },
+          { min: 1, max: 50, message: '长度在1到50个字符', trigger: 'change'},
+        ],*/
+        depnrate:[{required: true, message: '请填写折旧率', trigger: 'change'}],
+        barcode: [
+          // { required: true, message: '请输入条形码', trigger: 'change' },
+          { min: 1, max: 20, message: '长度在1到50个字符', trigger: 'change'},
         ],
       },
-      chartMasterList: [],
+      assetcategoryList: [],
+      assetlocationList: [],
     }
   },
   created() {
     Promise.all([
       this.getList(),
-      // this.getAllChartMasters(),
+      this.getAllAssetcategory(),
+      this.getAllassetlocation(),
     ])
   },
   methods: {
@@ -215,9 +317,14 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    getAllChartMasters(){
-      chartMasterAll().then(response => {
-        this.chartMasterList = response.data
+    getAllAssetcategory(){
+      fixedAssetCategorieAll().then(response => {
+        this.assetcategoryList = response.data
+      })
+    },
+    getAllassetlocation(){
+      fixedAssetLocationAll().then(response => {
+        this.assetlocationList = response.data
       })
     },
     handleFilter() {
@@ -268,12 +375,15 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        id: undefined,
-        name: '',
-        chart: null,
-        cancreate : '1',
-        discountrate : 0,
-        paymenttype: '1',
+        assetid: undefined,
+        description: '',
+        longdescription: '',
+        assetlocation : null,
+        assetcategoryid : null,
+        depntype : null,
+        depnrate: 0,
+        barcode: '',
+        serialno: '',
       }
     },
     handleCreate() {
@@ -290,7 +400,7 @@ export default {
           createFixedAssets(this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
-              this.temp.id = response_data.data.id
+              this.temp.assetid = response_data.data.assetid
               this.list.unshift(response_data.data)
               this.dialogFormVisible = false
               this.$notify({
@@ -312,7 +422,9 @@ export default {
       })
     },
     handleUpdate(row) {
-      row.chart = parseInt(row.chart)
+      row.assetlocation = parseInt(row.assetlocation)
+      row.assetcategoryid = parseInt(row.assetcategoryid)
+      // row.depntype = parseInt(row.depntype)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -328,7 +440,7 @@ export default {
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
-                if (v.id === this.temp.id) {
+                if (v.assetid === this.temp.assetid) {
                   const index = this.list.indexOf(v)
                   this.list.splice(index, 1, response_data.data)
                   break
@@ -353,9 +465,6 @@ export default {
       })
     },
     handleShow(row) {
-      row.taxprovinceid = row.belongs_to_taxprovinces.taxprovincename
-      row.cashsalebranch = row.belongs_to_custbranch.brname
-      row.cashsalecustomer = row.belongs_to_debtors_master.name
       this.temp = Object.assign({}, row) // copy obj
       console.log(this.temp)
       this.dialogInfoVisible = true
@@ -366,15 +475,12 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style type="sass" scop>
   .el-dialog__body {
     padding: 15px 15px;
   }
   .el-dialog__header {
      padding-top: 10px; 
-  }
-  .el-form-item{
-    margin-bottom: 15px;
   }
   .el-row {
     margin-bottom: 5px;
@@ -387,7 +493,7 @@ export default {
   }
   .bg-purple-dark {
     background: #99a9bf;
-  }white
+  }
   .bg-purple {
     background: #d3dce6;
   }
@@ -396,15 +502,15 @@ export default {
   }
   .grid-content {
     border-radius: 4px;
-    min-height: 16px;
+    min-height: 36px;
   }
   .row-bg {
-    padding: 5px 0;
+    padding: 10px 0;
     background-color: #f9fafc;
   }
   .self-style{
     text-align: -webkit-center;
-    font-size: 14px;
-    padding: 5px 0px;
+    font-size: 20px;
+    padding: 10px 0px;
   }
 </style>

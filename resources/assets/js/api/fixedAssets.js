@@ -34,7 +34,7 @@ export function createFixedAssets(data) {
 
 export function updateFixedAssets(data) {
   return request({
-    url: ROAST_CONFIG.API_URL + '/fixedAssets/' + data.id,
+    url: ROAST_CONFIG.API_URL + '/fixedAssets/' + data.assetid,
     method: 'put',
     params: { token },
     data
@@ -42,7 +42,7 @@ export function updateFixedAssets(data) {
 }
 export function deleteFixedAssets(data) {
   return request({
-    url: ROAST_CONFIG.API_URL + '/fixedAssets/' + data.id,
+    url: ROAST_CONFIG.API_URL + '/fixedAssets/' + data.assetid,
     method: 'delete',
     params: {token},
     data

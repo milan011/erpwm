@@ -126,7 +126,7 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
-    <el-dialog  :visible.sync="dialogInfoVisible">
+    <el-dialog :visible.sync="dialogInfoVisible">
       <el-row>
         <el-col :span="24">
           <div class="grid-content bg-purple-dark self-style">

@@ -52,6 +52,7 @@ class ExampleRepository implements ExampleRepositoryInterface
             $example = new Example(); //税目
 
             $input = array_replace($requestData->all());
+            $input = nullDel($input);
             $example->fill($input);
             $example = $example->create($input);
 
