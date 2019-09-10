@@ -128,7 +128,14 @@ class FixedAssetsController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->fixedAssets->destroy($id);
-        return $this->baseSucceed($message = '修改成功');
+        $info = $this->fixedAssets->destroy($id);
+
+        if ($info['status']) {
+            //删除成功
+            return $this->baseSucceed($respond_data = $info, $message = '删除成功');
+        } else {
+            //删除失败
+            return $this->baseFailed($message = $info['message']);
+        }
     }
 }

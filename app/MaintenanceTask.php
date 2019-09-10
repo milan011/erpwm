@@ -64,7 +64,7 @@ class MaintenanceTask extends Model
     // 定义MaintenanceTask表与FixedAssetItem表一对一关系
     public function belongsToFixedAssetItem()
     {
-        return $this->belongsTo('App\FixedAssetItem', 'assetid', 'assetid')->withDefault(['description' => '',
+        return $this->belongsTo('App\FixedAssets', 'assetid', 'assetid')->withDefault(['description' => '',
         ]);
     }
 

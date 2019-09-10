@@ -15,7 +15,7 @@ class AccountGroup extends Model
     protected $guard_name = 'api'; // 使用任何你想要的守卫
     protected $table      = 'accountgroups';
     protected $primaryKey = 'id';
-    protected $fillable   = ['id', 'groupname', 'sectioninaccounts', 'pandl', 'sequenceintb', 'parentgroupname', 'status'];
+    protected $fillable   = ['id', 'groupname', 'pid', 'sectioninaccounts', 'pandl', 'sequenceintb', 'parentgroupname', 'status'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,12 +33,17 @@ class AccountGroup extends Model
      */
     public $timestamps = false;
 
-    // 定义Example表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义AccountGroup表与AccountSection表一对一关系
+    public function belongsToAccountSection()
     {
+        return $this->belongsTo('App\AccountSection', 'sectioninaccounts', 'sectionid')->withDefault(['sectionname' => '',
+        ]);
+    }
 
-        // return $this->hasOne('App\Shop', 'user_id', 'id')->select('user_id','name', 'address');
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
+    // 定义AccountGroup表与AccountGroup表一对一关系
+    public function belongsToAccountGroup()
+    {
+        return $this->belongsTo('App\AccountGroup', 'pid', 'id')->withDefault(['groupname' => '顶层组',
         ]);
     }
 

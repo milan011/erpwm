@@ -105837,6 +105837,12 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     pcAssignCashToTab: '预支现金',
     pcClaimExpensesFromTab: '报销申请',
     pcAuthorizeExpense: '费用审批',
+    finance: '财务管理',
+    financeManage: '管理功能',
+    financeSelect: '查询及报告',
+    financeSet: '维护',
+    accountSection: '会计要素',
+    accountGroup: '科目组',
     asset: '资产管理',
     assetManage: '管理功能',
     fixedAssets: '资产列表',
@@ -106301,6 +106307,19 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     depntype: '折旧类型',
     depnrate: '折旧率',
     disposaldate: '上次执行折旧日期'
+  },
+  accountSection: {
+    sectionid: '序号',
+    sectionname: '要素名称'
+  },
+  accountGroup: {
+    id: '序号',
+    groupname: '名称',
+    sectioninaccounts: '会计要素',
+    pandl: '损益类',
+    sequenceintb: '试算表行次',
+    parentgroupname: '父组',
+    pid: '父组'
   }
 });
 
@@ -106410,7 +106429,8 @@ __WEBPACK_IMPORTED_MODULE_1__router__["c" /* default */].afterEach(function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_set__ = __webpack_require__("./resources/assets/js/router/modules/set.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_pettyCash__ = __webpack_require__("./resources/assets/js/router/modules/pettyCash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_asset__ = __webpack_require__("./resources/assets/js/router/modules/asset.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_role__ = __webpack_require__("./resources/assets/js/router/modules/role.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_finance__ = __webpack_require__("./resources/assets/js/router/modules/finance.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_role__ = __webpack_require__("./resources/assets/js/router/modules/role.js");
 
 
 
@@ -106420,6 +106440,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 
 /* Router Modules */
+
 
 
 
@@ -106488,7 +106509,7 @@ var constantRouterMap = [{
   routes: constantRouterMap
 }));
 
-var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_6__modules_asset__["a" /* default */], __WEBPACK_IMPORTED_MODULE_5__modules_pettyCash__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_set__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
+var asyncRouterMap = [__WEBPACK_IMPORTED_MODULE_7__modules_finance__["a" /* default */], __WEBPACK_IMPORTED_MODULE_6__modules_asset__["a" /* default */], __WEBPACK_IMPORTED_MODULE_5__modules_pettyCash__["a" /* default */], __WEBPACK_IMPORTED_MODULE_4__modules_set__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__modules_user__["a" /* default */], { path: '*', redirect: '/404', hidden: true }];
 
 /***/ }),
 
@@ -106592,6 +106613,102 @@ var assetRouter = {
   }]
 };
 /* harmony default export */ __webpack_exports__["a"] = (assetRouter);
+
+/***/ }),
+
+/***/ "./resources/assets/js/router/modules/finance.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__ = __webpack_require__("./resources/assets/js/views/layout/Layout.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layout_Layout__);
+
+//后台用户管理路由组
+
+
+var financeRouter = {
+  path: '/finance',
+  component: __WEBPACK_IMPORTED_MODULE_0__views_layout_Layout___default.a,
+  redirect: '/finance/manage/accountSection',
+  name: 'finance',
+  meta: {
+    title: 'finance',
+    icon: 'user',
+    roles: ['admin', 'manager']
+  },
+  children: [{
+    path: 'manage',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(58).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/finance/manage/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'financeManage',
+    meta: { title: 'financeManage' },
+    children: [
+      /*{
+        path: 'accountSection',
+        component: resolve => void(require(['@/views/finance/manage/accountSection.vue'], resolve)),
+        name: 'accountSection',
+        meta: { title: 'accountSection' },
+      },
+      {
+        path: 'pcClaimExpensesFromTab',
+        component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
+        name: 'pcClaimExpensesFromTab',
+        meta: { title: 'pcClaimExpensesFromTab' },
+      },
+      {
+        path: 'pcAuthorizeExpense',
+        component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
+        name: 'pcAuthorizeExpense',
+        meta: { title: 'pcAuthorizeExpense' },
+      }*/
+    ]
+  }, {
+    path: 'select',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(57).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/finance/select/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'financeSelect',
+    meta: { title: 'financeSelect' }
+    /*children: [
+      {
+        path: 'taxProvinces',
+        component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
+        name: 'taxProvinces',
+        meta: { title: 'taxProvinces' },
+      },
+      {
+        path: 'taxCategories',
+        component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
+        name: 'taxCategories',
+        meta: { title: 'taxCategories' },
+      }
+    ]*/
+  }, {
+    path: 'financeSet',
+    component: function component(resolve) {
+      return void __webpack_require__.e/* require */(54).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/finance/set/index.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    },
+    name: 'financeSet',
+    meta: { title: 'financeSet' },
+    children: [{
+      path: 'accountSection',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(59).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/finance/set/accountSection.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'accountSection',
+      meta: { title: 'accountSection' }
+    }, {
+      path: 'accountGroup',
+      component: function component(resolve) {
+        return void __webpack_require__.e/* require */(53).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/views/finance/set/accountGroup.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+      },
+      name: 'accountGroup',
+      meta: { title: 'accountGroup' }
+    }]
+  }]
+};
+/* harmony default export */ __webpack_exports__["a"] = (financeRouter);
 
 /***/ }),
 

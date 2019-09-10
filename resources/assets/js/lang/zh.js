@@ -32,6 +32,12 @@ export default {
     pcAssignCashToTab: '预支现金',
     pcClaimExpensesFromTab: '报销申请',
     pcAuthorizeExpense: '费用审批',
+    finance: '财务管理',
+    financeManage: '管理功能',
+    financeSelect: '查询及报告',
+    financeSet: '维护',
+    accountSection: '会计要素',
+    accountGroup: '科目组',
     asset: '资产管理',
     assetManage: '管理功能',
     fixedAssets: '资产列表',
@@ -497,4 +503,17 @@ export default {
     depnrate: '折旧率',
     disposaldate: '上次执行折旧日期',
   },
+  accountSection:{
+    sectionid: '序号',
+    sectionname: '要素名称',
+  },
+  accountGroup:{
+    id: '序号',
+    groupname: '名称',
+    sectioninaccounts: '会计要素',
+    pandl: '损益类',
+    sequenceintb: '试算表行次',
+    parentgroupname: '父组',
+    pid: '父组',
+  }
 }

@@ -239,6 +239,7 @@ class PcAuthorizeExpenseRepository implements PcAuthorizeExpenseRepositoryInterf
             /*处理标签代码*/
             $sysInfo               = $sysType->where('typeid', $gltransInfo['type'])->first();
             $gltransInfo['typeno'] = $sysInfo->typeno + 1;
+            $typenoN               = $gltransInfo['typeno'];
             //
 
             /*摘要内容*/
@@ -282,10 +283,12 @@ class PcAuthorizeExpenseRepository implements PcAuthorizeExpenseRepositoryInterf
                 $bankTrans = $bankTrans->create($bankTransInfo);
             }
 
+            $typenoN = $sysInfo->typeno + 2;
+
             $info->posted     = '2'; //审批通过
             $info->authorized = Carbon::now()->toDateString(); //审批通过
             $info->save();
-            $sysInfo->typeno = $bankTransInfo['typeno'];
+            $sysInfo->typeno = $typenoN;
             $sysInfo->save();
 
             DB::commit();

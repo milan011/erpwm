@@ -93,12 +93,39 @@ class FixedAssetsRepository implements FixedAssetsRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = FixedAssets::findorFail($id);
-            $info->status = '0'; //删除税目
+            $info                  = FixedAssets::findorFail($id);
+            $returnData['status']  = true;
+            $returnData['message'] = '';
+
+            // dd($info->hasManyFixedAssetTrans->count());
+            $nbv = $info->cost - $info->accumdepn;
+
+            if ($nbv != 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '此资产依然有帐目净值。只有帐目净值为0的资产才可以删除';
+
+                return $returnData;
+            }
+
+            if ($info->hasManyFixedAssetTrans->count() > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '此资产有关联交易。只有固定资产的交易被删除后，才可删除此资产，否则的话资产报告的完整性会被破坏';
+
+                return $returnData;
+            }
+
+            if ($info->hasManyPurchOrderDetails->count() > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '此资产已经有一张采购订单。必须先删除采购订单行';
+
+                return $returnData;
+            }
+
+            $info->status = '0'; //删除资产
             $info->save();
 
             DB::commit();
-            return $info;
+            return $returnData;
 
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();

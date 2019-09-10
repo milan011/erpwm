@@ -375,6 +375,20 @@ Route::group([
     Route::post('fixedAssetItem', 'FixedAssetItemController@store');
     Route::put('fixedAssetItem/{id}', 'FixedAssetItemController@update');
     Route::delete('fixedAssetItem/{id}', 'FixedAssetItemController@destroy');
+
+    // AccountSection
+    Route::get('accountSectionList', 'AccountSectionController@index');
+    Route::get('accountSection/{id}', 'AccountSectionController@show');
+    Route::post('accountSection', 'AccountSectionController@store');
+    Route::put('accountSection/{id}', 'AccountSectionController@update');
+    Route::delete('accountSection/{id}', 'AccountSectionController@destroy');
+
+    // AccountGroup
+    Route::get('accountGroupList', 'AccountGroupController@index');
+    Route::get('accountGroup/{id}', 'AccountGroupController@show');
+    Route::post('accountGroup', 'AccountGroupController@store');
+    Route::put('accountGroup/{id}', 'AccountGroupController@update');
+    Route::delete('accountGroup/{id}', 'AccountGroupController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

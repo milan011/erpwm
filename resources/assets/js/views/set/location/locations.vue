@@ -396,6 +396,7 @@ export default {
           }else{
             const index = this.list.indexOf(row)
             this.list.splice(index, 1)
+            this.total = this.total -1
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -442,6 +443,7 @@ export default {
             const response_data = response.data
             if(response_data.status){
               this.list.unshift(response_data.data)
+              this.total = this.total + 1
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',

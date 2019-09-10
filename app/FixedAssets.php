@@ -60,10 +60,15 @@ class FixedAssets extends Model
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义FixedAssets表与FixedAssetTrans表一对多关系
+    public function hasManyFixedAssetTrans()
     {
+        return $this->hasMany('App\FixedAssetTrans', 'assetid', 'id');
+    }
 
-        return $this->hasMany('App\Notice', 'user_id', 'id');
+    // 定义FixedAssets表与PurchOrderDetails表一对多关系
+    public function hasManyPurchOrderDetails()
+    {
+        return $this->hasMany('App\PurchOrderDetails', 'assetid', 'id');
     }
 }
