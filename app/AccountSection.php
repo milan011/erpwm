@@ -68,10 +68,10 @@ class AccountSection extends Model
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义AccountSection表与AccountGroup表一对多关系
+    public function hasManyAccountGroup()
     {
 
-        return $this->hasMany('App\Notice', 'user_id', 'id');
+        return $this->hasMany('App\AccountGroup', 'sectioninaccounts', 'sectionid');
     }
 }

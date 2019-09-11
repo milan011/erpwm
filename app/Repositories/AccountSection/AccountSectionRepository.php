@@ -85,8 +85,19 @@ class AccountSectionRepository implements AccountSectionRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = AccountSection::findorFail($id);
-            $info->status = '0'; //删除会计元素
+            $info = AccountSection::findorFail($id);
+
+            $returnData['status']  = true;
+            $returnData['message'] = '';
+            // dd($info->hasManyAccountGroup->count());
+            if ($info->hasManyAccountGroup->count() > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '该要素已被科目组使用,无法删除';
+
+                return $returnData;
+            }
+
+            $info->status = '0'; //删除会计要素
             $info->save();
 
             DB::commit();

@@ -127,7 +127,13 @@ class AccountSectionController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->accountSection->destroy($id);
-        return $this->baseSucceed($message = '删除成功');
+        $info = $this->accountSection->destroy($id);
+        if ($info['status']) {
+            //删除成功
+            return $this->baseSucceed($respond_data = $info, $message = '删除成功');
+        } else {
+            //删除失败
+            return $this->baseFailed($message = $info['message']);
+        }
     }
 }
