@@ -2,10 +2,10 @@
 //后台用户管理路由组
 import Layout from '@/views/layout/Layout'
 
-const financeRouter = {  
+const financeRouter = {
     path: '/finance',
     component: Layout,
-    redirect: '/finance/manage/accountSection',
+    redirect: '/finance/set/accountGroup',
     name: 'finance',
     meta: {
       title: 'finance',
@@ -13,17 +13,17 @@ const financeRouter = {
       roles: ['admin', 'manager']
     },
     children: [
-      {
+      /*{
         path: 'manage',
         component: resolve => void(require(['@/views/finance/manage/index'], resolve)),
         name: 'financeManage',
         meta: { title: 'financeManage' },
         children: [
-          /*{
-            path: 'accountSection',
-            component: resolve => void(require(['@/views/finance/manage/accountSection.vue'], resolve)),
-            name: 'accountSection',
-            meta: { title: 'accountSection' },
+          {
+            path: 'fixedAssets',
+            component: resolve => void(require(['@/views/finance/manage/fixedAssets.vue'], resolve)),
+            name: 'fixedAssets',
+            meta: { title: 'fixedAssets' },
           },
           {
             path: 'pcClaimExpensesFromTab',
@@ -36,15 +36,15 @@ const financeRouter = {
             component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
             name: 'pcAuthorizeExpense',
             meta: { title: 'pcAuthorizeExpense' },
-          }*/
+          }
         ]
-      },
-      {
+      },*/
+      /*{
         path: 'select',
-        component: resolve => void(require(['@/views/finance/select/index'], resolve)),
+        component: resolve => void(require(['@/views/finance/manage/index'], resolve)),
         name: 'financeSelect',
         meta: { title: 'financeSelect' },
-        /*children: [
+        children: [
           {
             path: 'taxProvinces',
             component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
@@ -57,32 +57,26 @@ const financeRouter = {
             name: 'taxCategories',
             meta: { title: 'taxCategories' },
           }
-        ]*/
-      },
+        ]
+      },*/
       {
-        path: 'financeSet',
+        path: 'set',
         component: resolve => void(require(['@/views/finance/set/index'], resolve)),
         name: 'financeSet',
         meta: { title: 'financeSet' },
         children: [
-          {
-            path: 'accountSection',
-            component: resolve => void(require(['@/views/finance/set/accountSection.vue'], resolve)),
-            name: 'accountSection',
-            meta: { title: 'accountSection' },
-          },
           {
             path: 'accountGroup',
             component: resolve => void(require(['@/views/finance/set/accountGroup.vue'], resolve)),
             name: 'accountGroup',
             meta: { title: 'accountGroup' },
           },
-          /*{
-            path: 'maintenanceTask',
-            component: resolve => void(require(['@/views/finance/set/maintenanceTask.vue'], resolve)),
-            name: 'maintenanceTask',
-            meta: { title: 'maintenanceTask' },
-          },*/
+          {
+            path: 'accountSection',
+            component: resolve => void(require(['@/views/finance/set/accountSection.vue'], resolve)),
+            name: 'accountSection',
+            meta: { title: 'accountSection' },
+          },
         ]
       },
     ]

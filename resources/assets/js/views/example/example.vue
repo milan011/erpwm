@@ -249,7 +249,7 @@ export default {
               title: '失败',
               message: response.data.message,
               type: 'warning',
-              duration: 2000
+              duration: 8000
             })
           }else{
             const index = this.list.indexOf(row)

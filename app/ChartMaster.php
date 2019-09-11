@@ -43,7 +43,7 @@ class ChartMaster extends Model
     // 定义chartmaster表与Shop表一对一关系
     public function belongsToAccountGroup()
     {
-        return $this->belongsTo('App\AccountGroup', 'group_', 'groupname')->withDefault(['groupname' => '',
+        return $this->belongsTo('App\AccountGroup', 'group_', 'id')->withDefault(['groupname' => '',
         ]);
     }
 

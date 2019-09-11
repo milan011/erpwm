@@ -47,11 +47,10 @@ class AccountGroup extends Model
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义AccountGroup表与ChartMaster表一对多关系
+    public function hasManyChartMasters()
     {
 
-        return $this->hasMany('App\Notice', 'user_id', 'id')->withDefault(['accountname' => '',
-        ]);
+        return $this->hasMany('App\ChartMaster', 'group_', 'id');
     }
 }

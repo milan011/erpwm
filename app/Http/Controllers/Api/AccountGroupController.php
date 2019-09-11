@@ -55,12 +55,12 @@ class AccountGroupController extends Controller
         // dd($request->all());
 
         if ($this->accountGroup->isRepeat($request->groupname)) {
-            return $this->baseFailed($message = '数据已存在');
+            return $this->baseFailed($message = '该名称已被使用');
         }
 
         $info = $this->accountGroup->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info->belongsToAccountSection;
+        $info->belongsToAccountGroup;
 
         if ($info) {
             //添加成功
@@ -109,11 +109,12 @@ class AccountGroupController extends Controller
         $update_info = $this->accountGroup->isRepeat($request->groupname);
 
         if ($update_info && ($update_info->id != $id)) {
-            return $this->baseFailed($message = '数据已存在');
+            return $this->baseFailed($message = '该名称已被使用');
         }
 
         $info = $this->accountGroup->update($request, $id);
-        $info->hasOnePackage;
+        $info->belongsToAccountSection;
+        $info->belongsToAccountGroup;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -127,7 +128,14 @@ class AccountGroupController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->accountGroup->destroy($id);
-        return $this->baseSucceed($message = '修改成功');
+        $info = $this->accountGroup->destroy($id);
+
+        if ($info['status']) {
+            //删除成功
+            return $this->baseSucceed($respond_data = $info, $message = '删除成功');
+        } else {
+            //删除失败
+            return $this->baseFailed($message = $info['message']);
+        }
     }
 }

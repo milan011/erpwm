@@ -128,6 +128,6 @@ class AccountSectionController extends Controller
     {
         // dd($id);
         $this->accountSection->destroy($id);
-        return $this->baseSucceed($message = '修改成功');
+        return $this->baseSucceed($message = '删除成功');
     }
 }

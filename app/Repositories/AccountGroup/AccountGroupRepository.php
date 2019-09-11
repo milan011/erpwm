@@ -49,15 +49,22 @@ class AccountGroupRepository implements AccountGroupRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new AccountGroup(); //税目
+            $newGroup = new AccountGroup(); //税目
 
             $input = array_replace($requestData->all());
+
+            if ($input['topGroup']) {
+                //顶层组设置pid为0
+                $input['pid'] = 0;
+            }
+
             $input = nullDel($input);
-            $example->fill($input);
-            $example = $example->create($input);
+            $newGroup->fill($input);
+
+            $newGroup = $newGroup->create($input);
 
             DB::commit();
-            return $example;
+            return $newGroup;
 
         } catch (\Exception $e) {
             throw $e;
@@ -73,10 +80,19 @@ class AccountGroupRepository implements AccountGroupRepositoryInterface
         // dd($requestData->all());
         $info = AccountGroup::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->groupname = $requestData->groupname;
-        $info->groupname = $requestData->groupname;
-        $info->groupname = $requestData->groupname;
-        $info->groupname = $requestData->groupname;
+        $info->groupname         = $requestData->groupname;
+        $info->sectioninaccounts = $requestData->sectioninaccounts;
+        $info->pandl             = $requestData->pandl;
+        $info->sequenceintb      = $requestData->sequenceintb;
+
+        if ($requestData->topGroup) {
+            //顶层组设置pid为0
+            $info->pid = 0;
+        } else {
+            $info->pid = $requestData->pid;
+        }
+
+        // dd($info);
 
         $info->save();
 
@@ -88,12 +104,23 @@ class AccountGroupRepository implements AccountGroupRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = AccountGroup::findorFail($id);
+            $info = AccountGroup::findorFail($id);
+
+            $returnData['status']  = true;
+            $returnData['message'] = '';
+            // dd($info->hasManyChartMasters->count());
+            if ($info->hasManyChartMasters->count() > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '不能删除，已创建了属于这个科目组的会计科目';
+
+                return $returnData;
+            }
+
             $info->status = '0'; //删除税目
             $info->save();
 
             DB::commit();
-            return $info;
+            return $returnData;
 
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();

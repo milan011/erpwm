@@ -92,7 +92,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="是否顶层组">
-          <el-radio-group @change="" v-model="isTopGroup">
+          <el-radio-group @change="topGroupSel" v-model="isTopGroup">
             <el-radio-button :label="true">顶层组</el-radio-button>
             <el-radio-button :label="false">非顶层组</el-radio-button>
           </el-radio-group>
@@ -108,12 +108,14 @@
             filterable 
             clearable 
             placeholder="输入要素搜索">
-            <el-option v-for="group in accountGroupList" :key="group.id" :label="group.groupname" :value="group.id"/>
+            <el-option v-if="(temp.id != group.id) && (group.pid == '0')" v-for="group in accountGroupList" :key="group.id" :label="group.groupname" :value="group.id"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('accountGroup.sequenceintb')" prop="sequenceintb">
           <el-input-number 
-            v-model='temp.sequenceintb'   
+            v-model='temp.sequenceintb' 
+            :min="0" 
+            :max="10000"   
             label="试算表行次">
           </el-input-number>
         </el-form-item>
@@ -189,6 +191,7 @@ export default {
         pandl: 0,
         sequenceintb:null,
         pid: null,
+        topGroup: true,
       },
       dialogFormVisible: false,
       setRateVisible: false,
@@ -247,9 +250,14 @@ export default {
         this.accountGroupList = response.data
       })
     },
-    /*topGroupSel(val){
-      this.showGroup = !val
-    },*/
+    topGroupSel(val){
+      this.temp.topGroup = val
+      // console.log(this.temp.pid)
+      if(this.temp.pid == 0){
+        this.temp.pid = null
+      }
+      console.log(this.temp.topGroup)
+    },
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
@@ -275,7 +283,7 @@ export default {
               title: '失败',
               message: response.data.message,
               type: 'warning',
-              duration: 2000
+              duration: 8000
             })
           }else{
             const index = this.list.indexOf(row)
@@ -305,6 +313,7 @@ export default {
         pandl: 0,
         sequenceintb: '',
         pid: null,
+        topGroup: true,
       }
     },
     handleCreate() {
@@ -347,11 +356,12 @@ export default {
     handleUpdate(row) {
       row.sectioninaccounts = parseInt(row.sectioninaccounts)
       // row.pid = parseInt(row.pid)
-      console.log(row.pid)
+      // console.log(row)
 
       if(row.pid == 0){ //顶层组
         this.isTopGroup = true 
-        row.pid = null
+        // row.pid = undefined
+        row.pid = parseInt(row.pid)
       }else{ //非顶层组
         this.isTopGroup = false
         row.pid = parseInt(row.pid)
