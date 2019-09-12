@@ -2,50 +2,39 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input 
-        :placeholder="$t('example.condetionName')"
+        :placeholder="$t('chartMaster.accountname')"
         clearable 
-        v-model="listQuery.name"
+        v-model="listQuery.accountname"
         style="width: 150px;" 
         class="filter-item">
       </el-input>
-      <el-select clearable style="width:100px;" v-model="listQuery.condetion" class="filter-item" filterable placeholder="条件">
-        <!-- <el-option v-for="user in userList" :key="user.id" :label="user.nick_name" :value="user.id"/> -->
-      </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <!-- <el-tooltip class="item" effect="dark" content="注意:默认只导出当月信息,如需导出其他月,请选择筛选条件" placement="top">
-        <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
-      </el-tooltip> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('example.id')" width="60%" align="center">
+      <el-table-column :label="$t('chartMaster.id')" width="60%" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('example.chart')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('chartMaster.accountname')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_chart.chartdescription }}</span>
+          <span>{{ scope.row.accountname }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('example.cancreate')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('chartMaster.group_')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.belongs_to_account_group.groupname }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('chartMaster.pandl')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
           <span>
-            <el-tag :type="scope.row.cancreate | statusFilter">
-              {{ cancreateStatus[scope.row.cancreate] }}
+            <el-tag :type="scope.row.belongs_to_account_group.pandl | statusFilter">
+              {{ pandlStatus[scope.row.belongs_to_account_group.pandl] }}
             </el-tag>
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.date')" width="150px" align="center">
-        <template slot-scope="scope">
-          <span>
-            {{ scope.row.lastcompleted | parseTime('{y}-{m}-{d}') }}
-            <!-- |
-            <span v-if="scope.row.belongs_to_creater">{{scope.row.belongs_to_creater.nick_name}}</span>
-            <span v-else></span> -->
           </span>
         </template>
       </el-table-column>
@@ -71,44 +60,19 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 400px;margin:0px auto;">
-        <el-form-item :label="$t('example.name')" prop="name">
-          <el-input v-model="temp.name" />
+        <el-form-item :label="$t('chartMaster.accountname')" prop="accountname">
+          <el-input v-model="temp.accountname" />
         </el-form-item>
-        <el-form-item :label="$t('example.chart')" prop="chart">
+        <el-form-item :label="$t('chartMaster.group_')" prop="group_">
           <el-select 
-            v-model="temp.chart" 
+            v-model="temp.group_" 
             class="filter-item" 
             filterable 
             clearable 
-            placeholder="输入区域搜索">
-            <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.chartdescription" :value="chart.id"/>
+            placeholder="输入名称搜索">
+            <el-option v-for="group in accountGroupList" :key="group.id" :label="group.groupname" :value="group.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('example.paymenttype')">
-          <el-radio-group @change="" v-model="temp.paymenttype">
-            <el-radio-button label="1">次月截止</el-radio-button>
-            <el-radio-button label="2">N天后截止</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item :label="$t('example.cancreate')">
-          <el-switch
-            v-model="temp.cancreate"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0">
-          </el-switch>
-        </el-form-item>
-        <el-form-item :label="$t('example.discountrate')" prop="discountrate">
-          <el-input-number 
-            v-model='temp.discountrate'   
-            :min="0" 
-            :max="1" 
-            :precision="2"
-            :step="0.1"
-            label="折扣率">
-          </el-input-number>
-        </el-form-item>  
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -117,16 +81,16 @@
       </div>
     </el-dialog>
     <!-- 组件 -->
-    <!-- <example-components ref="exampleChild"></example-components>  -->
+    <!-- <chartMaster-components ref="chartMasterChild"></chartMaster-components>  -->
   </div>
 </template>
 <script>
-  import { getExampleList,  createExample, updateExample, deleteExample} from '@/api/example'
-  import { chartMasterAll } from '@/api/chartMaster'
+  import { getChartMasterList,  createChartMaster, updateChartMaster, deleteChartMaster} from '@/api/chartMaster'
+  import { accountGroupAll } from '@/api/accountGroup'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
-  // import ExampleComponents from './components/ExampleComponents'
+  // import ChartMasterComponents from './components/ChartMasterComponents'
 
 const calendarTypeOptions = [
   { key: 'web', display_name: 'web' },
@@ -140,8 +104,8 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'example',
-  // components: { ExampleComponents },
+  name: 'chartMaster',
+  // components: { ChartMasterComponents },
   directives: {
     waves
   },
@@ -165,52 +129,46 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        condetionName: '',
+        accountname: '',
         condetion: '',
       },
-      cancreateStatus:['否', '是'],
+      pandlStatus:['资产负责表', '损益表'],
       calendarTypeOptions,
       showReviewer: false,
       temp: {
         id: undefined,
-        name: '',
-        chart: null,
-        cancreate : '1',
-        discountrate : 0,
-        paymenttype: '1',
+        accountname: '',
+        group_: null,
       },
       dialogFormVisible: false,
       setRateVisible: false,
-      exampleName: '',
+      chartMasterName: '',
       dialogStatus: '',
       textMap: {
-        update: '编辑',
-        create: '新增'
+        update: '编辑会计科目',
+        create: '新增会计科目'
       },
       pvData: [],
       rules: {
-        name: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在3到5个字符', trigger: 'blur'},
+        accountname: [
+          { required: true, message: '请输入名称', trigger: 'change' },
+          { min: 1, max: 50, message: '长度在1到50个字符', trigger: 'change'},
         ],
-        chart: [{ required: true, message: '请选择库存种类', trigger: 'change' }],
-        quantitybreak: [ 
-          { required: true, message: '折扣率', trigger: 'change'}, 
-        ],
+        group_: [{ required: true, message: '请选择科目组', trigger: 'change' }],
       },
-      chartMasterList: [],
+      accountGroupList: [],
     }
   },
   created() {
     Promise.all([
       this.getList(),
-      // this.getAllChartMasters(),
+      this.getAllAccountGroup(),
     ])
   },
   methods: {
     getList() {
       this.listLoading = true
-      getExampleList(this.listQuery).then(response => {
+      getChartMasterList(this.listQuery).then(response => {
         this.list = response.data.data
         this.total = response.data.total
         // Just to simulate the time of the request
@@ -219,9 +177,9 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    getAllChartMasters(){
-      chartMasterAll().then(response => {
-        this.chartMasterList = response.data
+    getAllAccountGroup(){
+      accountGroupAll().then(response => {
+        this.accountGroupList = response.data
       })
     },
     handleFilter() {
@@ -243,13 +201,13 @@ export default {
         type: 'warning'
       }).then(() => {
         this.temp = Object.assign({}, row)
-        deleteExample(this.temp).then((response) => {
+        deleteChartMaster(this.temp).then((response) => {
           if(!response.data.status){
             this.$notify({
               title: '失败',
               message: response.data.message,
               type: 'warning',
-              duration: 2000
+              duration: 8000
             })
           }else{
             const index = this.list.indexOf(row)
@@ -274,11 +232,8 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        name: '',
-        chart: null,
-        cancreate : '1',
-        discountrate : 0,
-        paymenttype: '1',
+        accountname: '',
+        group_: null,
       }
     },
     handleCreate() {
@@ -292,7 +247,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createExample(this.temp).then((response) => {
+          createChartMaster(this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
               this.temp.id = response_data.data.id
@@ -318,7 +273,7 @@ export default {
       })
     },
     handleUpdate(row) {
-      row.chart = parseInt(row.chart)
+      row.group_ = parseInt(row.group_)
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -330,7 +285,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
           const tempData = Object.assign({}, this.temp)
-          updateExample(tempData).then((response) => {
+          updateChartMaster(tempData).then((response) => {
             const response_data = response.data
             if(response_data.status){
               for (const v of this.list) {
@@ -367,7 +322,7 @@ export default {
       this.dialogInfoVisible = true
     },
     handleSetChild(row){
-      this.$refs.exampleChild.handleStockCategory(row) 
+      this.$refs.chartMasterChild.handleStockCategory(row) 
     },
   }
 }

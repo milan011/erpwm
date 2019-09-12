@@ -43,14 +43,23 @@ class ChartMaster extends Model
     // 定义chartmaster表与Shop表一对一关系
     public function belongsToAccountGroup()
     {
-        return $this->belongsTo('App\AccountGroup', 'group_', 'id')->withDefault(['groupname' => '',
-        ]);
+        return $this->belongsTo('App\AccountGroup', 'group_', 'id')
+            ->withDefault([
+                'groupname' => '',
+                'pandl'     => '',
+            ]);
     }
 
-    // 定义chartmaster表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义chartmaster表与ChartDetail表一对多关系
+    public function hasManyChartDetail()
     {
-
-        return $this->hasMany('App\Notice', 'user_id', 'id');
+        return $this->hasMany('App\ChartDetail', 'accountcode', 'id')->where('actual', '!=', '0');
     }
+
+    // 定义chartmaster表与Gltrans表一对多关系
+    public function hasManyGltrans()
+    {
+        return $this->hasMany('App\Gltrans', 'account', 'id');
+    }
+
 }

@@ -38,6 +38,7 @@ export default {
     financeSet: '维护',
     accountSection: '会计要素',
     accountGroup: '科目组',
+    chartMaster: '会计科目',
     asset: '资产管理',
     assetManage: '管理功能',
     fixedAssets: '资产列表',
@@ -515,5 +516,11 @@ export default {
     sequenceintb: '试算表行次',
     parentgroupname: '父组',
     pid: '父组',
-  }
+  },
+  chartMaster:{
+    id: '序号',
+    accountname: '科目名称',
+    group_: '科目组',
+    pandl: '损益类',
+  },
 }

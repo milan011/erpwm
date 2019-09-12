@@ -77,6 +77,12 @@ const financeRouter = {
             name: 'accountSection',
             meta: { title: 'accountSection' },
           },
+          {
+            path: 'chartMaster',
+            component: resolve => void(require(['@/views/finance/set/chartMaster.vue'], resolve)),
+            name: 'chartMaster',
+            meta: { title: 'chartMaster' },
+          },
         ]
       },
     ]

@@ -52,15 +52,14 @@ class ChartMasterController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
 
-        if ($this->chartmaster->isRepeat($request->new_telephone)) {
-            return $this->baseFailed($message = '入网号码已存在');
+        if ($this->chartmaster->isRepeat($request->accountname)) {
+            return $this->baseFailed($message = '科目组名称重复');
         }
 
         $info = $this->chartmaster->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info->belongsToAccountGroup;
 
         if ($info) {
             //添加成功
@@ -106,9 +105,14 @@ class ChartMasterController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
+        $update_info = $this->chartmaster->isRepeat($request->accountname);
+
+        if ($update_info && ($update_info->id != $id)) {
+            return $this->baseFailed($message = '科目组名称重复');
+        }
 
         $info = $this->chartmaster->update($request, $id);
-        $info->hasOnePackage;
+        $info->belongsToAccountGroup;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -122,7 +126,15 @@ class ChartMasterController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $this->chartmaster->destroy($id);
-        return $this->baseSucceed($message = '修改成功');
+        $info = $this->chartmaster->destroy($id);
+
+        if ($info['status']) {
+            //删除成功
+            return $this->baseSucceed($respond_data = $info, $message = '删除成功');
+        } else {
+            //删除失败
+            return $this->baseFailed($message = $info['message']);
+        }
+
     }
 }

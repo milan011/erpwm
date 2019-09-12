@@ -48,39 +48,16 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $tax_categories = new ChartMaster(); //税目
-            $tax_authrates  = new Taxauthrates(); //税率
+            $newChart = new ChartMaster(); //会计科目
 
-            $tax_authorities = TaxAuthorities::get(); ////税种
-            $tax_provinces   = Taxprovinces::get(); //纳税区域
-
-            // dd($tax_provinces);
-            // dd($tax_authorities->get());
             $input = array_replace($requestData->all());
-            $tax_categories->fill($input);
-            $tax_categories = $tax_categories->create($input);
-            // dd($tax_categories);
-            $authrates_arr = []; //需要插入税率表的数据
+            $input = nullDel($input);
+            $newChart->fill($input);
 
-            foreach ($tax_provinces as $key => $value) {
-                foreach ($tax_authorities as $k => $v) {
-                    $authrates_arr[$key][$k]['taxauthority']        = $v->taxid;
-                    $authrates_arr[$key][$k]['dispatchtaxprovince'] = $value->taxprovinceid;
-                    $authrates_arr[$key][$k]['taxcatid']            = $tax_categories->taxcatid;
-                    $authrates_arr[$key][$k]['taxrate']             = 0;
-                }
-            }
-
-            $authrates_arr = collect($authrates_arr);
-            $authrates_arr = $authrates_arr->collapse();
-            // dd($authrates_arr);
-
-            foreach ($authrates_arr as $key => $value) {
-                $tax_authrates->create($value);
-            }
+            $newChart = $newChart->create($input);
 
             DB::commit();
-            return $tax_categories;
+            return $newChart;
 
         } catch (\Exception $e) {
             throw $e;
@@ -96,7 +73,8 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
         // dd($requestData->all());
         $info = ChartMaster::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->accountname = $requestData->accountname;
+        $info->group_      = $requestData->group_;
 
         $info->save();
 
@@ -108,15 +86,107 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $tax_authrates = new Taxauthrates(); //税率
-            $info          = ChartMaster::findorFail($id);
-            $info->status  = '0'; //删除税目
+
+            $info = ChartMaster::findorFail($id);
+
+            $returnData['status']  = true;
+            $returnData['message'] = '';
+
+            if ($info->hasManyChartDetail->count() > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除会计科目失败，原因是：科目明细账已存在';
+
+                return $returnData;
+            }
+
+            if ($info->hasManyGltrans->count() > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除会计科目失败，已存在交易';
+
+                return $returnData;
+            }
+
+            $comUseNum = DB::select("SELECT COUNT(*) AS count FROM companies
+                    WHERE debtorsact='" . $id . "'
+                    OR pytdiscountact='" . $id . "'
+                    OR creditorsact='" . $id . "'
+                    OR payrollact='" . $id . "'
+                    OR grnact='" . $id . "'
+                    OR exchangediffact='" . $id . "'
+                    OR purchasesexchangediffact='" . $id . "'
+                    OR retainedearnings='" . $id . "'");
+
+            if ($comUseNum[0]->count > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除会计科目失败，原因是：已作为公司预设会计科目';
+
+                return $returnData;
+            }
+
+            $taxUseNum = DB::select("SELECT COUNT(*) AS count  FROM taxauthorities
+                    WHERE taxglcode='" . $id . "'
+                    OR purchtaxglaccount ='" . $id . "'");
+
+            if ($taxUseNum[0]->count > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除会计科目失败, 原因是：已作为税务科目';
+
+                return $returnData;
+            }
+
+            $salUseNum = DB::select("SELECT COUNT(*) AS count FROM salesglpostings
+                        WHERE salesglcode='" . $id . "'
+                        OR discountglcode='" . $id . "'");
+
+            if ($salUseNum[0]->count > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除会计科目失败，原因是：已作为销售收入科目';
+
+                return $returnData;
+            }
+
+            $salcUseNum = DB::select("SELECT COUNT(*) AS count
+                                FROM cogsglpostings
+                                WHERE glcode='" . $id . "'");
+
+            if ($salcUseNum[0]->count > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除会计科目失败，原因是：已作为销售成本科目';
+
+                return $returnData;
+            }
+
+            $stockUseNum = DB::select("SELECT COUNT(*) AS count
+                                FROM stockcategory
+                                    WHERE stockact='" . $id . "'
+                                    OR adjglact='" . $id . "'
+                                    OR purchpricevaract='" . $id . "'
+                                    OR materialuseagevarac='" . $id . "'
+                                    OR wipact='" . $id . "'");
+
+            if ($stockUseNum[0]->count > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除会计科目失败，原因是：已作为存货科目';
+
+                return $returnData;
+            }
+
+            $bankUseNum = DB::select("SELECT COUNT(*) AS count
+                                FROM bankaccounts
+                                WHERE accountcode='" . $id . "'");
+
+            if ($bankUseNum[0]->count > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除会计科目失败, 原因是：已作为银行科目';
+
+                return $returnData;
+            }
+
+            $info->status = '0'; //删除会计科目
             $info->save();
 
-            $tax_authrates->where('taxcatid', $id)->delete(); //删除关联的税目
-
             DB::commit();
-            return $info;
+            return $returnData;
 
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
@@ -125,8 +195,8 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
     }
 
     //名称是否重复
-    public function isRepeat($taxcatname)
+    public function isRepeat($accountname)
     {
-        return ChartMaster::where('taxcatname', $taxcatname)->where('status', '1')->first();
+        return ChartMaster::where('accountname', $accountname)->where('status', '1')->first();
     }
 }
