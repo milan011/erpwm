@@ -522,5 +522,13 @@ export default {
     accountname: '科目名称',
     group_: '科目组',
     pandl: '损益类',
+    createGLBudgets: '总帐预算',
+    proFiscalYear: '上财年',
+    currentFiscalYear: '本财年',
+    nextFiscalYear: '下财年',
+    yearEnd: '年末',
+    period: '期间',
+    actual: '实际',
+    budget: '预算',
   },
 }

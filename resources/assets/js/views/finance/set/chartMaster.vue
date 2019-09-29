@@ -46,9 +46,9 @@
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
             {{ $t('table.edit') }}
           </el-button>
-          <!-- <el-button type="success" size="mini" @click="handleSetChild(scope.row)">
-            {{ $t('table.setOrther') }}
-          </el-button> -->
+          <el-button type="success" size="mini" @click="createGLBudgets(scope.row)">
+            {{ $t('chartMaster.createGLBudgets') }}
+          </el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
             {{ $t('table.delete') }}
           </el-button>
@@ -80,6 +80,110 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="setGLBudgetVisible" width="70%">
+      <el-row>
+        <el-col :span="24">
+          <div class="grid-content bg-purple-light self-style">
+            <span>{{ $t('chartMaster.createGLBudgets') }}:{{ chartMasterName }}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <div class="grid-content bg-purple-dark self-style" style="margin-bottom:5px">
+            {{ $t('chartMaster.proFiscalYear') }} : 年末[]
+          </div>
+          <el-row>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.period') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.actual') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.budget') }}
+              </div>
+            </el-col>               
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-dark self-style">
+                {{ $t('chartMaster.yearEnd') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-dark self-style">
+                {{ $t('chartMaster.yearEnd') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-dark self-style">
+                {{ $t('chartMaster.yearEnd') }}
+              </div>
+            </el-col>               
+          </el-row>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content bg-purple-dark self-style">
+            {{ $t('chartMaster.currentFiscalYear') }} : 年末[]
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content bg-purple-dark self-style">
+            {{ $t('chartMaster.nextFiscalYear') }} : 年末[]
+          </div>
+        </el-col>               
+      </el-row>
+      <!-- <el-form ref="rateDataForm" 
+        :rules="rateRules" 
+        :model="taxAuthoritiesList" 
+        :inline="true"  
+        class="demo-form-inline">
+        <div v-for="(tax, tax_index) in taxAuthoritiesList" :key="tax_index" :model="tax">
+          <el-row v-for="(t, t_index) in tax" :key="t_index" :model="t">
+            <el-col :span="8"><div class="grid-content bg-purple-light self-style">
+              <el-form-item>
+              {{t.province_name}}
+              </el-form-item>
+            </div></el-col>
+            <el-col :span="8"><div class="grid-content bg-purple-light self-style">
+            <el-form-item>
+              {{t.taxcatname}}
+              </el-form-item>
+            </div></el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+              <el-form-item>
+                <el-input-number 
+                  v-model='t.taxrate' 
+                  size="mini"  
+                  :min="0" 
+                  :max="1" 
+                  :precision="2"
+                  :step="0.1"
+                  style="width: 120px;"
+                  label="税率">
+                </el-input-number>
+              </el-form-item>
+              </div>
+            </el-col>               
+          </el-row>
+        </div>
+      </el-form> -->
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="setTaxRateDel">
+          {{ $t('table.confirm') }}
+        </el-button>
+        <el-button @click="setRateVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+      </div>
+  </el-dialog>
     <!-- 组件 -->
     <!-- <chartMaster-components ref="chartMasterChild"></chartMaster-components>  -->
   </div>
@@ -141,6 +245,7 @@ export default {
         group_: null,
       },
       dialogFormVisible: false,
+      setGLBudgetVisible: false,
       setRateVisible: false,
       chartMasterName: '',
       dialogStatus: '',
@@ -193,6 +298,10 @@ export default {
     handleCurrentChange(val) {
       this.listQuery.page = val
       this.getList()
+    },
+    createGLBudgets(row){
+      console.log(row)
+      this.setGLBudgetVisible = true
     },
     handleModifyStatus(row, status) {
       this.$confirm('确定要删除?', '提示', {
@@ -321,9 +430,6 @@ export default {
       console.log(this.temp)
       this.dialogInfoVisible = true
     },
-    handleSetChild(row){
-      this.$refs.chartMasterChild.handleStockCategory(row) 
-    },
   }
 }
 </script>
@@ -332,7 +438,7 @@ export default {
     padding: 15px 15px;
   }
   .el-dialog__header {
-     padding-top: 10px; 
+     padding-top: 0px; 
   }
   .el-form-item{
     margin-bottom: 15px;
