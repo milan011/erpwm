@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Repositories\ChartMaster\ChartMasterRepositoryInterface;
 // use App\Http\Resources\ChartMaster\ChartMasterResource;
 // use App\Http\Resources\ChartMaster\ChartMasterResourceCollection;
-use App\Repositories\ChartMaster\ChartMasterRepositoryInterface;
+
 use Illuminate\Http\Request;
 
 class ChartMasterController extends Controller
@@ -85,14 +86,27 @@ class ChartMasterController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     * 编辑(基于接口的开发方式不需要该方法)
+     * 获取科目组总帐预算信息
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function getGLB($id)
     {
+        // dd($id);
 
+        $info = $this->chartmaster->getGLBInfo($id);
+
+        return $info;
+    }
+
+    /**
+     * 设置科目组总帐预算信息
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function setGLB(Request $request, $id)
+    {
+        dd('hhe');
     }
 
     /**

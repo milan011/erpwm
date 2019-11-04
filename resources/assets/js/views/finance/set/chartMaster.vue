@@ -14,7 +14,7 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('chartMaster.id')" width="60%" align="center">
+      <el-table-column :label="$t('chartMaster.id')" width="80%" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -46,7 +46,7 @@
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
             {{ $t('table.edit') }}
           </el-button>
-          <el-button type="success" size="mini" @click="createGLBudgets(scope.row)">
+          <el-button type="success" size="mini" @click="getGLBudgets(scope.row)">
             {{ $t('chartMaster.createGLBudgets') }}
           </el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
@@ -176,7 +176,7 @@
         </div>
       </el-form> -->
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="setTaxRateDel">
+        <el-button type="primary" @click="setGLBudgets">
           {{ $t('table.confirm') }}
         </el-button>
         <el-button @click="setRateVisible = false">
@@ -189,7 +189,7 @@
   </div>
 </template>
 <script>
-  import { getChartMasterList,  createChartMaster, updateChartMaster, deleteChartMaster} from '@/api/chartMaster'
+  import { getChartMasterList,  createChartMaster, updateChartMaster, deleteChartMaster, getChartMasterGLB, setChartMasterGLB} from '@/api/chartMaster'
   import { accountGroupAll } from '@/api/accountGroup'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
@@ -299,9 +299,18 @@ export default {
       this.listQuery.page = val
       this.getList()
     },
-    createGLBudgets(row){
+    getGLBudgets(row){
       console.log(row)
+      getChartMasterGLB(row).then(response => {
+        
+      })
       this.setGLBudgetVisible = true
+    },
+    setGLBudgets(){
+      const data = {id: '1'}
+      setChartMasterGLB(data).then(response => {
+
+      })
     },
     handleModifyStatus(row, status) {
       this.$confirm('确定要删除?', '提示', {

@@ -2,9 +2,11 @@
 namespace App\Repositories\ChartMaster;
 
 use App\ChartMaster;
+use App\Periods;
 use App\Repositories\BaseInterface\Repository;
 use App\Repositories\ChartMaster\ChartMasterRepositoryInterface;
 use Auth;
+use Carbon;
 use Datatables;
 use DB;
 use Debugbar;
@@ -198,5 +200,56 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
     public function isRepeat($accountname)
     {
         return ChartMaster::where('accountname', $accountname)->where('status', '1')->first();
+    }
+
+    // 获取总帐预算信息
+    public function getGLBInfo($id)
+    {
+        // dd($id);
+        /*
+         **1.根据当前日期获取上财年,本财年,下财年perid列表
+         **2.根据perid列表获取总帐预算信息
+         */
+        $time = Carbon::now();
+
+        $currentYear    = $time->year; // 本财政年
+        $currentYearEnd = $currentYear . '-12-31'; // 本财政年末日期
+        $perYear        = $currentYear - 1; //上财政年
+        $perYearEnd     = $perYear . '-12-31'; //上财政年日期
+        $nextYear       = $currentYear + 1; //下财政年
+        $nextYearEnd    = $nextYear . '-12-31'; //下财政年日期
+
+        /*p($currentYear);
+        p($perYear);
+        dd($nextYear);*/
+
+        $peridCurrentList = []; //当前财政年perid列表
+        $peridPerList     = []; //上财政年perid列表
+        $peridNextList    = []; //下财政年perid列表
+
+        $peridCurrent = Periods::where('lastdate_in_period', 'like', $currentYear . '%')->get();
+        $peridPer     = Periods::where('lastdate_in_period', 'like', $perYear . '%')->get();
+        $peridNext    = Periods::where('lastdate_in_period', 'like', $nextYear . '%')->get();
+
+        // dd($peridCurrent->all());
+
+        foreach ($peridCurrent as $key => $value) {
+            # code...
+            $peridCurrentList[] = $value->periodno;
+        }
+
+        foreach ($peridPer as $key => $value) {
+            # code...
+            $peridPerList[] = $value->periodno;
+        }
+
+        foreach ($peridNext as $key => $value) {
+            # code...
+            $peridNextList[] = $value->periodno;
+        }
+
+        p($peridPerList);
+        p($peridCurrentList);
+        dd($peridNextList);
     }
 }

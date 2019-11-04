@@ -13,6 +13,24 @@ export function getChartMasterList(query) {
   })
 }
 
+export function getChartMasterGLB(data) {
+  return request({
+    // url: '/chartmaster/list',
+    url: ROAST_CONFIG.API_URL + '/getChartMasterGLB/' + data.id,
+    method: 'get',
+    params: {token}
+  })
+}
+
+export function setChartMasterGLB(data) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/setChartMasterGLB/' + data.id,
+    method: 'put',
+    params: { token },
+    data
+  })
+}
+
 export function chartMasterAll() {
   return request({
     // url: '/chartMaster/list',
@@ -40,6 +58,7 @@ export function updateChartMaster(data) {
     data
   })
 }
+
 export function deleteChartMaster(data) {
   return request({
     url: ROAST_CONFIG.API_URL + '/chartMaster/' + data.id,
