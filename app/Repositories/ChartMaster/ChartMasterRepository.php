@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories\ChartMaster;
 
+use App\ChartDetail;
 use App\ChartMaster;
 use App\Periods;
 use App\Repositories\BaseInterface\Repository;
@@ -248,8 +249,24 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
             $peridNextList[] = $value->periodno;
         }
 
-        p($peridPerList);
+        //获取上财政年,本财政年,下财政年总帐
+        $peridCurrentDetail = ChartDetail::whereIn('period', $peridCurrentList)
+            ->where('accountid', $id)
+            ->get();
+
+        $peridCurrentPer = ChartDetail::whereIn('period', $peridPerList)
+            ->where('accountid', $id)
+            ->get();
+
+        $peridCurrentNext = ChartDetail::whereIn('period', $peridNextList)
+            ->where('accountid', $id)
+            ->get();
+
+        // dd(lastSql());
+        // dd($peridCurrentDetail->all());
+        /*p($peridPerList);
         p($peridCurrentList);
-        dd($peridNextList);
+        dd($peridNextList);*/
+        return [$peridCurrentDetail, $peridCurrentPer, $peridCurrentNext];
     }
 }

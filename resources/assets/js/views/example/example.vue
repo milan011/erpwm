@@ -20,7 +20,7 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('example.id')" width="60%" align="center">
+      <el-table-column :label="$t('example.id')" width="80%" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>

@@ -302,7 +302,7 @@ export default {
     getGLBudgets(row){
       console.log(row)
       getChartMasterGLB(row).then(response => {
-        
+        console.log(response.data)
       })
       this.setGLBudgetVisible = true
     },
