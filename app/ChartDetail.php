@@ -61,10 +61,10 @@ class ChartDetail extends Model
     return $query;
     }*/
 
-    // 定义Example表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义ChartDetail表与periods表一对一关系
+    public function belongsToPeriods()
     {
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
+        return $this->belongsTo('App\Periods', 'period', 'periodno')->withDefault(['lastdate_in_period' => '',
         ]);
     }
 

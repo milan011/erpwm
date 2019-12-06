@@ -14,7 +14,7 @@
       </el-button>
     </div>
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('chartMaster.id')" width="80%" align="center">
+      <el-table-column :label="$t('chartMaster.id')" width="80%" show-overflow-tooltip align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -91,7 +91,7 @@
       <el-row>
         <el-col :span="8">
           <div class="grid-content bg-purple-dark self-style" style="margin-bottom:5px">
-            {{ $t('chartMaster.proFiscalYear') }} : 年末[]
+            {{ $t('chartMaster.proFiscalYear') }} : 年末[{{ currentYearEnd - 1 }}-12-31]
           </div>
           <el-row>
             <el-col :span="8">
@@ -110,33 +110,105 @@
               </div>
             </el-col>               
           </el-row>
-          <el-row>
+          <el-row v-for="(glb, glb_index) in preGlbs" :key="glb_index">
             <el-col :span="8">
               <div class="grid-content bg-purple-dark self-style">
-                {{ $t('chartMaster.yearEnd') }}
+                {{ glb.belongs_to_periods.lastdate_in_period.slice(0,7) }}
               </div>
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-dark self-style">
-                {{ $t('chartMaster.yearEnd') }}
+                {{ glb.actual }}
               </div>
             </el-col>
             <el-col :span="8">
-              <div class="grid-content bg-purple-dark self-style">
-                {{ $t('chartMaster.yearEnd') }}
+              <div class="grid-content self-style">
+                <!-- {{ glb.budget }} -->
+                <el-input 
+                 class="budget_height" 
+                 size="mini" 
+                 v-model.number="glb.budget" />
               </div>
             </el-col>               
           </el-row>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple-dark self-style">
-            {{ $t('chartMaster.currentFiscalYear') }} : 年末[]
+          <div class="grid-content bg-purple-dark self-style" style="margin-bottom:5px">
+            {{ $t('chartMaster.currentFiscalYear') }} : 年末[{{ currentYearEnd }}-12-31]
           </div>
+          <el-row>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.period') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.actual') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.budget') }}
+              </div>
+            </el-col>               
+          </el-row>
+          <el-row v-for="(glb, glb_index) in currentGlbs" :key="glb_index">
+            <el-col :span="8">
+              <div class="grid-content bg-purple-dark self-style">
+                {{ glb.belongs_to_periods.lastdate_in_period.slice(0,7) }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-dark self-style">
+                {{ glb.actual }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content self-style">
+                <el-input class="budget_height" size="mini" v-model="glb.budget" />
+              </div>
+            </el-col>               
+          </el-row>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple-dark self-style">
-            {{ $t('chartMaster.nextFiscalYear') }} : 年末[]
+          <div class="grid-content bg-purple-dark self-style" style="margin-bottom:5px">
+            {{ $t('chartMaster.nextFiscalYear') }} : 年末[{{ currentYearEnd + 1 }}-12-31]
           </div>
+          <el-row>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.period') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.actual') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.budget') }}
+              </div>
+            </el-col>               
+          </el-row>
+          <el-row v-for="(glb, glb_index) in nextGlbs" :key="glb_index">
+            <el-col :span="8">
+              <div class="grid-content bg-purple-dark self-style">
+                {{ glb.belongs_to_periods.lastdate_in_period.slice(0,7) }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-dark self-style">
+                {{ glb.actual }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content self-style">
+                <el-input size="mini" class="budget_height" v-model="glb.budget" />
+              </div>
+            </el-col>               
+          </el-row>
         </el-col>               
       </el-row>
       <!-- <el-form ref="rateDataForm" 
@@ -244,11 +316,15 @@ export default {
         accountname: '',
         group_: null,
       },
+      currentGlbs: [],
+      preGlbs: [],
+      nextGlbs: [],
       dialogFormVisible: false,
       setGLBudgetVisible: false,
       setRateVisible: false,
       chartMasterName: '',
       dialogStatus: '',
+      currentYearEnd: new Date().getFullYear(),
       textMap: {
         update: '编辑会计科目',
         create: '新增会计科目'
@@ -301,13 +377,18 @@ export default {
     },
     getGLBudgets(row){
       console.log(row)
+      this.chartMasterName = row.accountname
       getChartMasterGLB(row).then(response => {
         console.log(response.data)
+        this.currentGlbs = response.data.current
+        this.preGlbs = response.data.pre
+        this.nextGlbs = response.data.next
       })
       this.setGLBudgetVisible = true
     },
     setGLBudgets(){
       const data = {id: '1'}
+      console.log(this.currentGlbs)
       setChartMasterGLB(data).then(response => {
 
       })
@@ -482,5 +563,12 @@ export default {
     text-align: -webkit-center;
     font-size: 14px;
     padding: 5px 0px;
+  }
+  .self-style{
+    height:35px;
+  }
+  .budget_height{
+    padding:2px;
+    top: -10%;
   }
 </style>

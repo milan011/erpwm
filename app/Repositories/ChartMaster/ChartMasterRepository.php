@@ -216,9 +216,9 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
         $currentYear    = $time->year; // 本财政年
         $currentYearEnd = $currentYear . '-12-31'; // 本财政年末日期
         $perYear        = $currentYear - 1; //上财政年
-        $perYearEnd     = $perYear . '-12-31'; //上财政年日期
+        $perYearEnd     = $perYear . '-12-31'; //上财政年末日期
         $nextYear       = $currentYear + 1; //下财政年
-        $nextYearEnd    = $nextYear . '-12-31'; //下财政年日期
+        $nextYearEnd    = $nextYear . '-12-31'; //下财政年末日期
 
         /*p($currentYear);
         p($perYear);
@@ -250,15 +250,15 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
         }
 
         //获取上财政年,本财政年,下财政年总帐
-        $peridCurrentDetail = ChartDetail::whereIn('period', $peridCurrentList)
+        $peridCurrentDetail = ChartDetail::with('belongsToPeriods')->whereIn('period', $peridCurrentList)
             ->where('accountid', $id)
             ->get();
 
-        $peridCurrentPer = ChartDetail::whereIn('period', $peridPerList)
+        $peridPerDetail = ChartDetail::with('belongsToPeriods')->whereIn('period', $peridPerList)
             ->where('accountid', $id)
             ->get();
 
-        $peridCurrentNext = ChartDetail::whereIn('period', $peridNextList)
+        $peridNextDetail = ChartDetail::with('belongsToPeriods')->whereIn('period', $peridNextList)
             ->where('accountid', $id)
             ->get();
 
@@ -267,6 +267,11 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
         /*p($peridPerList);
         p($peridCurrentList);
         dd($peridNextList);*/
-        return [$peridCurrentDetail, $peridCurrentPer, $peridCurrentNext];
+        $info = [
+            'pre'     => $peridPerDetail,
+            'current' => $peridCurrentDetail,
+            'next'    => $peridNextDetail,
+        ];
+        return $info;
     }
 }

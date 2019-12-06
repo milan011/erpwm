@@ -44,6 +44,7 @@
     "connect": "^3.6.6",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^1.0.0",
+    "default-passive-events": "^1.0.10",
     "driver.js": "^0.5.2",
     "dropzone": "^5.2.0",
     "echarts": "^4.1.0",

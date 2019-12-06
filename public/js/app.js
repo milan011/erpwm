@@ -10446,6 +10446,14 @@ module.exports = deepmerge_1;
 
 /***/ }),
 
+/***/ "./node_modules/default-passive-events/dist/index.js":
+/***/ (function(module, exports) {
+
+!function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={i:n,l:!1,exports:{}};return e[n].call(r.exports,r,r.exports,t),r.l=!0,r.exports}var o={};t.m=e,t.c=o,t.d=function(e,o,n){t.o(e,o)||Object.defineProperty(e,o,{configurable:!1,enumerable:!0,get:n})},t.n=function(e){var o=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(o,"a",o),o},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=0)}([function(e,t,o){"use strict";var n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},r=o(1),u={passive:!0,capture:!1},i=["scroll","wheel","touchstart","touchmove","touchenter","touchend","touchleave","mouseout","mouseleave","mouseup","mousedown","mousemove","mouseenter","mousewheel","mouseover"],s=function(e,t){return void 0!==e?e:-1!==i.indexOf(t)&&u.passive},c=function(e){var t=Object.getOwnPropertyDescriptor(e,"passive");return t&&!0!==t.writable&&void 0===t.set?Object.assign({},e):e};if((0,r.eventListenerOptionsSupported)()){var p=EventTarget.prototype.addEventListener;!function(e){EventTarget.prototype.addEventListener=function(t,o,r){var i="object"===(void 0===r?"undefined":n(r))&&null!==r,p=i?r.capture:r;r=i?c(r):{},r.passive=s(r.passive,t),r.capture=void 0===p?u.capture:p,e.call(this,t,o,r)},EventTarget.prototype.addEventListener._original=e}(p)}},function(e,t,o){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.eventListenerOptionsSupported=function(){var e=!1;try{var t=Object.defineProperty({},"passive",{get:function(){e=!0}});window.addEventListener("test",null,t),window.removeEventListener("test",null,t)}catch(e){}return e}}]);
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "./node_modules/element-ui/lib/button-group.js":
 /***/ (function(module, exports) {
 
@@ -104751,6 +104759,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__errorLog__ = __webpack_require__("./resources/assets/js/errorLog.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__permission__ = __webpack_require__("./resources/assets/js/permission.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__filters__ = __webpack_require__("./resources/assets/js/filters/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_default_passive_events__ = __webpack_require__("./node_modules/default-passive-events/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_default_passive_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_default_passive_events__);
 
 
 /**
@@ -104789,6 +104799,7 @@ __webpack_require__("./resources/assets/js/bootstrap.js");
 // import './mock' // simulation data
 
  // global filters
+
 
 __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_element_ui___default.a, {
   size: __WEBPACK_IMPORTED_MODULE_2_js_cookie___default.a.get('size') || 'medium', // set element-ui default size
