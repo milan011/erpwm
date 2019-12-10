@@ -4148,7 +4148,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return __WEBPACK_IMPORTED_MODULE_0_path___default.a.resolve(this.basePath, routePath);
     },
     isExternalLink: function isExternalLink(routePath) {
-      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_validate__["d" /* validateURL */])(routePath);
+      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_validate__["e" /* validateURL */])(routePath);
     },
     clickLink: function clickLink(routePath, e) {
       if (!this.isExternalLink(routePath)) {
@@ -106345,7 +106345,10 @@ var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
     yearEnd: '年末',
     period: '期间',
     actual: '实际',
-    budget: '预算'
+    budget: '预算',
+    total: '总计',
+    budgetForYear: '年度预算',
+    budgeShare: '预算分摊'
   }
 });
 
@@ -108419,15 +108422,15 @@ function (error) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = isvalidUsername;
-/* harmony export (immutable) */ __webpack_exports__["d"] = validateURL;
+/* harmony export (immutable) */ __webpack_exports__["d"] = isvalidUsername;
+/* harmony export (immutable) */ __webpack_exports__["e"] = validateURL;
 /* unused harmony export validateLowerCase */
 /* unused harmony export validateUpperCase */
 /* unused harmony export validateAlphabets */
 /* unused harmony export validateEmail */
-/* harmony export (immutable) */ __webpack_exports__["b"] = isTelephone;
+/* harmony export (immutable) */ __webpack_exports__["c"] = isTelephone;
 /* harmony export (immutable) */ __webpack_exports__["a"] = isFax;
-/* unused harmony export isBalanceMonth */
+/* harmony export (immutable) */ __webpack_exports__["b"] = isNumber;
 /* unused harmony export isReturnMonth */
 /**
  * Created by jiachenpan on 16/11/18.
@@ -108493,14 +108496,13 @@ function isFax(fax) {
 }
 
 /**
- * 校验符合格式的返还日期
+ * 校验是否数字
  * @param email
  * @returns {boolean}
  */
-function isBalanceMonth(balance_month) {
-  var res = /^\+?[1-9][0-9]*$/;
-  // console.log(res.test(balance_month))
-  return res.test(balance_month);
+function isNumber(num) {
+  var res = /(^[\-0-9][0-9]*(.[0-9]+)?)$/;
+  return res.test(num);
 }
 /**
  * 校验符合格式的结算月

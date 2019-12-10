@@ -123,13 +123,46 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content self-style">
-                <!-- {{ glb.budget }} -->
                 <el-input 
                  class="budget_height" 
                  size="mini" 
                  v-model.number="glb.budget" />
               </div>
+            </el-col>           
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.total') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ this.preTotal.actual}}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ this.preTotal.budget }}
+              </div>
             </el-col>               
+          </el-row>
+          <el-row>   
+            <el-col :span="12">
+              <div class="grid-content self-style">
+                <el-input 
+                 class="budget_height" 
+                 size="mini" 
+                 v-model="preBudgeShare" />
+              </div>
+            </el-col>   
+            <el-col :span="12">
+              <div class="grid-content self-style">
+                <el-button type="success" size="mini" @click="budgeShareSet('pre')">
+                   {{ $t('chartMaster.budgeShare') }}
+                </el-button>
+              </div>
+            </el-col>            
           </el-row>
         </el-col>
         <el-col :span="8">
@@ -170,6 +203,40 @@
               </div>
             </el-col>               
           </el-row>
+          <el-row>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.total') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ this.currentTotal.actual}}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ this.currentTotal.budget }}
+              </div>
+            </el-col>               
+          </el-row>
+          <el-row>   
+            <el-col :span="12">
+              <div class="grid-content self-style">
+                <el-input 
+                 class="budget_height" 
+                 size="mini" 
+                 v-model="currentBudgeShare" />
+              </div>
+            </el-col>   
+            <el-col :span="12">
+              <div class="grid-content self-style">
+                <el-button type="success" size="mini" @click="budgeShareSet('current')">
+                   {{ $t('chartMaster.budgeShare') }}
+                </el-button>
+              </div>
+            </el-col>            
+          </el-row>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple-dark self-style" style="margin-bottom:5px">
@@ -208,6 +275,40 @@
                 <el-input size="mini" class="budget_height" v-model="glb.budget" />
               </div>
             </el-col>               
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ $t('chartMaster.total') }}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ this.nextTotal.actual}}
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple-light self-style">
+                {{ this.nextTotal.budget }}
+              </div>
+            </el-col>               
+          </el-row>
+          <el-row>   
+            <el-col :span="12">
+              <div class="grid-content self-style">
+                <el-input 
+                 class="budget_height" 
+                 size="mini" 
+                 v-model="nextBudgeShare" />
+              </div>
+            </el-col>   
+            <el-col :span="12">
+              <div class="grid-content self-style">
+                <el-button type="success" size="mini" @click="budgeShareSet('next')">
+                   {{ $t('chartMaster.budgeShare') }}
+                </el-button>
+              </div>
+            </el-col>            
           </el-row>
         </el-col>               
       </el-row>
@@ -265,6 +366,7 @@
   import { accountGroupAll } from '@/api/accountGroup'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
+  import { isNumber } from '@/utils/validate'
   import { isEmpty } from '@/common.js'
   // import ChartMasterComponents from './components/ChartMasterComponents'
 
@@ -315,6 +417,21 @@ export default {
         id: undefined,
         accountname: '',
         group_: null,
+      },
+      currentBudgeShare: 0,
+      preBudgeShare: 0,
+      nextBudgeShare: 0,
+      currentTotal: {
+        actual: 0,
+        budget: 0,
+      },
+      preTotal: {
+        actual: 0,
+        budget: 0,
+      },
+      nextTotal: {
+        actual: 0,
+        budget: 0,
       },
       currentGlbs: [],
       preGlbs: [],
@@ -375,20 +492,67 @@ export default {
       this.listQuery.page = val
       this.getList()
     },
-    getGLBudgets(row){
+    getGLBudgets(row){ //获取科目总帐预算信息
       console.log(row)
-      this.chartMasterName = row.accountname
+      var that = this
+      that.chartMasterName = row.accountname
       getChartMasterGLB(row).then(response => {
         console.log(response.data)
-        this.currentGlbs = response.data.current
-        this.preGlbs = response.data.pre
-        this.nextGlbs = response.data.next
+        that.currentGlbs = response.data.current //当前财年总帐预算
+        that.preGlbs = response.data.pre         //上财年总帐预算
+        that.nextGlbs = response.data.next       //下财年总帐预算
+
+        Array.prototype.forEach.call(response.data.current, (info, index) => {
+          //循环遍历当前财年信息,获取实际与预算总计
+          // console.log(info)
+          that.currentTotal.actual += info.actual
+          that.currentTotal.budget += info.budget
+        })
+        Array.prototype.forEach.call(response.data.pre, (info, index) => {
+          //循环遍历上财年信息,获取实际与预算总计
+          // console.log(info)
+          that.preTotal.actual += info.actual
+          that.preTotal.budget += info.budget
+        })
+        Array.prototype.forEach.call(response.data.next, (info, index) => {
+          //循环遍历下财年信息,获取实际与预算总计
+          // console.log(info)
+          that.nextTotal.actual += info.actual
+          that.nextTotal.budget += info.budget
+        })
       })
-      this.setGLBudgetVisible = true
+      that.setGLBudgetVisible = true
+    },
+    budgeShareSet(data){
+      console.log(data)
+      console.log(this.preBudgeShare)
+      console.log(!isNumber(this.preBudgeShare))
+      console.log(isNumber(this.preBudgeShare))
+      switch(data) {
+        case 'pre': //处理上年预算分摊
+           if(!isNumber(this.preBudgeShare)){
+              alert('pre不是数字')
+           }
+           break;
+        case 'current': //处理当前年预算分摊
+           if(!isNumber(this.currentBudgeShare)){
+              alert('current不是数字')
+           }
+           break;
+        case 'next': //处理下一年预算分摊
+           if(!isNumber(this.nextBudgeShare)){
+              alert('next不是数字')
+           }
+           break;
+        default:
+          alert('不是数字')
+      }
     },
     setGLBudgets(){
       const data = {id: '1'}
       console.log(this.currentGlbs)
+      console.log(this.preGlbs)
+      console.log(this.nextGlbs)
       setChartMasterGLB(data).then(response => {
 
       })

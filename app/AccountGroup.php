@@ -36,15 +36,17 @@ class AccountGroup extends Model
     // 定义AccountGroup表与AccountSection表一对一关系
     public function belongsToAccountSection()
     {
-        return $this->belongsTo('App\AccountSection', 'sectioninaccounts', 'sectionid')->withDefault(['sectionname' => '',
-        ]);
+        return $this->belongsTo('App\AccountSection', 'sectioninaccounts', 'sectionid')
+            ->withDefault(['sectionname' => '',
+            ]);
     }
 
     // 定义AccountGroup表与AccountGroup表一对一关系
     public function belongsToAccountGroup()
     {
-        return $this->belongsTo('App\AccountGroup', 'pid', 'id')->withDefault(['groupname' => '顶层组',
-        ]);
+        return $this->belongsTo('App\AccountGroup', 'pid', 'id')
+            ->withDefault(['groupname' => '顶层组',
+            ]);
     }
 
     // 定义AccountGroup表与ChartMaster表一对多关系

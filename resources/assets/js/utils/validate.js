@@ -64,14 +64,13 @@ export function isFax(fax) {
 
 
 /**
- * 校验符合格式的返还日期
+ * 校验是否数字
  * @param email
  * @returns {boolean}
  */
-export function isBalanceMonth(balance_month) {
-  const res = /^\+?[1-9][0-9]*$/
-  // console.log(res.test(balance_month))
-  return res.test(balance_month)
+export function isNumber(num) {
+  const res = /(^[\-0-9][0-9]*(.[0-9]+)?)$/
+  return res.test(num)
 }
 /**
  * 校验符合格式的结算月

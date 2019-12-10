@@ -530,5 +530,8 @@ export default {
     period: '期间',
     actual: '实际',
     budget: '预算',
+    total: '总计',
+    budgetForYear: '年度预算',
+    budgeShare: '预算分摊',
   },
 }
