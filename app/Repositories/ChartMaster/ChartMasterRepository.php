@@ -274,4 +274,26 @@ class ChartMasterRepository implements ChartMasterRepositoryInterface
         ];
         return $info;
     }
+
+    //设置总帐预算信息
+    public function setGLBInfo($data)
+    {
+        DB::beginTransaction();
+        try {
+            foreach ($data as $key => $value) {
+                $glb         = ChartDetail::findOrFail($value['id']);
+                $glb->budget = $value['budget'];
+
+                $glb->save();
+            }
+            DB::commit();
+
+            return $glb;
+
+        } catch (\Exception $e) {
+            throw $e;
+            DB::rollBack();
+            return false;
+        }
+    }
 }

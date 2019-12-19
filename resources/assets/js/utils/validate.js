@@ -69,7 +69,7 @@ export function isFax(fax) {
  * @returns {boolean}
  */
 export function isNumber(num) {
-  const res = /(^[\-0-9][0-9]*(.[0-9]+)?)$/
+  const res = /^-?\d*\.?\d*$/
   return res.test(num)
 }
 /**

@@ -153,7 +153,7 @@
                 <el-input 
                  class="budget_height" 
                  size="mini" 
-                 v-model="preBudgeShare" />
+                 v-model.number="preBudgeShare" />
               </div>
             </el-col>   
             <el-col :span="12">
@@ -199,7 +199,7 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content self-style">
-                <el-input class="budget_height" size="mini" v-model="glb.budget" />
+                <el-input class="budget_height" size="mini" v-model.number="glb.budget" />
               </div>
             </el-col>               
           </el-row>
@@ -352,7 +352,7 @@
         <el-button type="primary" @click="setGLBudgets">
           {{ $t('table.confirm') }}
         </el-button>
-        <el-button @click="setRateVisible = false">
+        <el-button @click="setGLBudgetVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
       </div>
@@ -493,69 +493,137 @@ export default {
       this.getList()
     },
     getGLBudgets(row){ //获取科目总帐预算信息
-      console.log(row)
+      // console.log(row)
       var that = this
       that.chartMasterName = row.accountname
       getChartMasterGLB(row).then(response => {
-        console.log(response.data)
-        that.currentGlbs = response.data.current //当前财年总帐预算
-        that.preGlbs = response.data.pre         //上财年总帐预算
-        that.nextGlbs = response.data.next       //下财年总帐预算
+        // console.log(response.data)
+        that.currentGlbs = response.data.data.current //当前财年总帐预算
+        that.preGlbs = response.data.data.pre         //上财年总帐预算
+        that.nextGlbs = response.data.data.next       //下财年总帐预算
 
-        Array.prototype.forEach.call(response.data.current, (info, index) => {
+        /*that.currentTotal.actual = 0
+        that.currentTotal.budget = 0
+        that.preTotal.budget = 0
+        that.preTotal.budget = 0
+        that.nextTotal.budget = 0
+        that.nextTotal.budget = 0*/
+
+        Array.prototype.forEach.call(response.data.data.current, (info, index) => {
           //循环遍历当前财年信息,获取实际与预算总计
-          // console.log(info)
           that.currentTotal.actual += info.actual
           that.currentTotal.budget += info.budget
         })
-        Array.prototype.forEach.call(response.data.pre, (info, index) => {
+        Array.prototype.forEach.call(response.data.data.pre, (info, index) => {
           //循环遍历上财年信息,获取实际与预算总计
           // console.log(info)
           that.preTotal.actual += info.actual
           that.preTotal.budget += info.budget
         })
-        Array.prototype.forEach.call(response.data.next, (info, index) => {
+        Array.prototype.forEach.call(response.data.data.next, (info, index) => {
           //循环遍历下财年信息,获取实际与预算总计
           // console.log(info)
           that.nextTotal.actual += info.actual
           that.nextTotal.budget += info.budget
         })
       })
+      that.currentBudgeShare = 0
+      that.preBudgeShare = 0
+      that.nextBudgeShare = 0
       that.setGLBudgetVisible = true
     },
     budgeShareSet(data){
-      console.log(data)
+      /*console.log(data)
       console.log(this.preBudgeShare)
       console.log(!isNumber(this.preBudgeShare))
-      console.log(isNumber(this.preBudgeShare))
+      console.log(isNumber(this.preBudgeShare))*/
       switch(data) {
         case 'pre': //处理上年预算分摊
            if(!isNumber(this.preBudgeShare)){
-              alert('pre不是数字')
+              this.$notify.error({
+                title: '失败',
+                message: '预算金额应为数字',
+                duration: 2000
+              })
+           }else{
+              // console.log(Math.round(this.preBudgeShare/12))
+              let preShareVal = Math.round(this.preBudgeShare/12)
+              Array.prototype.forEach.call(this.preGlbs, (info, index) => {
+                //循环遍历上财年信息,设定预算分摊值
+                info.budget = preShareVal
+              })
            }
            break;
         case 'current': //处理当前年预算分摊
            if(!isNumber(this.currentBudgeShare)){
-              alert('current不是数字')
+              this.$notify.error({
+                title: '失败',
+                message: '预算金额应为数字',
+                duration: 2000
+              })
+           }else{
+              // console.log(Math.round(this.currentBudgeShare/12))
+              let currentShareVal = Math.round(this.currentBudgeShare/12)
+              Array.prototype.forEach.call(this.currentGlbs, (info, index) => {
+                //循环遍历上财年信息,设定预算分摊值
+                info.budget = currentShareVal
+              })
            }
            break;
         case 'next': //处理下一年预算分摊
            if(!isNumber(this.nextBudgeShare)){
-              alert('next不是数字')
+              this.$notify.error({
+                title: '失败',
+                message: '预算金额应为数字',
+                duration: 2000
+              })
+           }else{
+            // console.log(Math.round(this.nextBudgeShare/12))
+            let nextShareVal = Math.round(this.nextBudgeShare/12)
+              Array.prototype.forEach.call(this.nextGlbs, (info, index) => {
+                //循环遍历上财年信息,设定预算分摊值
+                info.budget = nextShareVal
+              })
            }
            break;
         default:
-          alert('不是数字')
+          this.$notify.error({
+            title: '失败',
+            message: '预算金额应为数字',
+            duration: 2000
+          })
       }
     },
     setGLBudgets(){
-      const data = {id: '1'}
-      console.log(this.currentGlbs)
+      /*console.log(this.currentGlbs)
       console.log(this.preGlbs)
-      console.log(this.nextGlbs)
-      setChartMasterGLB(data).then(response => {
-
+      console.log(this.nextGlbs)*/
+      const budgetsData =  [...this.currentGlbs, ...this.preGlbs, ...this.nextGlbs]
+      let is_number = true
+      Array.prototype.forEach.call(budgetsData, (info, index) => {
+        //循环遍历预算金额判断是否为数字
+        if(!isNumber(info.budget)){
+            is_number = false
+            return 
+        }
       })
+      if(!is_number){
+        this.$notify.error({
+          title: '失败',
+          message: '预算金额应为数字',
+          duration: 2000
+        })
+      }else{
+        setChartMasterGLB({allBudgets: budgetsData}).then(response => {
+          this.$notify({
+            title: '成功',
+            message: '总帐预算设置成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.setGLBudgetVisible = false
+        })
+      }
     },
     handleModifyStatus(row, status) {
       this.$confirm('确定要删除?', '提示', {

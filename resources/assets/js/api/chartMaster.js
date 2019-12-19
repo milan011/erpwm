@@ -24,7 +24,7 @@ export function getChartMasterGLB(data) {
 
 export function setChartMasterGLB(data) {
   return request({
-    url: ROAST_CONFIG.API_URL + '/setChartMasterGLB/' + data.id,
+    url: ROAST_CONFIG.API_URL + '/setChartMasterGLB/',
     method: 'put',
     params: { token },
     data

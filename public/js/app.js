@@ -108501,7 +108501,7 @@ function isFax(fax) {
  * @returns {boolean}
  */
 function isNumber(num) {
-  var res = /(^[\-0-9][0-9]*(.[0-9]+)?)$/;
+  var res = /^-?\d*\.?\d*$/;
   return res.test(num);
 }
 /**

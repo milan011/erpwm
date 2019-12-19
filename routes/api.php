@@ -87,7 +87,7 @@ Route::group([
     Route::get('chartMasterList', 'ChartMasterController@index');
     Route::get('chartMaster/{id}', 'ChartMasterController@show');
     Route::get('getChartMasterGLB/{id}', 'ChartMasterController@getGLB');
-    Route::put('setChartMasterGLB/{id}', 'ChartMasterController@setGLB');
+    Route::put('setChartMasterGLB', 'ChartMasterController@setGLB');
     Route::post('chartMaster', 'ChartMasterController@store');
     Route::put('chartMaster/{id}', 'ChartMasterController@update');
     Route::delete('chartMaster/{id}', 'ChartMasterController@destroy');

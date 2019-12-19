@@ -96,7 +96,13 @@ class ChartMasterController extends Controller
 
         $info = $this->chartmaster->getGLBInfo($id);
 
-        return $info;
+        if ($info) {
+            //添加成功
+            return $this->baseSucceed($respond_data = $info, $message = '获取预算信息');
+        } else {
+            //添加失败
+            return $this->baseFailed($message = '内部错误');
+        }
     }
 
     /**
@@ -104,9 +110,17 @@ class ChartMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function setGLB(Request $request, $id)
+    public function setGLB(Request $request)
     {
-        dd('hhe');
+        $info = $this->chartmaster->setGLBInfo($request->allBudgets);
+
+        if ($info) {
+            //添加成功
+            return $this->baseSucceed($respond_data = $info, $message = '更新预算信息成功');
+        } else {
+            //添加失败
+            return $this->baseFailed($message = '内部错误');
+        }
     }
 
     /**
