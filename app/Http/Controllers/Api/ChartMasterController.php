@@ -95,10 +95,32 @@ class ChartMasterController extends Controller
         // dd($id);
 
         $info = $this->chartmaster->getGLBInfo($id);
-
+        // dd($info['pre']);
+        $preTotal     = ['actual' => 0, 'budget' => 0];
+        $currentTotal = ['actual' => 0, 'budget' => 0];
+        $nextTotal    = ['actual' => 0, 'budget' => 0];
+        foreach ($info['pre'] as $key => $value) {
+            # 上财年总计
+            $preTotal['actual'] += $value['actual'];
+            $preTotal['budget'] += $value['budget'];
+        }
+        foreach ($info['current'] as $key => $value) {
+            # 本财年总计
+            $currentTotal['actual'] += $value['actual'];
+            $currentTotal['budget'] += $value['budget'];
+        }
+        foreach ($info['next'] as $key => $value) {
+            # 下财年总计
+            $nextTotal['actual'] += $value['actual'];
+            $nextTotal['budget'] += $value['budget'];
+        }
+        $returnData = [
+            'glbInfo'   => $info,
+            'totalInfo' => [$preTotal, $currentTotal, $nextTotal],
+        ];
         if ($info) {
             //添加成功
-            return $this->baseSucceed($respond_data = $info, $message = '获取预算信息');
+            return $this->baseSucceed($respond_data = $returnData, $message = '获取预算信息');
         } else {
             //添加失败
             return $this->baseFailed($message = '内部错误');

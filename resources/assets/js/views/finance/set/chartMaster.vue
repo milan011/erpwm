@@ -138,12 +138,12 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light self-style">
-                {{ this.preTotal.actual}}
+                {{ preTotal.actual}}
               </div>
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light self-style">
-                {{ this.preTotal.budget }}
+                {{ preTotal.budget }}
               </div>
             </el-col>               
           </el-row>
@@ -211,12 +211,12 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light self-style">
-                {{ this.currentTotal.actual}}
+                {{ currentTotal.actual}}
               </div>
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light self-style">
-                {{ this.currentTotal.budget }}
+                {{ currentTotal.budget }}
               </div>
             </el-col>               
           </el-row>
@@ -284,12 +284,12 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light self-style">
-                {{ this.nextTotal.actual}}
+                {{ nextTotal.actual}}
               </div>
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light self-style">
-                {{ this.nextTotal.budget }}
+                {{ nextTotal.budget }}
               </div>
             </el-col>               
           </el-row>
@@ -498,34 +498,32 @@ export default {
       that.chartMasterName = row.accountname
       getChartMasterGLB(row).then(response => {
         // console.log(response.data)
-        that.currentGlbs = response.data.data.current //当前财年总帐预算
-        that.preGlbs = response.data.data.pre         //上财年总帐预算
-        that.nextGlbs = response.data.data.next       //下财年总帐预算
+        const gblData = response.data.data.glbInfo
+        const gblTotal = response.data.data.totalInfo
+        that.currentGlbs = gblData.current //当前财年总帐预算
+        that.preGlbs = gblData.pre         //上财年总帐预算
+        that.nextGlbs = gblData.next       //下财年总帐预算
 
-        /*that.currentTotal.actual = 0
-        that.currentTotal.budget = 0
-        that.preTotal.budget = 0
-        that.preTotal.budget = 0
-        that.nextTotal.budget = 0
-        that.nextTotal.budget = 0*/
-
-        Array.prototype.forEach.call(response.data.data.current, (info, index) => {
+        that.preTotal = gblTotal[0]
+        that.currentTotal = gblTotal[1]
+        that.nextTotal = gblTotal[2]
+        /*Array.prototype.forEach.call(that.currentGlbs, (info, index) => {
           //循环遍历当前财年信息,获取实际与预算总计
           that.currentTotal.actual += info.actual
           that.currentTotal.budget += info.budget
         })
-        Array.prototype.forEach.call(response.data.data.pre, (info, index) => {
+        Array.prototype.forEach.call(that.preGlbs, (info, index) => {
           //循环遍历上财年信息,获取实际与预算总计
           // console.log(info)
           that.preTotal.actual += info.actual
           that.preTotal.budget += info.budget
         })
-        Array.prototype.forEach.call(response.data.data.next, (info, index) => {
+        Array.prototype.forEach.call(that.nextGlbs, (info, index) => {
           //循环遍历下财年信息,获取实际与预算总计
           // console.log(info)
           that.nextTotal.actual += info.actual
           that.nextTotal.budget += info.budget
-        })
+        })*/
       })
       that.currentBudgeShare = 0
       that.preBudgeShare = 0
