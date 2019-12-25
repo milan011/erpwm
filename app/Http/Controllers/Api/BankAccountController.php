@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-// use App\Http\Resources\Tags\TagsResource;
-// use App\Http\Resources\Tags\TagsResourceCollection;
-use App\Repositories\Tags\TagsRepositoryInterface;
+// use App\Http\Resources\BankAccount\BankAccountResource;
+// use App\Http\Resources\BankAccount\BankAccountResourceCollection;
+use App\Repositories\BankAccount\BankAccountRepositoryInterface;
 use Illuminate\Http\Request;
 
-class TagsController extends Controller
+class BankAccountController extends Controller
 {
-    protected $tags;
+    protected $bankAccount;
 
     public function __construct(
 
-        TagsRepositoryInterface $tags
+        BankAccountRepositoryInterface $bankAccount
     ) {
-        $this->tags = $tags;
+        $this->bankAccount = $bankAccount;
     }
 
     /**
@@ -29,9 +29,9 @@ class TagsController extends Controller
     {
         $query_list = jsonToArray($request); //获取搜索信息
 
-        $tagss = $this->tags->getList($query_list);
+        $bankAccounts = $this->bankAccount->getList($query_list);
 
-        return $tagss;
+        return $bankAccounts;
     }
 
     /**
@@ -54,13 +54,12 @@ class TagsController extends Controller
 
         // dd($request->all());
 
-        if ($this->tags->isRepeat($request->tagdescription)) {
-            return $this->baseFailed($message = '标签名称重复');
+        if ($this->bankAccount->isRepeat($request->bankaccountname, $request->bankaccountcode, $request->accountcode)) {
+            return $this->baseFailed($message = '该会计科目银行账户和户名重复');
         }
 
-        $info = $this->tags->create($request);
-        $info->hasOnePackage;
-        $info->belongsToCreater;
+        $info = $this->bankAccount->create($request);
+        $info->belongsToChartMaster;
 
         if ($info) {
             //添加成功
@@ -79,10 +78,10 @@ class TagsController extends Controller
      */
     public function show($id)
     {
-        $info = $this->tags->find($id);
+        $info = $this->bankAccount->find($id);
         $info->belongsToCreater;
 
-        return new TagsResource($info);
+        return new BankAccountResource($info);
     }
 
     /**
@@ -105,15 +104,15 @@ class TagsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-        $update_info = $this->tags->isRepeat($request->tagdescription);
 
-        if ($update_info && ($update_info->tagref != $id)) {
-            return $this->baseFailed($message = '标签名称重复');
+        $update_info = $this->bankAccount->isRepeat($request->bankaccountname, $request->bankaccountcode, $request->accountcode);
+
+        if ($update_info && ($update_info->id != $id)) {
+            return $this->baseFailed($message = '该会计科目银行账户和户名重复');
         }
 
-        $info = $this->tags->update($request, $id);
-        $info->hasOnePackage;
+        $info = $this->bankAccount->update($request, $id);
+        $info->belongsToChartMaster;
 
         return $this->baseSucceed($respond_data = $info, $message = '修改成功');
     }
@@ -127,9 +126,7 @@ class TagsController extends Controller
     public function destroy($id)
     {
         // dd($id);
-        $info = $this->tags->destroy($id);
-
-        // dd($info);
+        $info = $this->bankAccount->destroy($id);
 
         if ($info['status']) {
             //删除成功

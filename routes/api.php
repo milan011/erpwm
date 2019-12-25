@@ -391,6 +391,13 @@ Route::group([
     Route::post('accountGroup', 'AccountGroupController@store');
     Route::put('accountGroup/{id}', 'AccountGroupController@update');
     Route::delete('accountGroup/{id}', 'AccountGroupController@destroy');
+
+    //BankAccount
+    Route::get('bankAccountList', 'BankAccountController@index');
+    Route::get('bankAccount/{id}', 'BankAccountController@show');
+    Route::post('bankAccount', 'BankAccountController@store');
+    Route::put('bankAccount/{id}', 'BankAccountController@update');
+    Route::delete('bankAccount/{id}', 'BankAccountController@destroy');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Auth'], function () {

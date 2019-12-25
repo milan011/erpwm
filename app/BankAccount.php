@@ -33,17 +33,17 @@ class BankAccount extends Model
      */
     public $timestamps = false;
 
-    // 定义Example表与Shop表一对一关系
-    public function belongsToShop()
+    // 定义BankAccount表与ChartMaster表一对一关系
+    public function belongsToChartMaster()
     {
-        return $this->belongsTo('App\Shop', 'shop_id', 'id')->withDefault(['accountname' => '',
+        return $this->belongsTo('App\ChartMaster', 'accountcode', 'id')->withDefault(['accountname' => '',
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义BankAccount表与BankTrans表一对多关系
+    public function hasManyBankTrans()
     {
 
-        return $this->hasMany('App\Notice', 'user_id', 'id');
+        return $this->hasMany('App\BankTrans', 'bankact', 'id');
     }
 }

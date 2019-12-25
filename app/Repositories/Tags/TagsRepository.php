@@ -48,7 +48,7 @@ class TagsRepository implements TagsRepositoryInterface
         DB::beginTransaction();
         try {
 
-            $example = new Tags(); //税目
+            $example = new Tags(); //标签
 
             $input = array_replace($requestData->all());
             $example->fill($input);
@@ -71,7 +71,7 @@ class TagsRepository implements TagsRepositoryInterface
         // dd($requestData->all());
         $info = Tags::select($this->select_columns)->findorFail($id); //获取信息
 
-        $info->taxcatname = $requestData->taxcatname;
+        $info->tagdescription = $requestData->tagdescription;
 
         $info->save();
 
@@ -83,12 +83,23 @@ class TagsRepository implements TagsRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $info         = Tags::findorFail($id);
-            $info->status = '0'; //删除税目
+            $info = Tags::findorFail($id);
+
+            $returnData['status']  = true;
+            $returnData['message'] = '';
+
+            if ($info->hasManyGltrans->count() > 0) {
+                $returnData['status']  = false;
+                $returnData['message'] = '删除标签失败，原因是：该标签已经被使用';
+                // dd(lastSql());
+                return $returnData;
+            }
+
+            $info->status = '0'; //删除标签
             $info->save();
 
             DB::commit();
-            return $info;
+            return $returnData;
 
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();

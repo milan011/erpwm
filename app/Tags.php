@@ -40,10 +40,10 @@ class Tags extends Model
         ]);
     }
 
-    // 定义Example表与Notice表一对多关系
-    public function hasManyNotice()
+    // 定义tags表与Gltrans表一对多关系
+    public function hasManyGltrans()
     {
 
-        return $this->hasMany('App\Notice', 'user_id', 'id');
+        return $this->hasMany('App\Gltrans', 'tag', 'tagref')->where('gltrans.status', '=', '1');
     }
 }

@@ -80,5 +80,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\FixedAssetItem\FixedAssetItemRepositoryInterface', 'App\Repositories\FixedAssetItem\FixedAssetItemRepository');
         $this->app->bind('App\Repositories\AccountSection\AccountSectionRepositoryInterface', 'App\Repositories\AccountSection\AccountSectionRepository');
         $this->app->bind('App\Repositories\AccountGroup\AccountGroupRepositoryInterface', 'App\Repositories\AccountGroup\AccountGroupRepository');
+        $this->app->bind('App\Repositories\BankAccount\BankAccountRepositoryInterface', 'App\Repositories\BankAccount\BankAccountRepository');
     }
 }

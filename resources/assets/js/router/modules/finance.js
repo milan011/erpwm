@@ -83,6 +83,18 @@ const financeRouter = {
             name: 'chartMaster',
             meta: { title: 'chartMaster' },
           },
+          {
+            path: 'tags',
+            component: resolve => void(require(['@/views/finance/set/tags.vue'], resolve)),
+            name: 'tags',
+            meta: { title: 'tags' },
+          },
+          {
+            path: 'bankAccount',
+            component: resolve => void(require(['@/views/finance/set/bankAccount.vue'], resolve)),
+            name: 'bankAccount',
+            meta: { title: 'bankAccount' },
+          },
         ]
       },
     ]
