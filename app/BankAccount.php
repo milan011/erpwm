@@ -46,4 +46,11 @@ class BankAccount extends Model
 
         return $this->hasMany('App\BankTrans', 'bankact', 'id');
     }
+
+    // 定义BankAccount表与BankTrans表一对多关系
+    public function hasManyBankAccountUsers()
+    {
+
+        return $this->hasMany('App\BankAccountUsers', 'account_id', 'id');
+    }
 }

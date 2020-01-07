@@ -395,8 +395,10 @@ Route::group([
     //BankAccount
     Route::get('bankAccountList', 'BankAccountController@index');
     Route::get('bankAccount/{id}', 'BankAccountController@show');
+    Route::get('getBankUser/{id}', 'BankAccountController@getBankUsers');
     Route::post('bankAccount', 'BankAccountController@store');
     Route::put('bankAccount/{id}', 'BankAccountController@update');
+    Route::put('setBankUser/{id}', 'BankAccountController@setBankUsers');
     Route::delete('bankAccount/{id}', 'BankAccountController@destroy');
 });
 

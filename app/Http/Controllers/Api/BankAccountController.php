@@ -136,4 +136,38 @@ class BankAccountController extends Controller
             return $this->baseFailed($message = $info['message']);
         }
     }
+
+    /**
+     * Remove the specified resource from storage.
+     * 获取银行账号授权用户信息
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getBankUsers($id)
+    {
+        // dd($id);
+        $info = $this->bankAccount->getUserInfo($id);
+
+        return $info;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * 银行账号授权用户
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function setBankUsers(Request $request, $id)
+    {
+        dd($id);
+        $info = $this->bankAccount->destroy($id);
+
+        if ($info['status']) {
+            //删除成功
+            return $this->baseSucceed($respond_data = $info, $message = '删除成功');
+        } else {
+            //删除失败
+            return $this->baseFailed($message = $info['message']);
+        }
+    }
 }

@@ -545,6 +545,7 @@ export default {
     id: '序号',
     accountcode: '会计科目',
     currcode: '币种',
+    setBankUser: '账户授权',
     invoice: '发票处理',
     bankaccountcode: '户名',
     bankaccountnumber: '账号',

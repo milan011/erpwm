@@ -41,6 +41,27 @@ class BankAccountRepository implements BankAccountRepositoryInterface
         }
     }
 
+    // 获取银行账号授权用户信息
+    public function getUserInfo($id)
+    {
+        $query = new BankAccount(); // 返回的是一个Order实例,两种方法均可
+        // $query = $query->addCondition($queryList); //根据条件组合语句
+        $userInfo = $query->with('belongsToChartMaster', 'hasManyBankAccountUsers')
+            ->findOrFail($id);
+
+        $userArry = [];
+        /*dd($userInfo->hasManyBankAccountUsers->count());
+        dd($userInfo->hasManyBankAccountUsers[0]->belongsToUser);*/
+        if ($userInfo->hasManyBankAccountUsers->count() > 0) {
+            //已有授权用户,获取所有授权用户列表
+            foreach ($userInfo->hasManyBankAccountUsers as $key => $value) {
+                $userArry[] = $value->belongsToUser->id;
+            }
+        }
+        // dd($userArry);
+        return $userArry;
+    }
+
     // 创建信息
     public function create($requestData)
     {

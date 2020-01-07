@@ -32,7 +32,7 @@ class UserRepository implements UserRepositoryInterface
     // 获得所有用户
     public function getUsers()
     {
-        return User::select($this->select_columns)
+        return User::select(['id', 'userid'])
             ->where('status', '1')
             ->get();
     }

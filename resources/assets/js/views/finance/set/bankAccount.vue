@@ -64,9 +64,9 @@
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
             {{ $t('table.edit') }}
           </el-button>
-          <!-- <el-button type="success" size="mini" @click="handleSetChild(scope.row)">
-            {{ $t('table.setOrther') }}
-          </el-button> -->
+          <el-button type="success" size="mini" @click="handleSetBankUser(scope.row)">
+            {{ $t('bankAccount.setBankUser') }}
+          </el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
             {{ $t('table.delete') }}
           </el-button>
@@ -115,6 +115,7 @@
       </div>
     </el-dialog>
     <!-- 组件 -->
+    <set-bank-user ref="bankUserChild"></set-bank-user>
     <!-- <bankAccount-components ref="bankAccountChild"></bankAccount-components>  -->
   </div>
 </template>
@@ -124,6 +125,7 @@
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import { isEmpty } from '@/common.js'
+  import  SetBankUser  from './components/SetBankUser'
   // import BankAccountComponents from './components/BankAccountComponents'
 
 const calendarTypeOptions = [
@@ -139,6 +141,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 
 export default {
   name: 'bankAccount',
+  components: { SetBankUser },
   // components: { BankAccountComponents },
   directives: {
     waves
@@ -374,9 +377,15 @@ export default {
       console.log(this.temp)
       this.dialogInfoVisible = true
     },
-    handleSetChild(row){
-      this.$refs.bankAccountChild.handleStockCategory(row) 
+    handleSetBankUser(row) {  //银行账户授权
+      this.$refs.bankUserChild.handleUsers(row) 
     },
+    SetBankUser() {
+      this.$refs.bankUserChild.giveUsers()
+    },
+    /*handleSetChild(row){
+      this.$refs.bankAccountChild.handleStockCategory(row) 
+    },*/
   }
 }
 </script>

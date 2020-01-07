@@ -40,6 +40,25 @@ export function updateBankAccount(data) {
     data
   })
 }
+
+export function getBankUser(id) {
+  return request({
+    // url: '/bankAccount/list',
+    url: ROAST_CONFIG.API_URL + '/getBankUser/' + id,
+    method: 'get',
+    params: {token}
+  })
+}
+
+export function setBankUser(data) {
+  return request({
+    url: ROAST_CONFIG.API_URL + '/setBankUser/' + data.id,
+    method: 'put',
+    params: { token },
+    data
+  })
+}
+
 export function deleteBankAccount(data) {
   return request({
     url: ROAST_CONFIG.API_URL + '/bankAccount/' + data.id,
