@@ -159,12 +159,11 @@ class BankAccountController extends Controller
      */
     public function setBankUsers(Request $request, $id)
     {
-        dd($id);
-        $info = $this->bankAccount->destroy($id);
+        $info = $this->bankAccount->setUserInfo($request, $id);
 
-        if ($info['status']) {
+        if ($info) {
             //删除成功
-            return $this->baseSucceed($respond_data = $info, $message = '删除成功');
+            return $this->baseSucceed($respond_data = $info, $message = '授权成功');
         } else {
             //删除失败
             return $this->baseFailed($message = $info['message']);

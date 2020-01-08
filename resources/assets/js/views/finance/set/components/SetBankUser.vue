@@ -25,6 +25,7 @@
       return {
         userTemp: {
           id: null,
+          accountId: null,
           users:[],
         },
         RoleListQuery: {
@@ -51,35 +52,29 @@
       },
       handleUsers(row) { 
         /*row参数为点击的用户对象*/
-        console.log(2)
-        console.log(row)
+        // console.log(row)
         getBankUser(row.id).then((response) => {
-          console.log(response.data)
+          // console.log(response.data)
           this.checkList = response.data
           this.userTemp.id = row.id
+          this.userTemp.accountId = row.accountcode
           this.userDialogFormVisible = true
         })
-
-        // this.userDialogFormVisible = true
-        /*this.$nextTick(() => {
-          this.$refs['roleDForm'].clearValidate()
-        })*/
       },
-      giveUsers() {
-        
-        // this.roleTemp.roles = this.checkList
-        // console.log(this.checkList)
-        // console.log(this.roleTemp)
+      giveUsers() {      
+        this.userTemp.users = this.checkList
+        /*console.log(this.checkList)
+        console.log(this.userTemp)*/
         // return false
-        /*giveUserRoles(this.roleTemp).then((response) => {
+        setBankUser(this.userTemp).then((response) => {
           this.userDialogFormVisible = false
           this.$notify({
             title: '成功',
-            message: '角色设置成功',
+            message: '用户授权成功',
             type: 'success',
             duration: 2000
           })
-        })*/
+        })
       },
     }
   };

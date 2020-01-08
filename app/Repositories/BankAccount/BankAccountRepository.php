@@ -2,6 +2,7 @@
 namespace App\Repositories\BankAccount;
 
 use App\BankAccount;
+use App\BankAccountUsers;
 use App\Repositories\BankAccount\BankAccountRepositoryInterface;
 use App\Repositories\BaseInterface\Repository;
 use Auth;
@@ -57,6 +58,39 @@ class BankAccountRepository implements BankAccountRepositoryInterface
             foreach ($userInfo->hasManyBankAccountUsers as $key => $value) {
                 $userArry[] = $value->belongsToUser->id;
             }
+        }
+        // dd($userArry);
+        return $userArry;
+    }
+
+    // 获取银行账号授权用户信息
+    public function setUserInfo($requestData, $id)
+    {
+        // dd($requestData->except(['token']));
+
+        DB::beginTransaction();
+        try {
+            //清除原有用户授权
+            DB::table('bankaccountusers')->where('account_id', $id)->delete();
+
+            //新用户授权建立
+            $newUserArry = [];
+            foreach ($requestData->users as $key => $value) {
+                //批量插入数据数组
+                $newUserArry[$key]['account_id']  = $requestData->id;
+                $newUserArry[$key]['accountcode'] = $requestData->accountId;
+                $newUserArry[$key]['user_id']     = $value;
+            }
+
+            $info = BankAccountUsers::insert($newUserArry);
+            // dd($newUserArry);
+            // dd($info);
+            DB::commit();
+            return $info;
+        } catch (\Exception $e) {
+            throw $e;
+            DB::rollBack();
+            return false;
         }
         // dd($userArry);
         return $userArry;
