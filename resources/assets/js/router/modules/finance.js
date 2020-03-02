@@ -13,13 +13,18 @@ const financeRouter = {
       roles: ['admin', 'manager']
     },
     children: [
+<<<<<<< HEAD
       /*{
+=======
+      {
+>>>>>>> ba61a6472e88391d448d68ade147a05e50828e98
         path: 'manage',
         component: resolve => void(require(['@/views/finance/manage/index'], resolve)),
         name: 'financeManage',
         meta: { title: 'financeManage' },
         children: [
           {
+<<<<<<< HEAD
             path: 'fixedAssets',
             component: resolve => void(require(['@/views/finance/manage/fixedAssets.vue'], resolve)),
             name: 'fixedAssets',
@@ -32,13 +37,33 @@ const financeRouter = {
             meta: { title: 'pcClaimExpensesFromTab' },
           },
           {
+=======
+            path: 'bankTransTo',
+            component: resolve => void(require(['@/views/finance/manage/bankTransTo.vue'], resolve)),
+            name: 'bankTransTo',
+            meta: { title: 'bankTransTo' },
+          },
+          {
+            path: 'bankTransFrom',
+            component: resolve => void(require(['@/views/finance/manage/bankTransFrom.vue'], resolve)),
+            name: 'bankTransFrom',
+            meta: { title: 'bankTransFrom' },
+          },
+          /*{
+>>>>>>> ba61a6472e88391d448d68ade147a05e50828e98
             path: 'pcAuthorizeExpense',
             component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
             name: 'pcAuthorizeExpense',
             meta: { title: 'pcAuthorizeExpense' },
+<<<<<<< HEAD
           }
         ]
       },*/
+=======
+          }*/
+        ]
+      },
+>>>>>>> ba61a6472e88391d448d68ade147a05e50828e98
       /*{
         path: 'select',
         component: resolve => void(require(['@/views/finance/manage/index'], resolve)),
