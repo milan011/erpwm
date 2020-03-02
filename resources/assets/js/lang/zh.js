@@ -34,6 +34,8 @@ export default {
     pcAuthorizeExpense: '费用审批',
     finance: '财务管理',
     financeManage: '管理功能',
+    bankTransTo: '银行对账-付款',
+    bankTransFrom: '银行对账-收款',
     financeSelect: '查询及报告',
     financeSet: '维护',
     accountSection: '会计要素',

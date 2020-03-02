@@ -13,32 +13,32 @@ const financeRouter = {
       roles: ['admin', 'manager']
     },
     children: [
-      /*{
+      {
         path: 'manage',
         component: resolve => void(require(['@/views/finance/manage/index'], resolve)),
         name: 'financeManage',
         meta: { title: 'financeManage' },
         children: [
           {
-            path: 'fixedAssets',
-            component: resolve => void(require(['@/views/finance/manage/fixedAssets.vue'], resolve)),
-            name: 'fixedAssets',
-            meta: { title: 'fixedAssets' },
+            path: 'bankTransTo',
+            component: resolve => void(require(['@/views/finance/manage/bankTransTo.vue'], resolve)),
+            name: 'bankTransTo',
+            meta: { title: 'bankTransTo' },
           },
           {
-            path: 'pcClaimExpensesFromTab',
-            component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
-            name: 'pcClaimExpensesFromTab',
-            meta: { title: 'pcClaimExpensesFromTab' },
+            path: 'bankTransFrom',
+            component: resolve => void(require(['@/views/finance/manage/bankTransFrom.vue'], resolve)),
+            name: 'bankTransFrom',
+            meta: { title: 'bankTransFrom' },
           },
-          {
+          /*{
             path: 'pcAuthorizeExpense',
             component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
             name: 'pcAuthorizeExpense',
             meta: { title: 'pcAuthorizeExpense' },
-          }
+          }*/
         ]
-      },*/
+      },
       /*{
         path: 'select',
         component: resolve => void(require(['@/views/finance/manage/index'], resolve)),
