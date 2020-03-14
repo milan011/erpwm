@@ -26,15 +26,9 @@
 
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
-<<<<<<< HEAD
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom"/>
-=======
           <span>{{ nick_name }}</span>
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom"/>
-          
->>>>>>> ba61a6472e88391d448d68ade147a05e50828e98
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/user/passwordReset">
@@ -71,14 +65,11 @@ export default {
     LangSelect,
     ThemePicker
   },
-<<<<<<< HEAD
-=======
   data() {
     return {
       nick_name: this.$store.getters.nick_name,
     }
   },
->>>>>>> ba61a6472e88391d448d68ade147a05e50828e98
   computed: {
     ...mapGetters([
       'sidebar',

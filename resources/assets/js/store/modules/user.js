@@ -7,11 +7,7 @@ const user = {
     status: '',
     code: '',
     token: getToken(),
-<<<<<<< HEAD
-    name: '',
-=======
     nick_name: '',
->>>>>>> ba61a6472e88391d448d68ade147a05e50828e98
     userid: '',
     avatar: '',
     introduction: '',
@@ -38,11 +34,8 @@ const user = {
       state.status = status
     },
     SET_NAME: (state, name) => {
-<<<<<<< HEAD
-      state.username = name
-=======
+      // state.username = name
       state.nick_name = name
->>>>>>> ba61a6472e88391d448d68ade147a05e50828e98
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -99,11 +92,8 @@ const user = {
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
-<<<<<<< HEAD
-          commit('SET_NAME', data.name)
-=======
+          // commit('SET_NAME', data.name)
           commit('SET_NAME', data.nick_name)
->>>>>>> ba61a6472e88391d448d68ade147a05e50828e98
           commit('SET_USER_ID', data.id)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
