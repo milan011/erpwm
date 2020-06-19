@@ -48,3 +48,14 @@ export function deleteBankTrans(data) {
     data
   }) 
 }
+
+export function getUserBanks(query) {
+  console.log('query',query)
+  return request({
+    // url: '/bankTrans/list',
+    url: ROAST_CONFIG.API_URL + '/userBankList/' + query.id,
+    method: 'get',
+    // params: {token, query}
+    params: {token}
+  })
+}

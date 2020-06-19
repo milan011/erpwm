@@ -555,4 +555,18 @@ export default {
     bankaddress: '开户行地址',
     status: '状态',
   },
+  bankTransTo:{
+      id: '序号',
+      type: '记录类型',
+      transno : '批次号码',
+      bankact : '银行账户',
+      amountcleared: '清算',
+      ref : '摘要',
+      transdate : '付款日期',
+      banktranstype : '付款方式',
+      amount : '收/付款金额',
+      bankaccountcode: '账户',
+      cleared: '清算'
+  },
+
 }

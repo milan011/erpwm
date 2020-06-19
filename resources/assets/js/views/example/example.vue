@@ -209,54 +209,60 @@ export default {
   },
   methods: {
     getList() {
-      this.listLoading = true
+      var _this = this
+      _this.listLoading = true
       getExampleList(this.listQuery).then(response => {
-        this.list = response.data.data
-        this.total = response.data.total
+        _this.list = response.data.data
+        _this.total = response.data.total
         // Just to simulate the time of the request
         setTimeout(() => {
-          this.listLoading = false
+          _this.listLoading = false
         }, 1.5 * 1000)
       })
     },
     getAllChartMasters(){
+      var _this = this
       chartMasterAll().then(response => {
-        this.chartMasterList = response.data
+        _this.chartMasterList = response.data
       })
     },
     handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
+      var _this = this
+      _this.listQuery.page = 1
+      _this.getList()
     },
     handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
+      var _this = this
+      _this.listQuery.limit = val
+      _this.getList()
     },
     handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
+      var _this = this
+      _this.listQuery.page = val
+      _this.getList()
     },
     handleModifyStatus(row, status) {
-      this.$confirm('确定要删除?', '提示', {
+      var _this = this
+      _this.$confirm('确定要删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.temp = Object.assign({}, row)
-        deleteExample(this.temp).then((response) => {
+        _this.temp = Object.assign({}, row)
+        deleteExample(_this.temp).then((response) => {
           if(!response.data.status){
-            this.$notify({
+            _this.$notify({
               title: '失败',
               message: response.data.message,
               type: 'warning',
               duration: 8000
             })
           }else{
-            const index = this.list.indexOf(row)
-            this.list.splice(index, 1)
-            this.total = this.total - 1
-            this.dialogFormVisible = false
-            this.$notify({
+            const index = _this.list.indexOf(row)
+            _this.list.splice(index, 1)
+            _this.total = _this.total - 1
+            _this.dialogFormVisible = false
+            _this.$notify({
               title: '成功',
               message: '删除成功',
               type: 'success',
@@ -265,14 +271,15 @@ export default {
           }   
         })
       }).catch(() => {
-        this.$message({
+        _this.$message({
           type: 'info',
           message: '已取消删除'
         });          
       });
     },
     resetTemp() {
-      this.temp = {
+      var _this = this
+      _this.temp = {
         id: undefined,
         name: '',
         chart: null,
@@ -282,31 +289,33 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+      var _this = this
+      _this.resetTemp()
+      _this.dialogStatus = 'create'
+      _this.dialogFormVisible = true
+      _this.$nextTick(() => {
+        _this.$refs['dataForm'].clearValidate()
       })
     },
     createData() {
-      this.$refs['dataForm'].validate((valid) => {
+      var _this = this
+      _this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createExample(this.temp).then((response) => {
+          createExample(_this.temp).then((response) => {
             const response_data = response.data
             if(response_data.status){
-              this.temp.id = response_data.data.id
-              this.list.unshift(response_data.data)
-              this.total = this.total + 1
-              this.dialogFormVisible = false
-              this.$notify({
+              _this.temp.id = response_data.data.id
+              _this.list.unshift(response_data.data)
+              _this.total = _this.total + 1
+              _this.dialogFormVisible = false
+              _this.$notify({
                 title: '成功',
                 message: response_data.message,
                 type: 'success',
                 duration: 2000
               })
             }else{
-              this.$notify.error({
+              _this.$notify.error({
                 title: '失败',
                 message: response_data.message,
                 duration: 2000
@@ -318,37 +327,39 @@ export default {
       })
     },
     handleUpdate(row) {
+      var _this = this
       row.chart = parseInt(row.chart)
-      this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+      _this.temp = Object.assign({}, row) // copy obj
+      _this.dialogStatus = 'update'
+      _this.dialogFormVisible = true
+      _this.$nextTick(() => {
+        _this.$refs['dataForm'].clearValidate()
       })
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
+      var _this = this
+      _this.$refs['dataForm'].validate((valid) => {
         if (valid) {       
-          const tempData = Object.assign({}, this.temp)
+          const tempData = Object.assign({}, _this.temp)
           updateExample(tempData).then((response) => {
             const response_data = response.data
             if(response_data.status){
-              for (const v of this.list) {
-                if (v.id === this.temp.id) {
-                  const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, response_data.data)
+              for (const v of _this.list) {
+                if (v.id === _this.temp.id) {
+                  const index = _this.list.indexOf(v)
+                  _this.list.splice(index, 1, response_data.data)
                   break
                 }
               }
-              this.dialogFormVisible = false
-              this.$notify({
+              _this.dialogFormVisible = false
+              _this.$notify({
                 title: '成功',
                 message: response_data.message,
                 type: 'success',
                 duration: 2000
               })
             }else{
-              this.$notify.error({
+              _this.$notify.error({
                 title: '失败',
                 message: response_data.message,
                 duration: 2000
@@ -359,15 +370,17 @@ export default {
       })
     },
     handleShow(row) {
+      var _this = this
       row.taxprovinceid = row.belongs_to_taxprovinces.taxprovincename
       row.cashsalebranch = row.belongs_to_custbranch.brname
       row.cashsalecustomer = row.belongs_to_debtors_master.name
-      this.temp = Object.assign({}, row) // copy obj
-      console.log(this.temp)
-      this.dialogInfoVisible = true
+      _this.temp = Object.assign({}, row) // copy obj
+      console.log(_this.temp)
+      _this.dialogInfoVisible = true
     },
     handleSetChild(row){
-      this.$refs.exampleChild.handleStockCategory(row) 
+      var _this = this
+      _this.$refs.exampleChild.handleStockCategory(row) 
     },
   }
 }

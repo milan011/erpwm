@@ -9,12 +9,8 @@
         class="filter-item">
       </el-input>
       <el-select clearable style="width:100px;" v-model="listQuery.condetion" class="filter-item" filterable placeholder="条件">
-        <!-- <el-option v-for="user in userList" :key="user.id" :label="user.nick_name" :value="user.id"/> -->
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <!-- <el-tooltip class="item" effect="dark" content="注意:默认只导出当月信息,如需导出其他月,请选择筛选条件" placement="top">
-        <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
-      </el-tooltip> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
@@ -22,27 +18,41 @@
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
       <el-table-column :label="$t('bankTransTo.id')" show-overflow-tooltip width="80%" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.banktransid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('bankTransTo.chart')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('bankTransTo.bankaccountcode')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.belongs_to_chart.chartdescription }}</span>
+          <span>{{ scope.row.belongs_to_bank_account.bankaccountcode}}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('bankTransTo.cancreate')" show-overflow-tooltip align="center">
+      <el-table-column :label="$t('bankTransTo.ref')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.ref }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('bankTransTo.banktranstype')" show-overflow-tooltip align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.banktranstype }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('bankTransTo.amountcleared')" show-overflow-tooltip align="center">
         <template slot-scope="scope">
           <span>
-            <el-tag :type="scope.row.cancreate | statusFilter">
-              {{ cancreateStatus[scope.row.cancreate] }}
+            <el-tag v-if="scope.row.amountcleared == 0" type="danger">
+              未清算
+            </el-tag>
+            <el-tag v-else type="success">
+              已清算
             </el-tag>
           </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.date')" width="150px" align="center">
+      <el-table-column :label="$t('bankTransTo.transdate')" width="150px" align="center">
         <template slot-scope="scope">
           <span>
-            {{ scope.row.lastcompleted | parseTime('{y}-{m}-{d}') }}
+            <!-- {{ scope.row.transdate | parseTime('{y}-{m}-{d}') }} -->
+            {{ scope.row.transdate }}
             <!-- |
             <span v-if="scope.row.belongs_to_creater">{{scope.row.belongs_to_creater.nick_name}}</span>
             <span v-else></span> -->
@@ -51,9 +61,12 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230%" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <!-- <el-button type="success" size="mini" @click="handleShow(scope.row)">
-            {{ $t('table.content') }}
-          </el-button> -->
+          <el-button v-if="scope.row.amountcleared == 0" type="success" size="mini" @click="handleShow(scope.row)">
+            {{ $t('bankTransTo.cleared') }}
+          </el-button>
+          <el-button v-else type="danger" size="mini" @click="handleShow(scope.row)">
+            反清算
+          </el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
             {{ $t('table.edit') }}
           </el-button>
@@ -121,7 +134,7 @@
   </div>
 </template>
 <script>
-  import { getBankTransList,  createBankTrans, updateBankTrans, deleteBankTrans} from '@/api/bankTrans'
+  import { getBankTransList,  createBankTrans, getUserBanks, updateBankTrans, deleteBankTrans} from '@/api/bankTrans'
   import { chartMasterAll } from '@/api/chartMaster'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
@@ -216,18 +229,25 @@ export default {
       return new Promise((resolve, reject) => {  
         var that = this 
         var userid = that.$store.getters.userid 
-        // console.log(that.$store.getters)   
-        setTimeout(function() {
-          console.log(userid)
-          console.log('先获取用户授权银行账户啊啊啊')
+        // console.log(that.$store.getters) 
+          
+        getUserBanks({id: userid}).then(response => {
+          console.log('userBankList',response.data)
+          that.listQuery.userBanks = response.data.data
+          resolve()
+        })
+        
+        /*setTimeout(function() {
+          // console.log(userid)
+          console.log('先获取用户授权银行账户')
           console.log(that.listQuery.userBanks)
           // console.log(that.$store.getters.userid)
           
-          that.listQuery.userBanks = ['2', '2', '2']
+          that.listQuery.userBanks = ['2', '2']
           console.log(that.listQuery.userBanks)
 
           resolve()
-        }, 3000)
+        }, 3000)*/
         // console.log('先获取用户授权银行账户2')
         // resolve()
       })
@@ -260,16 +280,24 @@ export default {
     async getList() {
       console.log('开始')
       // await this.getUserBanks()
-      this.getUserBanks().then(() => {
+
+      this.getUserBanks().then((res) => {
 
         this.listLoading = true
-        // console.log('333')
+        // console.log(res)
         console.log('再获取列表a ')
         console.log(this.listQuery)
+        // this.listQuery.userBanks = [1,2,3]
+        getBankTransList(this.listQuery).then(response => {
+          console.log(response.data)
+          this.list = response.data.data
+          this.total = response.data.total
+          this.listLoading = false
+        })
       })
       /*this.listLoading = true
       // console.log('333')
-      console.log('再获取列表')
+      
       console.log(this.listQuery)*/
       /*return new Promise((resolve, reject) => {  
         this.listLoading = true

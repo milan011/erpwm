@@ -4,7 +4,7 @@
       <el-form ref="roleDForm" :model="userTemp" label-position="left" label-width="100px">
         <el-checkbox-group v-model="checkList">
           <el-checkbox border size="medium" v-for="user in users" :label="user.id" :key="user.id">
-            {{user.userid}}
+            {{user.realname}}
           </el-checkbox>
         </el-checkbox-group>
       </el-form>

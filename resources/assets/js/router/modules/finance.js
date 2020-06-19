@@ -37,13 +37,12 @@ const financeRouter = {
             name: 'bankTransFrom',
             meta: { title: 'bankTransFrom' },
           },
-          {
+          /*{
             path: 'pcAuthorizeExpense',
             component: resolve => void(require(['@/views/finance/manage/index.vue'], resolve)),
             name: 'pcAuthorizeExpense',
             meta: { title: 'pcAuthorizeExpense' },
-
-          }
+          }*/
         ]
       },
       /*{
