@@ -1,19 +1,19 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <el-input 
+      <!-- <el-input
         :placeholder="$t('pcAssignCashToTab.tabcode')"
-        clearable 
+        clearable
         v-model="listQuery.tabcode"
-        style="width: 150px;" 
+        style="width: 150px;"
         class="filter-item">
       </el-input> -->
       <el-select clearable style="width:100px;" v-model="listQuery.tabcode" class="filter-item" filterable :placeholder="$t('pcAssignCashToTab.tabcode')">
-        <el-option 
-          v-for="tab in pcTabList" 
+        <el-option
+          v-for="tab in pcTabList"
           v-if="tab.assigner == $store.getters.userid"
-          :key="tab.id" 
-          :label="tab.tabcode" 
+          :key="tab.id"
+          :label="tab.tabcode"
           :value="tab.id"/>
       </el-select>
       <el-select clearable style="width:100px;" v-model="listQuery.posted" class="filter-item" filterable :placeholder="$t('pcAssignCashToTab.posted')">
@@ -96,11 +96,11 @@
           <el-input v-model="temp.tabcode" />
         </el-form-item> -->
         <el-form-item :label="$t('pcAssignCashToTab.tabcode')" prop="tabcode">
-          <el-select 
-            v-model="temp.tabcode" 
-            class="filter-item" 
-            filterable 
-            clearable 
+          <el-select
+            v-model="temp.tabcode"
+            class="filter-item"
+            filterable
+            clearable
             placeholder="输入标签搜索">
             <el-option v-for="tab in pcTabList" v-if="tab.assigner == $store.getters.userid" :key="tab.id" :label="tab.tabcode" :value="tab.id"/>
           </el-select>
@@ -115,12 +115,12 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item :label="$t('pcAssignCashToTab.amount')" prop="amount">
-          <el-input-number 
-            v-model='temp.amount'   
-            :min="0" 
+          <el-input-number
+            v-model='temp.amount'
+            :min="0"
             label="金额">
           </el-input-number>
-        </el-form-item>  
+        </el-form-item>
         <el-form-item :label="$t('pcAssignCashToTab.notes')" prop="notes">
           <el-input v-model="temp.notes" />
         </el-form-item>
@@ -212,7 +212,7 @@ export default {
       },
       pickerOptionsAdd: {
         disabledDate: time => {
-          return time.getTime() < Date.now()  
+          return time.getTime() < Date.now()
         }
       },
       postedStatus:[ { key:1, value:'未授权'}, { key:2, value: '已授权'}],
@@ -242,7 +242,7 @@ export default {
           // { min: 3, max: 5, message: '长度在3到5个字符', trigger: 'blur'},
         ],
         amount: [{ required: true, message: '请输入金额', trigger: 'change' }],
-        notes: [ 
+        notes: [
           { required: true, message: '请填写备注', trigger: 'change'}, 
         ],
         date: [{ required: true, message: '请选择日期', trigger: 'change' }],
@@ -315,13 +315,13 @@ export default {
               type: 'success',
               duration: 2000
             })
-          }   
+          }
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });          
+        });
       });
     },
     resetTemp() {
@@ -366,7 +366,6 @@ export default {
                 duration: 2000
               })
             }
-            
           })
         }
       })
@@ -382,7 +381,7 @@ export default {
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
-        if (valid) {       
+        if (valid) {
           const tempData = Object.assign({}, this.temp)
           updatePcAssignCashToTab(tempData).then((response) => {
             const response_data = response.data
@@ -420,7 +419,7 @@ export default {
     padding: 15px 15px;
   }
   .el-dialog__header {
-     padding-top: 10px; 
+     padding-top: 10px;
   }
   .el-form-item{
     margin-bottom: 15px;

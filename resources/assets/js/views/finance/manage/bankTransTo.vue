@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input 
+      <el-input
         :placeholder="$t('bankTransTo.condetionName')"
-        clearable 
+        clearable
         v-model="listQuery.name"
-        style="width: 150px;" 
+        style="width: 150px;"
         class="filter-item">
       </el-input>
       <el-select clearable style="width:100px;" v-model="listQuery.condetion" class="filter-item" filterable placeholder="条件">
@@ -88,11 +88,11 @@
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item :label="$t('bankTransTo.chart')" prop="chart">
-          <el-select 
-            v-model="temp.chart" 
-            class="filter-item" 
-            filterable 
-            clearable 
+          <el-select
+            v-model="temp.chart"
+            class="filter-item"
+            filterable
+            clearable
             placeholder="输入区域搜索">
             <el-option v-for="chart in chartMasterList" :key="chart.id" :label="chart.chartdescription" :value="chart.id"/>
           </el-select>
@@ -113,15 +113,15 @@
           </el-switch>
         </el-form-item>
         <el-form-item :label="$t('bankTransTo.discountrate')" prop="discountrate">
-          <el-input-number 
-            v-model='temp.discountrate'   
-            :min="0" 
-            :max="1" 
+          <el-input-number
+            v-model='temp.discountrate'
+            :min="0"
+            :max="1"
             :precision="2"
             :step="0.1"
             label="折扣率">
           </el-input-number>
-        </el-form-item>  
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -209,8 +209,8 @@ export default {
           { min: 3, max: 5, message: '长度在3到5个字符', trigger: 'blur'},
         ],
         chart: [{ required: true, message: '请选择库存种类', trigger: 'change' }],
-        quantitybreak: [ 
-          { required: true, message: '折扣率', trigger: 'change'}, 
+        quantitybreak: [
+          { required: true, message: '折扣率', trigger: 'change'},
         ],
       },
       chartMasterList: [],
@@ -225,24 +225,21 @@ export default {
     ])
   },
   methods: {
-    async getUserBanks(){    
-      return new Promise((resolve, reject) => {  
-        var that = this 
-        var userid = that.$store.getters.userid 
+    async getUserBanks(){
+      return new Promise((resolve, reject) => {
+        var that = this
+        var userid = that.$store.getters.userid
         // console.log(that.$store.getters) 
-          
         getUserBanks({id: userid}).then(response => {
           console.log('userBankList',response.data)
           that.listQuery.userBanks = response.data.data
           resolve()
         })
-        
         /*setTimeout(function() {
           // console.log(userid)
           console.log('先获取用户授权银行账户')
           console.log(that.listQuery.userBanks)
           // console.log(that.$store.getters.userid)
-          
           that.listQuery.userBanks = ['2', '2']
           console.log(that.listQuery.userBanks)
 
@@ -297,14 +294,12 @@ export default {
       })
       /*this.listLoading = true
       // console.log('333')
-      
       console.log(this.listQuery)*/
-      /*return new Promise((resolve, reject) => {  
+      /*return new Promise((resolve, reject) => {
         this.listLoading = true
         console.log('333')
         console.log('再获取列表')
         console.log(this.listQuery)
-  
         getBankTransList(this.listQuery).then(response => {
           // this.list = response.data.data
           // this.total = response.data.total
@@ -314,7 +309,7 @@ export default {
           }, 1.5 * 1000)
         })
         resolve()
-      }) */ 
+      }) */
     },
     /*async getTransList(){
       await this.getUserBanks()
@@ -363,13 +358,13 @@ export default {
               type: 'success',
               duration: 2000
             })
-          }   
+          }
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });          
+        });
       });
     },
     resetTemp() {
@@ -413,7 +408,6 @@ export default {
                 duration: 2000
               })
             }
-            
           })
         }
       })
@@ -429,7 +423,7 @@ export default {
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
-        if (valid) {       
+        if (valid) {
           const tempData = Object.assign({}, this.temp)
           updateBankTrans(tempData).then((response) => {
             const response_data = response.data
@@ -468,7 +462,7 @@ export default {
       this.dialogInfoVisible = true
     },
     handleSetChild(row){
-      this.$refs.bankTransToChild.handleStockCategory(row) 
+      this.$refs.bankTransToChild.handleStockCategory(row)
     },
   }
 }
@@ -478,7 +472,7 @@ export default {
     padding: 15px 15px;
   }
   .el-dialog__header {
-     padding-top: 10px; 
+     padding-top: 10px;
   }
   .el-form-item{
     margin-bottom: 15px;

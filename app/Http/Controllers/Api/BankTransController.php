@@ -10,9 +10,7 @@ use Illuminate\Http\Request;
 
 class BankTransController extends Controller {
 	protected $bankTrans;
-
 	public function __construct(
-
 		BankTransRepositoryInterface $bankTrans
 	) {
 		$this->bankTrans = $bankTrans;

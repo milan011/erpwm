@@ -314,7 +314,7 @@ export default {
         this.temp = Object.assign({}, row) // copy obj
         // this.temp.noticeCity = ['10', '138']
         const pid = row.belongs_to_city.pid.toString(10) 
-        const id = row.belongs_to_city.id.toString(10) 
+        const id  = row.belongs_to_city.id.toString(10) 
         this.temp.noticeCity = [pid, id]
         // console.log(this.temp.noticeCity)
         this.dialogStatus = 'update'
