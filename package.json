@@ -69,7 +69,7 @@
     "mint-ui": "^2.2.13",
     "mockjs": "^1.0.1-beta3",
     "node-notifier": "^5.2.1",
-    "node-sass": "^4.9.3",
+    "node-sass": "^7.0.0",
     "normalize.css": "^8.0.0",
     "nprogress": "^0.2.0",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
